@@ -29,6 +29,7 @@ services:
             - 8112:8112
             - 6881:6881
             - 6881:6881/udp
+            - 6789:6789
         environment:
             - PRIVATE_KEY=
             - NET_LOCAL=192.168.86.0/24
@@ -114,6 +115,35 @@ services:
                 condition: service_started
                 restart: true
         image: lscr.io/linuxserver/radarr:latest
+    readarr:
+        image: lscr.io/linuxserver/readarr:develop
+        container_name: readarr
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Etc/UTC
+        volumes:
+            - /config/readarr:/config
+            - /mnt/video/Books:/books
+            - /mnt/complete:/downloads
+        ports:
+            - 8787:8787
+        restart: unless-stopped
+    nzbget:
+        image: lscr.io/linuxserver/nzbget:latest
+        container_name: nzbget
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Etc/UTC
+            - NZBGET_USER=nzbget #optional
+            - NZBGET_PASS=tegbzn6789 #optional
+        volumes:
+            - /config/nzbget:/config
+            - /media/downloads:/incomplete
+            - /mnt/complete:/downloads
+        network_mode: container:vpn
+        restart: unless-stopped
     minecraft-server:
         ports:
             - 25565:25565
@@ -127,7 +157,8 @@ services:
             - WHITELIST=surian
             - EXISTING_WHITELIST_FILE=SYNCHRONIZE
             - EXISTING_OPS_FILE=SYNCHRONIZE
-            - DIFFICULTY=hard
+            - DIFFICULTY=easy
+            - SEED=6259851991576567244
         container_name: mc
         volumes:
             - /mc-data:/data
@@ -138,3 +169,4 @@ services:
         restart: unless-stopped
         container_name: noip-duc
         image: ghcr.io/noipcom/noip-duc:latest
+
