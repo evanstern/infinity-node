@@ -1,3 +1,4 @@
 noip-duc.env
 data
 postgres
+*.swp
