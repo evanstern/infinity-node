@@ -30,7 +30,7 @@ services:
             - 6881:6881/udp
             - 6789:6789
         environment:
-            - PRIVATE_KEY=
+            - PRIVATE_KEY=uCh/s6/i1zzdBfi+VEzYolZKX4JLb+/lXeNTc0poel0=
             - NET_LOCAL=192.168.86.0/24
         restart: unless-stopped
         image: ghcr.io/bubuntux/nordlynx
