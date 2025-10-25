@@ -203,7 +203,10 @@ stacks/
 
 On each VM, likely locations:
 ```bash
-# Check common locations
+# Most likely location
+/home/evan/projects/infinity-node/stacks/
+
+# Other possible locations
 ~/docker/
 ~/services/
 ~/stacks/
@@ -211,7 +214,7 @@ On each VM, likely locations:
 /opt/docker/
 
 # Find all docker-compose.yml files
-find ~ -name "docker-compose.yml" -o -name "compose.yml"
+find /home/evan -name "docker-compose.yml" -o -name "compose.yml"
 
 # Check running containers for their compose files
 docker ps --format "{{.Label \"com.docker.compose.project.config_files\"}}"
