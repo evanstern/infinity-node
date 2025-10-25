@@ -202,7 +202,7 @@ LIMIT 20
 ## 📊 Completion Trend
 
 ```dataview
-TABLE count(rows) as "Completed"
+TABLE length(rows) as "Completed"
 FROM "tasks/completed"
 WHERE type = "task"
 GROUP BY dateformat(updated, "yyyy-MM") as "Month"
