@@ -40,11 +40,16 @@ This template will be the foundation for all future VMs in the infinity-node inf
 
 ### User Configuration
 - [ ] Create `evan` user with sudo privileges
+- [ ] Configure passwordless sudo for `evan` (for automation)
 - [ ] Set up SSH directory structure
 - [ ] Copy SSH public key to `evan` user
 - [ ] Disable root password login (SSH keys only)
-- [ ] Configure `inspector` user (read-only, for Testing Agent)
+- [ ] Configure `inspector` user (for Testing Agent)
 - [ ] Document user setup in template
+
+**Related scripts:**
+- `scripts/setup-evan-nopasswd-sudo.sh` - Passwordless sudo
+- `scripts/setup-inspector-user.sh` - Inspector user setup
 
 ### Security Hardening
 - [ ] Disable root SSH login

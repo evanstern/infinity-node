@@ -425,11 +425,14 @@ User Streams Media
 
 **Key-based authentication only:**
 - Proxmox: `root@192.168.86.106`
-- VMs: `evan@<VM_IP>`
+- VMs: `evan@<VM_IP>` (full access, passwordless sudo)
+- VMs: `inspector@<VM_IP>` (read-only, for Testing Agent)
 
-**Planned:**
-- Read-only `inspector` user for Testing Agent
-- Dedicated users per service if needed
+**User Details:**
+- `evan`: Full system access with passwordless sudo (for automation)
+- `inspector`: Docker group access (policy-based read-only), no sudo
+  - Created via `scripts/setup-inspector-user.sh`
+  - Used by [[agents/TESTING|Testing Agent]] for validation
 
 ### Secret Management
 

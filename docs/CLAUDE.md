@@ -192,8 +192,13 @@ Claude Code has a built-in TodoWrite tool for session-based task tracking. This 
 
 Claude Code has SSH access to:
 - **Proxmox**: `root@192.168.86.106`
-- **VMs**: `evan@192.168.86.{172,173,174,249}`
+- **VMs (full access)**: `evan@192.168.86.{172,173,174,249}` (passwordless sudo)
+- **VMs (read-only)**: `inspector@192.168.86.{172,173,174,249}` (Testing Agent only)
 - **Pangolin**: (to be configured)
+
+**User Roles:**
+- `evan`: Full access for deployment, configuration, and management
+- `inspector`: Read-only access for Testing Agent validation (policy-enforced)
 
 **SSH Best Practices:**
 - Run commands via SSH, don't maintain sessions
