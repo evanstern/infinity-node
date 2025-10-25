@@ -433,18 +433,26 @@ Claude Code has SSH access to:
 
 ### Git & Version Control
 
+**IMPORTANT:**
+- **ALWAYS use `/commit` command** for creating commits (follows conventional commit format)
+- **NEVER commit without explicit user approval** - ask first
+- **NEVER push to remote repository without explicit user approval** - ask first
+
 **Do:**
+- Use `/commit` slash command for all commits
 - Commit logical units of work
-- Write clear commit messages
-- Reference MDTD tasks in commits
+- Write clear commit messages following Conventional Commits format
+- Reference MDTD tasks in commits (use "Fixes task-name" or "Addresses task-name")
 - Keep commits focused
 - Review changes before committing
+- Wait for user approval before committing or pushing
 
 **Don't:**
 - Commit secrets
 - Make massive commits
 - Use vague commit messages
 - Commit broken code
+- Commit or push without asking user first
 
 ## Security Guidelines
 
