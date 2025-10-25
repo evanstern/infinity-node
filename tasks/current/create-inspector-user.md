@@ -27,16 +27,29 @@ A dedicated `inspector` user with read-only permissions ensures Testing Agent ca
 
 ## Acceptance Criteria
 
-- [ ] Create `inspector` user on VM 100 (emby)
-- [ ] Create `inspector` user on VM 101 (downloads)
-- [ ] Create `inspector` user on VM 102 (arr)
-- [ ] Create `inspector` user on VM 103 (misc)
-- [ ] Add SSH public key to inspector's authorized_keys
-- [ ] Grant read-only docker socket access (group membership)
+### Create Reusable Script
+- [ ] Create `scripts/setup-inspector-user.sh`
+- [ ] Make script idempotent (safe to re-run)
+- [ ] Add usage documentation in script
+- [ ] Test script on one VM first
+
+### Deploy to Existing VMs
+- [ ] Run script on VM 100 (emby)
+- [ ] Run script on VM 101 (downloads)
+- [ ] Run script on VM 102 (arr)
+- [ ] Run script on VM 103 (misc)
+
+### Validation
 - [ ] Verify inspector can run read-only docker commands
 - [ ] Verify inspector CANNOT run write commands
-- [ ] Update [[docs/agents/TESTING|Testing Agent]] documentation
 - [ ] Test SSH access as inspector from local machine
+- [ ] Verify no sudo access for inspector
+
+### Documentation
+- [ ] Update [[docs/agents/TESTING|Testing Agent]] documentation
+- [ ] Document inspector user in [[docs/ARCHITECTURE|Architecture]]
+- [ ] Update [[docs/CLAUDE|CLAUDE.md]] with SSH access info
+- [ ] Document script usage for future VMs
 
 ## Dependencies
 
@@ -68,29 +81,83 @@ A dedicated `inspector` user with read-only permissions ensures Testing Agent ca
 - [[docs/agents/TESTING|Testing Agent]]
 - [[docs/agents/SECURITY|Security Agent]]
 - [[docs/ARCHITECTURE|Architecture]]
+- [[create-vm-template]] - Script will be reused in VM template
 
 ## Notes
 
-**User creation commands (per VM):**
+### Script Approach (Option 1)
+
+**Benefits:**
+- Reusable on future VMs
+- Consistent setup across all VMs
+- Can be integrated into VM template later
+- Idempotent (safe to re-run)
+- Documented and version controlled
+
+**Script should:**
+- Accept SSH public key as parameter or use default
+- Check if user already exists (idempotent)
+- Create user with proper settings
+- Configure SSH access
+- Add to docker group
+- Set proper permissions
+- Provide clear success/failure output
+
+**Example script structure:**
 ```bash
-# Create user
-sudo useradd -m -s /bin/bash inspector
+#!/bin/bash
+# Setup read-only inspector user for Testing Agent
+# Usage: ./setup-inspector-user.sh [path-to-public-key]
 
-# Add to docker group (read-only socket access)
-sudo usermod -aG docker inspector
+set -e  # Exit on error
 
-# No sudo access
-# No password (key-only auth)
+# Configuration
+USERNAME="inspector"
+PUBKEY_PATH="${1:-$HOME/.ssh/id_rsa.pub}"
 
-# Copy SSH public key
-sudo mkdir -p /home/inspector/.ssh
-sudo cp ~/.ssh/authorized_keys /home/inspector/.ssh/
-sudo chown -R inspector:inspector /home/inspector/.ssh
-sudo chmod 700 /home/inspector/.ssh
-sudo chmod 600 /home/inspector/.ssh/authorized_keys
+# Check if user exists
+if id "$USERNAME" &>/dev/null; then
+    echo "User $USERNAME already exists"
+    # Update anyway (idempotent)
+else
+    echo "Creating user $USERNAME"
+    sudo useradd -m -s /bin/bash "$USERNAME"
+fi
+
+# Add to docker group
+sudo usermod -aG docker "$USERNAME"
+
+# Setup SSH
+sudo mkdir -p /home/$USERNAME/.ssh
+sudo cp "$PUBKEY_PATH" /home/$USERNAME/.ssh/authorized_keys
+sudo chown -R $USERNAME:$USERNAME /home/$USERNAME/.ssh
+sudo chmod 700 /home/$USERNAME/.ssh
+sudo chmod 600 /home/$USERNAME/.ssh/authorized_keys
+
+echo "✓ Inspector user setup complete"
 ```
 
-**Post-creation:**
-- Document inspector user in [[docs/ARCHITECTURE|Architecture]]
-- Update [[docs/CLAUDE|CLAUDE.md]] with SSH access info
-- Test from local machine
+### Testing Commands
+
+**After setup, verify:**
+```bash
+# Should succeed (read-only operations)
+ssh inspector@VM_IP "docker ps"
+ssh inspector@VM_IP "docker logs container-name"
+ssh inspector@VM_IP "cat /var/log/syslog | head"
+ssh inspector@VM_IP "systemctl status docker"
+
+# Should fail (write operations)
+ssh inspector@VM_IP "docker restart container-name"  # Permission denied
+ssh inspector@VM_IP "sudo ls"                         # sudo not allowed
+ssh inspector@VM_IP "echo test > /tmp/file"          # Works (can write to /tmp)
+ssh inspector@VM_IP "rm /etc/hosts"                  # Permission denied
+```
+
+### Future Reuse
+
+This script will be:
+1. Used immediately on existing VMs (100-103)
+2. Integrated into [[create-vm-template]] task
+3. Available for any new VMs
+4. Reference for other user setup scripts

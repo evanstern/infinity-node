@@ -18,6 +18,15 @@ WHERE type = "task" AND priority = "critical"
 SORT status ASC, updated DESC
 ```
 
+## 📌 Current Tasks (Active Work)
+
+```dataview
+TABLE status, priority, category, agent, updated as "Last Updated"
+FROM "tasks/current"
+WHERE type = "task"
+SORT choice(status = "in-progress", 0, choice(status = "blocked", 1, 2)) ASC, choice(priority = "critical", 0, choice(priority = "high", 1, choice(priority = "medium", 2, 3))) ASC
+```
+
 ## 🔥 In Progress
 
 ```dataview
@@ -36,13 +45,13 @@ WHERE type = "task" AND status = "blocked"
 SORT priority DESC, updated DESC
 ```
 
-## 📋 Pending Tasks
+## 📋 Backlog (Not Yet Started)
 
 ```dataview
 TABLE priority, category, agent, created
-FROM "tasks/current" OR "tasks/backlog"
+FROM "tasks/backlog"
 WHERE type = "task" AND status = "pending"
-SORT priority DESC, created ASC
+SORT choice(priority = "critical", 0, choice(priority = "high", 1, choice(priority = "medium", 2, 3))) ASC, created ASC
 ```
 
 ## Tasks by Agent
