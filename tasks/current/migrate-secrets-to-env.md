@@ -1,11 +1,11 @@
 ---
 type: task
-status: pending
+status: blocked
 priority: high
 category: security
 agent: security
 created: 2025-10-24
-updated: 2025-10-24
+updated: 2025-10-25
 tags:
   - task
   - security
@@ -14,6 +14,8 @@ tags:
 ---
 
 # Task: Migrate Secrets from Docker Compose to .env Files
+
+**⏸️ BLOCKED BY:** [[import-existing-docker-configs]] - Docker configurations must be imported into repository before secrets can be migrated.
 
 ## Description
 
