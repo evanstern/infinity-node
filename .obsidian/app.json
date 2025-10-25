@@ -1,0 +1,16 @@
+{
+  "attachmentFolderPath": "docs/assets",
+  "newLinkFormat": "shortest",
+  "useMarkdownLinks": false,
+  "showUnsupportedFiles": true,
+  "promptDelete": true,
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "current",
+  "defaultViewMode": "source",
+  "strictLineBreaks": false,
+  "showLineNumber": true,
+  "showIndentGuide": true,
+  "readableLineLength": false,
+  "foldHeading": true,
+  "foldIndent": true
+}

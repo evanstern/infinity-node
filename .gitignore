@@ -1,1 +1,44 @@
+# Editor workspaces
 *.code-workspace
+
+# Obsidian workspace (personal settings - don't commit)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/hotkeys.json
+.obsidian/graph.json
+.obsidian/cache
+
+# Environment files with secrets (NEVER COMMIT)
+.env
+**/.env
+.env.*
+!.env.example
+*.env.local
+
+# Secret directories
+secrets/
+**/secrets/
+
+# Backup files that might contain secrets
+*.backup
+*.bak
+*.old
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
