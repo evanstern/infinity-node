@@ -1,6 +1,6 @@
 ---
 type: task
-status: pending
+status: blocked
 priority: high
 category: docker
 agent: docker
@@ -14,6 +14,8 @@ tags:
 ---
 
 # Task: Import Existing Docker Configurations from VMs
+
+**⏸️ BLOCKED BY:** [[setup-vaultwarden-secret-storage]] - Need secret storage strategy before importing configs (we'll find secrets during import).
 
 ## Description
 

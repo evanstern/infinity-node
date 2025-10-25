@@ -72,6 +72,7 @@ Critical services (Emby, downloads, arr) require reliable backups to minimize do
 - VM disk snapshots
 - Docker configurations (already in git)
 - .env files (CRITICAL - contain secrets)
+- **Vaultwarden database (CRITICAL - source of truth for secrets)**
 - Service databases (Emby, *arr, Immich, etc.)
 - NAS data (handled by NAS?)
 
