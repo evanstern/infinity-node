@@ -41,6 +41,10 @@ Follows Conventional Commits specification:
 - Keep messages professional and clean
 - Follow the project's existing commit style
 - Always require user approval before committing
+- **ALWAYS include task reference** when commit is related to a MDTD task:
+  - Use "Fixes task-name" when completing a task
+  - Use "Addresses task-name" when making progress on a task
+  - Task name should match the markdown filename (without .md extension)
 
 ### Types
 - **feat**: New feature or service
@@ -67,6 +71,8 @@ feat(emby): add hardware transcoding support
 
 Configured Emby to use GPU for hardware transcoding. Added device passthrough
 in docker-compose.yml and configured transcoding temp directory on tmpfs.
+
+Addresses optimize-emby-transcoding
 ```
 
 ```
@@ -74,6 +80,8 @@ chore(tasks): complete inspector user setup task
 
 Moved create-inspector-user task to completed directory. Inspector user now
 deployed to all VMs with read-only access for Testing Agent.
+
+Fixes create-inspector-user
 ```
 
 ```
@@ -81,6 +89,8 @@ config(arr): update radarr quality profiles
 
 Modified quality profiles to prefer x265 encodes for space efficiency while
 maintaining quality standards.
+
+Addresses arr-quality-optimization
 ```
 
 ```
@@ -88,4 +98,6 @@ docs(architecture): add vaultwarden secret storage details
 
 Documented Vaultwarden organizational structure, API access patterns, and
 secret management workflows.
+
+Addresses setup-vaultwarden-secret-storage
 ```
