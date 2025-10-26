@@ -2,7 +2,7 @@
 type: stack
 service: newt
 category: networking
-vms: [103]
+vms: [100, 103]
 priority: critical
 status: running
 stack-type: single-container
@@ -14,6 +14,7 @@ created: 2025-10-26
 updated: 2025-10-26
 tags:
   - stack
+  - vm-100
   - vm-103
   - networking
   - tunnel
@@ -30,9 +31,11 @@ aliases:
 # Newt Stack
 
 **Service:** Newt (Pangolin Tunnel Client)
-**VM:** 103 (misc)
+**VMs:** 100 (emby), 103 (misc) - Separate instances with unique credentials
 **Priority:** Critical - Provides external access to services
 **Image:** `fosrl/newt:latest`
+
+> **Note:** Each VM requiring external access has its own newt instance with unique NEWT_ID and NEWT_SECRET credentials. This configuration documents the general setup; specific credentials are stored in Vaultwarden per VM.
 
 ## Overview
 

@@ -18,26 +18,37 @@ tags:
 
 **✅ UNBLOCKED:** [[setup-vaultwarden-secret-storage]] completed - ready to import configs.
 
-**Current Phase:** VM 103 priority stacks complete, continuing with remaining VM 103 stacks.
+**Current Phase:** VM 103 complete (10 stacks imported). Ready for VM 100, 101, 102.
 
 ## Progress Summary
 
-**Phase 1: VM 103 Priority Stacks** ✅ COMPLETE
+**Phase 1: VM 103 All Stacks** ✅ COMPLETE
 - ✅ vaultwarden stack imported (docker-compose.yml, .env.example, README.md)
 - ✅ paperless-ngx stack imported (docker-compose.yml, .env.example, README.md)
 - ✅ portainer stack imported (docker-compose.yml, .env.example, README.md)
-- ✅ Secrets migrated to Vaultwarden organization (vm-103-misc collection)
+- ✅ watchtower stack imported (multi-VM deployment documented)
+- ✅ audiobookshelf stack imported (separated from newt)
+- ✅ newt stack imported (Pangolin tunnel client)
+- ✅ homepage stack imported (dashboard)
+- ✅ navidrome stack imported (music server)
+- ✅ immich stack imported (photo management with AI/ML)
+- ✅ linkwarden stack imported (bookmark manager)
+- ✅ Secrets documented in README files with Vaultwarden references
 - ✅ Secret management utilities created (create/update/delete-secret.sh)
 - ✅ stacks/README.md created with deployment workflows
 - ✅ Portainer Git integration documented
 - ✅ Migration task created (migrate-portainer-to-monorepo)
+- ✅ Obsidian metadata added to all 10 stack READMEs
 
 **Commits:**
 - `3f9b9b5` feat(stacks): import VM 103 priority stacks
 - `508c80e` feat(scripts): add secret management utilities for Vaultwarden
 - `2b656a9` docs(stacks): add Portainer Git integration guide and migration task
+- `752ac2c` feat(stacks): import remaining VM 103 service stacks
+- `6e2311e` docs(stacks): add Obsidian metadata frontmatter to all stack READMEs
+- `00997d4` feat(tasks): implement task ID labeling system (IN-NNN)
 
-**Next:** Import remaining VM 103 stacks (immich, linkwarden, audiobookshelf, homepage, navidrome, watchtower)
+**Next Phase:** Import stacks from VM 100 (emby), VM 101 (downloads), VM 102 (arr services)
 
 **Architecture Decision:** Hybrid approach - Git as source of truth, Portainer as management interface:
 - Git repository contains all docker-compose.yml configurations (version controlled)
@@ -96,25 +107,26 @@ We need to import the existing configurations into the proper structure.
 - [ ] Import pangolin/newt stack
 - [ ] Document all services and integrations
 
-**VM 103 (misc):**
+**VM 103 (misc):** ✅ COMPLETE
 - [x] Import vaultwarden stack
 - [x] Import paperless-ngx stack
-- [ ] Import immich stack
-- [ ] Import linkwarden stack
-- [ ] Import navidrome stack
-- [ ] Import audiobookshelf stack
-- [ ] Import homepage stack
+- [x] Import immich stack
+- [x] Import linkwarden stack
+- [x] Import navidrome stack
+- [x] Import audiobookshelf stack
+- [x] Import homepage stack
 - [x] Import portainer stack
-- [ ] Import watchtower stack
-- [ ] Import pangolin/newt stack
-- [x] Document all services (for imported stacks)
+- [x] Import watchtower stack
+- [x] Import newt stack (separated from audiobookshelf)
+- [x] Document all services
+- [x] Add Obsidian metadata to all stack READMEs
 
 ### Environment Files
-- [x] Create .env.example for each stack (VM 103 priority stacks)
+- [x] Create .env.example for each stack (all VM 103 stacks)
 - [x] Document required environment variables with Vaultwarden references
 - [x] DO NOT commit actual .env files with secrets (verified via gitignore)
 - [x] Add .env to .gitignore if not already present
-- [ ] Create .env.example for remaining stacks
+- [x] Create .env.example for all VM 103 stacks
 
 ### Documentation
 - [x] Create README.md for each stack explaining:
@@ -129,9 +141,10 @@ We need to import the existing configurations into the proper structure.
 - [x] Document which VM each stack runs on (in individual README files)
 
 ### Validation
-- [x] Verify all docker-compose.yml files are valid syntax (VM 103 priority stacks validated)
-- [x] Ensure no secrets are committed to git (SECRETS-TO-MIGRATE.md properly gitignored and deleted)
-- [ ] Test that imported configs match running services
+- [x] Verify all docker-compose.yml files are valid syntax (all VM 103 stacks validated)
+- [x] Ensure no secrets are committed to git (verified - no secrets in commits)
+- [x] All VM 103 stacks validated with `docker compose config`
+- [ ] Test that imported configs match running services (VM 100, 101, 102)
 - [ ] Document any discrepancies found
 
 ## Dependencies

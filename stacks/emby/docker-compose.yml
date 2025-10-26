@@ -1,0 +1,26 @@
+name: emby
+
+services:
+  embyserver:
+    container_name: emby
+    image: emby/embyserver:latest
+    network_mode: host
+    restart: unless-stopped
+
+    volumes:
+      - ${CONFIG_PATH}:/config
+      - ${MEDIA_PATH}:/mnt/movies
+
+    environment:
+      - TZ=${TZ:-America/Toronto}
+
+    # Uncomment to enable GPU hardware transcoding
+    # Requires NVIDIA GPU and nvidia-docker runtime
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities:
+    #             - gpu
