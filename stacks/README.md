@@ -58,12 +58,53 @@ Each stack directory contains:
 
 ## Deployment Workflow
 
-### Option A: Via Portainer (Recommended for Operations)
+### Option A: Via Portainer Git Integration (Recommended)
 
-1. Configure Portainer Git integration (future task)
-2. Point stack at git repository
-3. Portainer auto-pulls and redeploys on git changes
-4. Manage via Portainer UI
+Portainer can automatically deploy and update stacks from this Git repository. This is the recommended approach for production operations.
+
+**Initial Configuration:**
+
+1. **Access Portainer** on your VM (e.g., http://192.168.86.249:9000)
+2. **Navigate to Stacks** → Add stack
+3. **Select "Repository"** as the build method
+4. **Configure Git settings:**
+   - **Repository URL:** `https://github.com/evanstern/infinity-node`
+   - **Repository reference:** `main` (or specific branch/tag)
+   - **Compose file path:** `stacks/<service-name>/docker-compose.yml`
+   - **Authentication:** Configure if using private repo
+5. **Configure Environment Variables:**
+   - Add required environment variables from `.env.example`
+   - Retrieve secret values from Vaultwarden using scripts:
+     ```bash
+     export BW_SESSION=$(bw unlock --raw)
+     bw get item <secret-name>
+     ```
+6. **Enable GitOps Updates (Optional):**
+   - **Polling:** Auto-check for updates on interval (e.g., every 5 minutes)
+   - **Webhook:** Generate webhook URL for on-demand deployments
+   - **Force redeployment:** Ensure Git is always source of truth
+7. **Deploy the stack**
+
+**Example Configuration:**
+```
+Stack name:         vaultwarden
+Repository URL:     https://github.com/evanstern/infinity-node
+Reference:          main
+Compose path:       stacks/vaultwarden/docker-compose.yml
+GitOps polling:     Enabled (5 minute interval)
+Force redeploy:     Enabled
+```
+
+**Automated via API:**
+
+See [tasks/current/migrate-portainer-to-monorepo.md](../tasks/current/migrate-portainer-to-monorepo.md) for scripted migration from individual repos to this monorepo.
+
+**Benefits:**
+- Automatic updates when Git changes
+- Infrastructure as Code
+- Easy rollbacks via Git history
+- Centralized management
+- Disaster recovery ready
 
 ### Option B: Via Script (Recommended for Automation/DR)
 
