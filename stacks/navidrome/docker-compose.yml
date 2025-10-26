@@ -1,0 +1,16 @@
+name: navidrome
+services:
+    navidrome:
+        image: deluan/navidrome:latest
+        container_name: navidrome
+        ports:
+            - ${PORT}:4533
+        volumes:
+            - ${DATA_PATH}:/data
+            - ${MUSIC_PATH}:/music:ro
+        environment:
+            - ND_MUSICFOLDER=/music
+            - ND_DATAFOLDER=/data
+            - ND_CONFIGFILE=/data/navidrome.toml
+            - ND_PORT=4533
+        restart: unless-stopped

@@ -1,0 +1,31 @@
+name: watchtower
+services:
+    watchtower:
+        container_name: watchtower
+        image: containrrr/watchtower
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        environment:
+            - TZ=UTC
+            - WATCHTOWER_SCHEDULE=${SCHEDULE}
+            - WATCHTOWER_CLEANUP=${CLEANUP}
+            - WATCHTOWER_REMOVE_VOLUMES=${REMOVE_VOLUMES}
+            - WATCHTOWER_ROLLING_RESTART=${ROLLING_RESTART}
+            - WATCHTOWER_INCLUDE_STOPPED=${INCLUDE_STOPPED}
+            - WATCHTOWER_MONITOR_ONLY=${MONITOR_ONLY}
+            - WATCHTOWER_LIFECYCLE_HOOKS=${ENABLE_LIFECYCLE_HOOKS}
+            # Uncomment and enable the following optional settings as needed
+            # - WATCHTOWER_LABEL_ENABLE=${LABEL_ENABLE}
+            # - WATCHTOWER_NOTIFICATION_EMAIL_FROM=${NOTIFICATION_EMAIL_FROM}
+            # - WATCHTOWER_NOTIFICATION_EMAIL_TO=${NOTIFICATION_EMAIL_TO}
+            # - WATCHTOWER_NOTIFICATION_EMAIL_SERVER=${NOTIFICATION_EMAIL_SERVER}
+            # - WATCHTOWER_NOTIFICATION_EMAIL_PORT=${NOTIFICATION_EMAIL_PORT}
+            # - WATCHTOWER_NOTIFICATION_EMAIL_USER=${NOTIFICATION_EMAIL_USER}
+            # - WATCHTOWER_NOTIFICATION_EMAIL_PASSWORD=${NOTIFICATION_EMAIL_PASSWORD}
+            # - WATCHTOWER_NOTIFICATION_EMAIL_TLS=${NOTIFICATION_EMAIL_TLS}
+            # - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_NAME=watchtower
+            # - REGISTRY_USER=${REGISTRY_USER}
+            # - REGISTRY_PASSWORD=${REGISTRY_PASSWORD}
+            # - WATCHTOWER_HTTP_API_TOKEN=${HTTP_API_TOKEN}
+            # - WATCHTOWER_HTTP_API_METRICS=${ENABLE_HTTP_API}
+        restart: unless-stopped
