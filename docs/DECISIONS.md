@@ -494,6 +494,10 @@ Use Git (GitHub) for all infrastructure configurations.
    - Git is standard
    - Better ecosystem
 
+### Validation
+
+**2025-10-26:** Decision validated through completion of [[tasks/completed/IN-001-import-existing-docker-configs|IN-001]]. Successfully imported 24 service stacks with docker-compose configurations, documentation, and .env.example templates. All configurations now version controlled in Git with comprehensive READMEs. Strategy proven effective for infrastructure-as-code approach.
+
 ---
 
 ## ADR-009: Use Obsidian + Markdown for Documentation
@@ -660,14 +664,14 @@ All other services are important but primarily affect system owner only.
 
 These decisions haven't been made yet but should be documented when addressed:
 
-1. **Backup Strategy** - Frequency, retention, storage, testing
-2. **Monitoring Solution** - Which tool(s), what to monitor, alerting
+1. **Backup Strategy** - Frequency, retention, storage, testing (see [[tasks/backlog/IN-011-document-backup-strategy|IN-011]])
+2. **Monitoring Solution** - Which tool(s), what to monitor, alerting (see [[tasks/backlog/IN-005-setup-monitoring-alerting|IN-005]])
 3. **High Availability** - Whether to implement, which services, how
-4. **Hardware Transcoding** - GPU passthrough for Emby, which GPU, setup
+4. **Hardware Transcoding** - GPU passthrough for Emby, which GPU, setup (see [[tasks/backlog/IN-007-optimize-emby-transcoding|IN-007]])
 5. **Centralized Logging** - Which solution, retention policy
 6. **Update Strategy** - Automated vs manual, critical vs non-critical
-7. **Disaster Recovery** - RTO/RPO definitions, procedures
-8. **Secret Management** - Final approach, backup strategy
+7. **Disaster Recovery** - RTO/RPO definitions, procedures (see [[tasks/backlog/IN-008-test-disaster-recovery|IN-008]])
+8. **Secret Backup and Rotation** - Vaultwarden backup procedures, secret rotation strategy (Vaultwarden chosen, .env migration pending in [[tasks/current/IN-002-migrate-secrets-to-env|IN-002]])
 
 ---
 

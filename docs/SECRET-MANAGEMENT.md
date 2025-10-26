@@ -536,7 +536,7 @@ bw list items --search "partial-name"
 - **Reason:** Pangolin tunnel adds authentication layer that blocks CLI
 - **Impact:** IP changes will break CLI configuration
 - **Workaround:** Update `bw config server` when IPs change
-- **Long-term solution:** [[tasks/backlog/setup-local-dns-service-discovery|Local DNS server]]
+- **Long-term solution:** [[tasks/backlog/IN-012-setup-local-dns-service-discovery|IN-012: Local DNS server]]
 
 **2. Vault Unlock Requires Master Password**
 - **Issue:** While login can be automated with API keys, unlocking the vault still requires interactive master password entry
@@ -558,7 +558,7 @@ bw list items --search "partial-name"
 
 ### Planned Improvements
 
-See [[tasks/backlog/setup-local-dns-service-discovery|Setup Local DNS]] for:
+See [[tasks/backlog/IN-012-setup-local-dns-service-discovery|IN-012: Setup Local DNS]] for:
 - Stable DNS names instead of IPs
 - Seamless IP address migration
 - CLI can use domain names
@@ -620,7 +620,7 @@ EOF
 
 - [[docs/ARCHITECTURE|Architecture]] - Infrastructure overview
 - [[docs/agents/SECURITY|Security Agent]] - Security responsibilities
-- [[tasks/current/setup-vaultwarden-secret-storage|Setup Task]] - This implementation
-- [[tasks/backlog/setup-local-dns-service-discovery|Local DNS Task]] - IP address limitation fix
+- [[tasks/completed/setup-vaultwarden-secret-storage|Setup Task]] - This implementation (completed)
+- [[tasks/backlog/IN-012-setup-local-dns-service-discovery|IN-012]] - IP address limitation fix
 - [Bitwarden CLI Documentation](https://bitwarden.com/help/cli/)
 - [Vaultwarden Wiki](https://github.com/dani-garcia/vaultwarden/wiki)

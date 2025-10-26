@@ -111,7 +111,7 @@ The [[agents/MEDIA|Media Stack Agent]] manages services that affect household us
 2. **Fill Metadata**
    ```yaml
    status: pending
-   priority: high|medium|low
+   priority: 3  # 0 (critical) → 1-2 (high) → 3-4 (medium) → 5-6 (low) → 7-9 (very low)
    category: infrastructure|docker|security|media|documentation
    agent: testing|docker|infrastructure|security|media|documentation
    ```
@@ -146,6 +146,32 @@ completed/ (completed)
 - **Check off criteria**: As each is completed
 - **Add notes**: Document issues, solutions, learnings
 - **Complete**: Set status to `completed`, move to `completed/`
+
+### Task IDs and References
+
+**Task ID System (IN-NNN):**
+- All tasks have unique IDs in format `IN-NNN` (e.g., IN-001, IN-015)
+- Task IDs are sequential and never reused
+- Task filenames include the ID: `IN-NNN-task-name.md`
+- Task frontmatter includes `task-id: IN-NNN` field
+
+**Benefits:**
+- **Easier communication:** Say "work on IN-001" instead of typing full task name
+- **Shorter references:** Use IN-NNN in commit messages, documentation, discussions
+- **Stable references:** ID stays the same even if task is renamed
+- **Quick lookup:** Find task by ID using file glob or search
+
+**How to Reference Tasks:**
+- **In conversation:** "Let's work on IN-015" or "IN-002 is blocked by IN-001"
+- **In wiki-links:** `[[tasks/current/IN-015-review-architecture-and-strategy-alignment|IN-015]]`
+- **In commits:** "Addresses IN-001" or "Fixes IN-015"
+- **In documentation:** Reference tasks by ID for brevity
+
+**Priority System:**
+- Tasks use numeric priorities (0-9) instead of text labels
+- Lower number = higher priority
+- Scale: 0 (critical/urgent) → 1-2 (high) → 3-4 (medium) → 5-6 (low) → 7-9 (very low)
+- Enables fine-grained prioritization and better sorting
 
 ## Tool Usage
 

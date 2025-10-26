@@ -613,13 +613,13 @@ infinity-node/
 ## Known Issues & Technical Debt
 
 1. **Emby VM hostname has typo:** "ininity-node-emby"
-2. **Secret migration in progress:** Vaultwarden strategy established, secrets being migrated
-3. **No local DNS:** Services accessed via IP addresses (see [[tasks/backlog/setup-local-dns-service-discovery]])
-4. **No centralized monitoring:** Manual health checks
-5. **Backup strategy undefined:** Needs documentation and automation
-6. **No disaster recovery testing:** Recovery procedures untested
+2. **Secret migration pending:** All stack docs reference Vaultwarden (completed in [[tasks/completed/IN-001-import-existing-docker-configs|IN-001]]). Actual .env migration pending ([[tasks/current/IN-002-migrate-secrets-to-env|IN-002]]).
+3. **No local DNS:** Services accessed via IP addresses (see [[tasks/backlog/IN-012-setup-local-dns-service-discovery|IN-012]])
+4. **No centralized monitoring:** Manual health checks (see [[tasks/backlog/IN-005-setup-monitoring-alerting|IN-005]])
+5. **Backup strategy undefined:** Needs documentation and automation (see [[tasks/backlog/IN-011-document-backup-strategy|IN-011]])
+6. **No disaster recovery testing:** Recovery procedures untested (see [[tasks/backlog/IN-008-test-disaster-recovery|IN-008]])
 7. **Resource monitoring needed:** Capacity planning requires data
-8. **Documentation incomplete:** Service-specific docs needed
+8. **Runbooks incomplete:** Common operational procedures need documentation (see [[tasks/backlog/IN-003-create-deployment-runbook|IN-003]])
 
 ## Future Enhancements
 
@@ -666,6 +666,7 @@ infinity-node/
 | Date | Change | Author |
 |------|--------|--------|
 | 2025-10-24 | Initial architecture documentation | Claude Code + Evan |
+| 2025-10-26 | Completed infrastructure import (IN-001): 24 service stacks documented, wiki-links added to all services, Known Issues section updated | Claude Code + Evan |
 
 ---
 
