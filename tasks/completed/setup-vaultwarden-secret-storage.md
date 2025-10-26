@@ -105,7 +105,7 @@ bw get item "secret-name"
 
 - [[docs/agents/SECURITY|Security Agent]]
 - [[tasks/current/IN-002-migrate-secrets-to-env|IN-002]] - Depends on this task
-- [[tasks/current/IN-001-import-existing-docker-configs|IN-001]] - Will use this strategy
+- [[tasks/completed/IN-001-import-existing-docker-configs|IN-001]] - ✅ COMPLETE - Used this strategy
 - [[tasks/backlog/IN-011-document-backup-strategy|IN-011]] - Includes Vaultwarden backup (separate)
 
 ## Notes
@@ -274,11 +274,11 @@ However, we should document that Vaultwarden needs backup:
 
 ### Integration with Import Task
 
-When we import Docker configs ([[tasks/current/IN-001-import-existing-docker-configs|IN-001]]):
-1. Document any secrets found in docker-compose files
-2. Store them in Vaultwarden immediately
-3. Reference Vaultwarden item in .env.example
-4. Remove secret from docker-compose.yml
+During Docker config import ([[tasks/completed/IN-001-import-existing-docker-configs|IN-001]]) ✅ COMPLETED:
+1. Documented any secrets found in docker-compose files
+2. Stored them in Vaultwarden immediately
+3. Referenced Vaultwarden items in .env.example files
+4. Removed secrets from docker-compose.yml files (using ${VAR} syntax)
 
 ### Priority Rationale
 

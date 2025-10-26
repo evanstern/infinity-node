@@ -100,10 +100,10 @@ External Access:
 - Network: virtio, bridge vmbr0
 
 **Services:**
-- Emby Server (emby/embyserver:latest)
-- Pangolin client (newt)
-- Portainer CE
-- Watchtower
+- [[stacks/emby/README|Emby Server]] (emby/embyserver:latest)
+- [[stacks/newt/README|Pangolin client (newt)]]
+- [[stacks/portainer/README|Portainer CE]]
+- [[stacks/watchtower/README|Watchtower]]
 
 **Storage Mounts:**
 - Config: NAS mount
@@ -131,11 +131,12 @@ External Access:
 - Network: virtio, bridge vmbr0
 
 **Services:**
-- NordVPN (bubuntux/nordlynx) - VPN tunnel
-- Deluge (linuxserver/deluge) - Torrent client
-- NZBGet (linuxserver/nzbget) - Usenet downloader
-- Portainer CE
-- Watchtower
+- [[stacks/downloads/README|Downloads Stack]] (NordVPN + Deluge + NZBGet)
+  - NordVPN (bubuntux/nordlynx) - VPN tunnel
+  - Deluge (linuxserver/deluge) - Torrent client
+  - NZBGet (linuxserver/nzbget) - Usenet downloader
+- [[stacks/portainer/README|Portainer CE]]
+- [[stacks/watchtower/README|Watchtower]]
 
 **Network Architecture:**
 - VPN container has NET_ADMIN capability
@@ -169,16 +170,16 @@ External Access:
 - Network: virtio, bridge vmbr0
 
 **Services:**
-- Radarr (linuxserver/radarr) - Movie management
-- Sonarr (linuxserver/sonarr) - TV management
-- Lidarr (linuxserver/lidarr) - Music management
-- Prowlarr (linuxserver/prowlarr) - Indexer aggregation
-- Jellyseerr (fallenbagel/jellyseerr) - Request management
-- Flaresolverr (flaresolverr/flaresolverr) - Cloudflare bypass
-- Huntarr (huntarr/huntarr) - *arr activity tracker
-- Pangolin client (newt)
-- Portainer CE
-- Watchtower
+- [[stacks/radarr/README|Radarr]] (linuxserver/radarr) - Movie management
+- [[stacks/sonarr/README|Sonarr]] (linuxserver/sonarr) - TV management
+- [[stacks/lidarr/README|Lidarr]] (linuxserver/lidarr) - Music management
+- [[stacks/prowlarr/README|Prowlarr]] (linuxserver/prowlarr) - Indexer aggregation
+- [[stacks/jellyseerr/README|Jellyseerr]] (fallenbagel/jellyseerr) - Request management
+- [[stacks/flaresolverr/README|Flaresolverr]] (flaresolverr/flaresolverr) - Cloudflare bypass
+- [[stacks/huntarr/README|Huntarr]] (huntarr/huntarr) - Unified search interface
+- [[stacks/newt/README|Pangolin client (newt)]]
+- [[stacks/portainer/README|Portainer CE]]
+- [[stacks/watchtower/README|Watchtower]]
 
 **Integration Points:**
 - Connects to Prowlarr for indexer management
@@ -215,30 +216,26 @@ External Access:
 **Services:**
 
 **Password Management:**
-- Vaultwarden (vaultwarden/server) - Password manager
+- [[stacks/vaultwarden/README|Vaultwarden]] (vaultwarden/server) - Password manager
 
 **Document Management:**
-- Paperless-NGX (paperless-ngx) + PostgreSQL + Redis
-- Gotenberg (PDF processing)
-- Tika (document parsing)
+- [[stacks/paperless-ngx/README|Paperless-NGX]] + PostgreSQL + Redis + Gotenberg + Tika
 
 **Photo Management:**
-- Immich (immich-app) - Photos + ML
-- PostgreSQL (pgvecto-rs)
-- Redis
+- [[stacks/immich/README|Immich]] - Photos + ML + PostgreSQL + Redis
 
 **Bookmark Management:**
-- Linkwarden + PostgreSQL + Meilisearch
+- [[stacks/linkwarden/README|Linkwarden]] + PostgreSQL + Meilisearch
 
 **Media:**
-- Navidrome - Music streaming
-- Audiobookshelf - Audiobook management
+- [[stacks/navidrome/README|Navidrome]] - Music streaming
+- [[stacks/audiobookshelf/README|Audiobookshelf]] - Audiobook management
 
 **Other:**
-- Homepage (gethomepage/homepage) - Dashboard
-- Pangolin client (newt)
-- Portainer CE
-- Watchtower
+- [[stacks/homepage/README|Homepage]] (gethomepage/homepage) - Dashboard
+- [[stacks/newt/README|Pangolin client (newt)]]
+- [[stacks/portainer/README|Portainer CE]]
+- [[stacks/watchtower/README|Watchtower]]
 
 **Notes:**
 - Most services here are personal use only
