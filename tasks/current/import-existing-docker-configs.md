@@ -1,11 +1,11 @@
 ---
 type: task
-status: blocked
+status: in-progress
 priority: high
 category: docker
 agent: docker
 created: 2025-10-25
-updated: 2025-10-25
+updated: 2025-10-26
 tags:
   - task
   - docker
@@ -15,13 +15,22 @@ tags:
 
 # Task: Import Existing Docker Configurations from VMs
 
-**⏸️ BLOCKED BY:** [[setup-vaultwarden-secret-storage]] - Need secret storage strategy before importing configs (we'll find secrets during import).
+**✅ UNBLOCKED:** [[setup-vaultwarden-secret-storage]] completed - ready to import configs.
+
+**Current Phase:** Importing VM 103 (misc) stacks first, then VM 100, 102, 101.
+
+**Architecture Decision:** Hybrid approach - Git as source of truth, Portainer as management interface:
+- Git repository contains all docker-compose.yml configurations (version controlled)
+- Vaultwarden stores all secrets (retrieved during deployment)
+- Portainer manages deployments via Git integration (pulls from repo)
+- Enables: disaster recovery, automated deployment, Infrastructure as Code
+- Future task: Configure Portainer Git integration on each VM
 
 ## Description
 
 Import all existing Docker Compose configurations from the 4 VMs (100-103) into the repository's stacks/ directory structure. This includes docker-compose.yml files, environment configurations, and documentation for each service stack.
 
-This task establishes the foundation for version control, secret management, and infrastructure-as-code practices.
+This task establishes the foundation for version control, secret management, infrastructure-as-code practices, and future Portainer Git integration.
 
 ## Context
 

@@ -42,3 +42,6 @@ logs/
 tmp/
 temp/
 *.tmp
+
+# Temporary secret migration file (delete after migrating to Vaultwarden)
+stacks/SECRETS-TO-MIGRATE.md

@@ -1,0 +1,99 @@
+# Docker Compose file for running paperless from the Docker Hub.
+# This file contains everything paperless needs to run.
+# Paperless supports amd64, arm and arm64 hardware.
+#
+# All compose files of paperless configure paperless in the following way:
+#
+# - Paperless is (re)started on system boot, if it was running before shutdown.
+# - Docker volumes for storing data are managed by Docker.
+# - Folders for importing and exporting files are created in the same directory
+#   as this file and mounted to the correct folders inside the container.
+# - Paperless listens on port 8000.
+#
+# In addition to that, this Docker Compose file adds the following optional
+# configurations:
+#
+# - Instead of SQLite (default), PostgreSQL is used as the database server.
+#
+# To install and update paperless with this file, do the following:
+#
+# - Copy this file as 'docker-compose.yml' and the files 'docker-compose.env'
+#   and '.env' into a folder.
+# - Run 'docker compose pull'.
+# - Run 'docker compose run --rm webserver createsuperuser' to create a user.
+# - Run 'docker compose up -d'.
+#
+# For more extensive installation and update instructions, refer to the
+# documentation.
+
+name: paperless-ngx
+services:
+  broker:
+    image: docker.io/library/redis:7
+    container_name: paperless_broker
+    restart: unless-stopped
+    volumes:
+      - ${REDIS_DATA_PATH}:/data
+
+  db:
+    image: docker.io/library/postgres:16
+    container_name: paperless_db
+    restart: unless-stopped
+    volumes:
+      - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: paperless_webserver
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+    ports:
+      - "${PORT}:8000"
+    volumes:
+      - ${DATA_PATH}:/usr/src/paperless/data
+      - ${MEDIA_PATH}:/usr/src/paperless/media
+      - ${EXPORT_PATH}:/usr/src/paperless/export
+      - ${CONSUME_PATH}:/usr/src/paperless/consume
+    environment:
+      PAPERLESS_REDIS: redis://broker:6379
+      PAPERLESS_DBHOST: db
+      PAPERLESS_TIKA_ENABLED: 1
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://gotenberg:3000
+      PAPERLESS_TIKA_ENDPOINT: http://tika:9998
+      PAPERLESS_URL: ${PAPERLESS_URL}
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY}
+      PAPERLESS_TIME_ZONE: ${PAPERLESS_TIME_ZONE}
+      PAPERLESS_OCR_LANGUAGE: ${PAPERLESS_OCR_LANGUAGE}
+      PAPERLESS_ADMIN_USER: ${PAPERLESS_ADMIN_USER}
+      PAPERLESS_ADMIN_PASSWORD: ${PAPERLESS_ADMIN_PASSWORD}
+      PAPERLESS_ADMIN_MAIL: ${PAPERLESS_ADMIN_MAIL}
+      PAPERLESS_CONSUMER_POLLING: ${PAPERLESS_CONSUMER_POLLING}
+
+  gotenberg:
+    image: gotenberg/gotenberg:7.9.2
+    restart: always
+    container_name: paperless_gotenberg
+    command:
+      - "gotenberg"
+      - "--log-level=debug"
+      - "--chromium-disable-javascript=true"
+      - "--chromium-disable-routes=true"
+      - "--chromium-allow-list=file:///tmp/.*"
+      - "--api-timeout=600s"
+
+  tika:
+    image: ghcr.io/paperless-ngx/tika
+    container_name: paperless_tika
+    restart: always
+
+volumes:
+  data:
+  media:
+  pgdata:
+  redisdata:
