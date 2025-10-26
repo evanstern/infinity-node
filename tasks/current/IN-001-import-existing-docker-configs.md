@@ -18,7 +18,7 @@ tags:
 
 **✅ UNBLOCKED:** [[setup-vaultwarden-secret-storage]] completed - ready to import configs.
 
-**Current Phase:** VM 103 ✅ and VM 100 ✅ complete. Ready for VM 101, 102.
+**Current Phase:** VM 103 ✅, VM 100 ✅, and VM 101 ✅ complete. Ready for VM 102.
 
 ## Progress Summary
 
@@ -59,7 +59,19 @@ tags:
 **Commits:**
 - `d3c5bce` feat(stacks): import emby stack from VM 100
 
-**Next Phase:** Import stacks from VM 101 (downloads), VM 102 (arr services)
+**Phase 3: VM 101 (downloads)** ✅ COMPLETE
+- ✅ downloads stack imported (CRITICAL service - VPN-protected downloads)
+- ✅ VPN kill switch architecture documented
+- ✅ NordLynx (NordVPN WireGuard) configuration
+- ✅ Deluge and NZBGet setup with network_mode: container:vpn
+- ✅ Obsidian metadata with critical priority designation
+- ✅ Secrets documented for Vaultwarden (PRIVATE_KEY, credentials)
+- ✅ Validated docker-compose syntax
+
+**Commits:**
+- `a9d919a` feat(stacks): import downloads stack from VM 101
+
+**Next Phase:** Import stacks from VM 102 (arr services - final VM)
 
 **Architecture Decision:** Hybrid approach - Git as source of truth, Portainer as management interface:
 - Git repository contains all docker-compose.yml configurations (version controlled)
@@ -102,11 +114,11 @@ We need to import the existing configurations into the proper structure.
 - [x] Newt documented (separate instance with unique credentials)
 - [x] Document all services
 
-**VM 101 (downloads):**
-- [ ] Import downloads stack (VPN + Deluge + NZBGet)
-- [ ] Import portainer stack
-- [ ] Import watchtower stack
-- [ ] Document all services and network dependencies
+**VM 101 (downloads):** ✅ COMPLETE
+- [x] Import downloads stack (VPN + Deluge + NZBGet)
+- [x] Portainer documented (multi-VM deployment)
+- [x] Watchtower documented (multi-VM deployment)
+- [x] Document all services and VPN kill switch architecture
 
 **VM 102 (arr):**
 - [ ] Import arr stack (Radarr, Sonarr, Lidarr, Prowlarr)
