@@ -9,13 +9,13 @@ tags:
 
 Live overview of all tasks across the infinity-node project using Dataview queries.
 
-## 🔴 Critical Priority
+## 🔴 Critical Priority (0-1)
 
 ```dataview
 TABLE status, category, agent, updated as "Last Updated"
 FROM "tasks"
-WHERE type = "task" AND priority = "critical"
-SORT status ASC, updated DESC
+WHERE type = "task" AND priority <= 1 AND status != "completed"
+SORT priority ASC, status ASC, updated DESC
 ```
 
 ## 📌 Current Tasks (Active Work)
@@ -24,7 +24,7 @@ SORT status ASC, updated DESC
 TABLE status, priority, category, agent, updated as "Last Updated"
 FROM "tasks/current"
 WHERE type = "task"
-SORT choice(status = "in-progress", 0, choice(status = "blocked", 1, 2)) ASC, choice(priority = "critical", 0, choice(priority = "high", 1, choice(priority = "medium", 2, 3))) ASC
+SORT choice(status = "in-progress", 0, choice(status = "blocked", 1, 2)) ASC, priority ASC, updated DESC
 ```
 
 ## 🔥 In Progress
@@ -33,7 +33,7 @@ SORT choice(status = "in-progress", 0, choice(status = "blocked", 1, 2)) ASC, ch
 TABLE priority, category, agent, file.ctime as "Started"
 FROM "tasks/current"
 WHERE type = "task" AND status = "in-progress"
-SORT priority DESC, file.ctime ASC
+SORT priority ASC, file.ctime ASC
 ```
 
 ## ⏸️ Blocked Tasks
@@ -42,7 +42,7 @@ SORT priority DESC, file.ctime ASC
 TABLE priority, category, agent, updated as "Last Updated"
 FROM "tasks/current"
 WHERE type = "task" AND status = "blocked"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ## 📋 Backlog (Not Yet Started)
@@ -51,7 +51,7 @@ SORT priority DESC, updated DESC
 TABLE priority, category, agent, created
 FROM "tasks/backlog"
 WHERE type = "task" AND status = "pending"
-SORT choice(priority = "critical", 0, choice(priority = "high", 1, choice(priority = "medium", 2, 3))) ASC, created ASC
+SORT priority ASC, created ASC
 ```
 
 ## Tasks by Agent
@@ -62,7 +62,7 @@ SORT choice(priority = "critical", 0, choice(priority = "high", 1, choice(priori
 TABLE status, priority, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND agent = "docker" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ### Infrastructure Agent
@@ -71,7 +71,7 @@ SORT priority DESC, updated DESC
 TABLE status, priority, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND agent = "infrastructure" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ### Security Agent
@@ -80,7 +80,7 @@ SORT priority DESC, updated DESC
 TABLE status, priority, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND agent = "security" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ### Media Stack Agent
@@ -89,7 +89,7 @@ SORT priority DESC, updated DESC
 TABLE status, priority, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND agent = "media" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ### Testing Agent
@@ -98,7 +98,7 @@ SORT priority DESC, updated DESC
 TABLE status, priority, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND agent = "testing" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ### Documentation Agent
@@ -107,7 +107,7 @@ SORT priority DESC, updated DESC
 TABLE status, priority, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND agent = "documentation" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ## Tasks by Category
@@ -118,7 +118,7 @@ SORT priority DESC, updated DESC
 TABLE status, priority, agent, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND category = "infrastructure" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ### Docker
@@ -127,7 +127,7 @@ SORT priority DESC, updated DESC
 TABLE status, priority, agent, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND category = "docker" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ### Security
@@ -136,7 +136,7 @@ SORT priority DESC, updated DESC
 TABLE status, priority, agent, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND category = "security" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ### Media
@@ -145,7 +145,7 @@ SORT priority DESC, updated DESC
 TABLE status, priority, agent, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND category = "media" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ### Documentation
@@ -154,7 +154,7 @@ SORT priority DESC, updated DESC
 TABLE status, priority, agent, updated as "Last Updated"
 FROM "tasks"
 WHERE type = "task" AND category = "documentation" AND status != "completed"
-SORT priority DESC, updated DESC
+SORT priority ASC, updated DESC
 ```
 
 ## 📈 Statistics

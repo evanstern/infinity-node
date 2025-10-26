@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-013
-status: not-started
+status: pending
 priority: 1
 category: infrastructure
 agent: docker
