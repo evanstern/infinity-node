@@ -203,6 +203,17 @@ ssh evan@192.168.86.172 "echo 'API_KEY=$SECRET' >> /path/to/.env"
 
 ## Workflows
 
+### Pre-Task Review for Security Tasks
+
+**CRITICAL:** Before starting any security-related task, conduct a pre-task review focusing on:
+- **Secret exposure risks:** Could secrets be accidentally committed or exposed?
+- **Rollback procedures:** Can we undo changes if something goes wrong?
+- **Service impact:** Which services will be affected during the work?
+- **Backup status:** Are current secrets backed up before changes?
+- **Testing plan:** How will we validate security still works after changes?
+
+See [[docs/CLAUDE#Pre-Task Review|Pre-Task Review in CLAUDE.md]] for complete process.
+
 ### Setting Up Pangolin Tunnel
 
 1. **Generate Credentials**

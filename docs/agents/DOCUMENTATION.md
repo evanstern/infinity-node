@@ -153,9 +153,36 @@ How this will be validated...
 #### Task Lifecycle
 1. **Create**: New task created in `tasks/backlog/`
 2. **Plan**: Task refined, acceptance criteria defined
-3. **Activate**: Moved to `tasks/current/`, status set to in-progress
-4. **Complete**: Status set to completed, moved to `tasks/completed/`
-5. **Archive**: Old completed tasks archived periodically
+3. **Pre-Task Review**: Critical analysis before starting (see below)
+4. **Activate**: Moved to `tasks/current/`, status set to in-progress
+5. **Complete**: Status set to completed, moved to `tasks/completed/`
+6. **Archive**: Old completed tasks archived periodically
+
+#### Pre-Task Review Process
+
+**Before activating any non-trivial task**, conduct a critical review to identify gaps and improve the plan:
+
+**Check For:**
+- Missing inventory/scope understanding
+- Need for phased approach to reduce risk
+- Rollback procedures
+- Specific, testable validation criteria
+- Impact on critical services
+- Timing considerations
+- Missing backups or safety measures
+
+**Improve:**
+- Add checklists, phases, or procedures as needed
+- Make tests specific and actionable
+- Document rollback plans
+- Clarify deployment methods
+- Address identified risks
+
+**Document:**
+- Add improvements to the task file
+- Get user approval on revised plan
+
+See [[docs/CLAUDE#Pre-Task Review|Pre-Task Review in CLAUDE.md]] for full details.
 
 ### Architectural Decision Records (ADR)
 

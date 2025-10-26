@@ -234,6 +234,65 @@ Claude Code has SSH access to:
 
 ## Common Workflows
 
+### Pre-Task Review (Before Starting Work)
+
+**IMPORTANT:** Before beginning any non-trivial task, conduct a critical pre-task review to identify potential issues and improve the plan.
+
+**Process:**
+
+1. **Read the Task Completely**
+   - Review all sections: description, context, acceptance criteria, dependencies
+   - Understand the goal and scope
+   - Note any ambiguities or gaps
+
+2. **Critical Analysis - Look For:**
+   - **Missing inventory/scope:** Do we know exactly what needs to be done?
+   - **Phased approach:** Should this be broken into phases to reduce risk?
+   - **Rollback procedures:** Can we recover if something goes wrong?
+   - **Testing criteria:** Are tests specific enough to validate success?
+   - **Dependencies:** Are all prerequisites truly ready?
+   - **Impact on critical services:** Could this affect Emby, downloads, or arr services?
+   - **Timing considerations:** Should this be done during low-usage windows?
+   - **Secret/security concerns:** Are we exposing or mishandling sensitive data?
+   - **Cross-service impacts:** Could this affect other services?
+   - **Documentation gaps:** Is the plan clear enough to execute?
+
+3. **Common Weak Points to Check:**
+   - No inventory of what will be changed
+   - "Audit all" without knowing the scope
+   - Single big-bang approach instead of phased
+   - No rollback plan
+   - Vague testing ("verify it works")
+   - Missing backup steps
+   - Unclear deployment method
+   - No consideration of shared resources/secrets
+
+4. **Propose Improvements**
+   - Document specific gaps found
+   - Suggest concrete additions (checklists, phases, tests)
+   - Propose risk mitigation strategies
+   - Clarify ambiguous sections
+
+5. **Update the Task**
+   - Add improvements to the task file
+   - Get user approval on revised plan
+   - Ensure task is now robust before starting work
+
+6. **When to Skip:**
+   - Trivial tasks (documentation typo fixes, etc.)
+   - Tasks with very clear, limited scope
+   - Emergency fixes where speed is critical
+
+**Example Issues Found in Real Tasks:**
+- IN-002: Missing secret inventory, no phased approach, vague testing
+- IN-015: (Well-structured - good example to follow)
+
+**Benefits:**
+- Catches problems before they occur
+- Reduces risk of breaking critical services
+- Makes execution clearer and more confident
+- Documents lessons learned for future tasks
+
 ### Deploying a New Service
 
 1. **Create Task**
