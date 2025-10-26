@@ -18,7 +18,7 @@ tags:
 
 **✅ UNBLOCKED:** [[setup-vaultwarden-secret-storage]] completed - ready to import configs.
 
-**Current Phase:** VM 103 complete (10 stacks imported). Ready for VM 100, 101, 102.
+**Current Phase:** VM 103 ✅ and VM 100 ✅ complete. Ready for VM 101, 102.
 
 ## Progress Summary
 
@@ -48,7 +48,18 @@ tags:
 - `6e2311e` docs(stacks): add Obsidian metadata frontmatter to all stack READMEs
 - `00997d4` feat(tasks): implement task ID labeling system (IN-NNN)
 
-**Next Phase:** Import stacks from VM 100 (emby), VM 101 (downloads), VM 102 (arr services)
+**Phase 2: VM 100 (emby)** ✅ COMPLETE
+- ✅ emby stack imported (CRITICAL service - household media streaming)
+- ✅ Comprehensive documentation with hardware transcoding setup
+- ✅ Obsidian metadata with critical priority designation
+- ✅ Change management notes for household-impacting service
+- ✅ Updated newt documentation for multi-VM deployment
+- ✅ Validated docker-compose syntax
+
+**Commits:**
+- `d3c5bce` feat(stacks): import emby stack from VM 100
+
+**Next Phase:** Import stacks from VM 101 (downloads), VM 102 (arr services)
 
 **Architecture Decision:** Hybrid approach - Git as source of truth, Portainer as management interface:
 - Git repository contains all docker-compose.yml configurations (version controlled)
@@ -84,12 +95,12 @@ We need to import the existing configurations into the proper structure.
 
 ### Import Configurations from VMs
 
-**VM 100 (emby):**
-- [ ] Import emby stack (docker-compose.yml)
-- [ ] Import portainer stack
-- [ ] Import watchtower stack
-- [ ] Import pangolin/newt stack
-- [ ] Document all services
+**VM 100 (emby):** ✅ COMPLETE
+- [x] Import emby stack (docker-compose.yml)
+- [x] Portainer documented (multi-VM deployment)
+- [x] Watchtower documented (multi-VM deployment)
+- [x] Newt documented (separate instance with unique credentials)
+- [x] Document all services
 
 **VM 101 (downloads):**
 - [ ] Import downloads stack (VPN + Deluge + NZBGet)
