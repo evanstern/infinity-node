@@ -1,3 +1,33 @@
+---
+type: stack
+service: portainer
+category: infrastructure
+vms: [100, 101, 102, 103]
+priority: important
+status: running
+stack-type: single-container
+has-secrets: false
+external-access: false
+ports: [8000, 9000, 9443]
+backup-priority: medium
+created: 2025-10-26
+updated: 2025-10-26
+tags:
+  - stack
+  - vm-100
+  - vm-101
+  - vm-102
+  - vm-103
+  - infrastructure
+  - docker-management
+  - single-container
+  - no-secrets
+  - web-ui
+aliases:
+  - Portainer
+  - Docker UI
+---
+
 # Portainer Stack
 
 **Service:** Portainer CE (Docker Management UI)

@@ -1,3 +1,32 @@
+---
+type: stack
+service: newt
+category: networking
+vms: [103]
+priority: critical
+status: running
+stack-type: single-container
+has-secrets: true
+external-access: true
+ports: []
+backup-priority: low
+created: 2025-10-26
+updated: 2025-10-26
+tags:
+  - stack
+  - vm-103
+  - networking
+  - tunnel
+  - pangolin
+  - single-container
+  - has-secrets
+  - external-access
+aliases:
+  - Newt
+  - Pangolin Client
+  - Tunnel Client
+---
+
 # Newt Stack
 
 **Service:** Newt (Pangolin Tunnel Client)

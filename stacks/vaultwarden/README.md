@@ -1,3 +1,31 @@
+---
+type: stack
+service: vaultwarden
+category: security
+vms: [103]
+priority: critical
+status: running
+stack-type: single-container
+has-secrets: true
+external-access: true
+ports: [8111]
+backup-priority: critical
+created: 2025-10-26
+updated: 2025-10-26
+tags:
+  - stack
+  - vm-103
+  - security
+  - password-manager
+  - single-container
+  - has-secrets
+  - external-access
+  - bitwarden
+aliases:
+  - Vaultwarden
+  - Password Manager
+---
+
 # Vaultwarden Stack
 
 **Service:** Vaultwarden (Bitwarden-compatible password manager)

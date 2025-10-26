@@ -1,3 +1,37 @@
+---
+type: stack
+service: linkwarden
+category: productivity
+vms: [103]
+priority: medium
+status: running
+stack-type: multi-container
+has-secrets: true
+external-access: false
+ports: [3000]
+backup-priority: high
+created: 2025-10-26
+updated: 2025-10-26
+tags:
+  - stack
+  - vm-103
+  - productivity
+  - bookmarks
+  - archiving
+  - full-text-search
+  - multi-container
+  - has-secrets
+  - postgresql
+  - meilisearch
+  - browser-extension
+  - mobile-app
+  - collaboration
+  - screenshots
+aliases:
+  - Linkwarden
+  - Bookmark Manager
+---
+
 # Linkwarden Stack
 
 **Service:** Linkwarden (Bookmark Manager)

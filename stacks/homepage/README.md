@@ -1,3 +1,32 @@
+---
+type: stack
+service: homepage
+category: productivity
+vms: [103]
+priority: medium
+status: running
+stack-type: single-container
+has-secrets: false
+external-access: false
+ports: [3001]
+backup-priority: low
+created: 2025-10-26
+updated: 2025-10-26
+tags:
+  - stack
+  - vm-103
+  - productivity
+  - dashboard
+  - monitoring
+  - single-container
+  - no-secrets
+  - web-ui
+  - docker-integration
+aliases:
+  - Homepage
+  - Dashboard
+---
+
 # Homepage Stack
 
 **Service:** Homepage (Dashboard)

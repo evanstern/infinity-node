@@ -1,3 +1,32 @@
+---
+type: stack
+service: audiobookshelf
+category: media
+vms: [103]
+priority: medium
+status: running
+stack-type: single-container
+has-secrets: false
+external-access: true
+ports: [13378]
+backup-priority: high
+created: 2025-10-26
+updated: 2025-10-26
+tags:
+  - stack
+  - vm-103
+  - media
+  - audiobooks
+  - podcasts
+  - single-container
+  - no-secrets
+  - external-access
+  - mobile-app
+aliases:
+  - Audiobookshelf
+  - Audiobook Server
+---
+
 # Audiobookshelf Stack
 
 **Service:** Audiobookshelf (Audiobook and Podcast Server)

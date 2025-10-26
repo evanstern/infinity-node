@@ -1,3 +1,33 @@
+---
+type: stack
+service: watchtower
+category: infrastructure
+vms: [100, 101, 102, 103]
+priority: important
+status: running
+stack-type: single-container
+has-secrets: false
+external-access: false
+ports: []
+backup-priority: low
+created: 2025-10-26
+updated: 2025-10-26
+tags:
+  - stack
+  - vm-100
+  - vm-101
+  - vm-102
+  - vm-103
+  - infrastructure
+  - automation
+  - single-container
+  - no-secrets
+  - container-updates
+aliases:
+  - Watchtower
+  - Auto-Updater
+---
+
 # Watchtower Stack
 
 **Service:** Watchtower (Automatic Docker Container Updater)

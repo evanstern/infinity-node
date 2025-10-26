@@ -1,3 +1,34 @@
+---
+type: stack
+service: paperless-ngx
+category: productivity
+vms: [103]
+priority: high
+status: running
+stack-type: multi-container
+has-secrets: true
+external-access: true
+ports: [8000]
+backup-priority: high
+created: 2025-10-26
+updated: 2025-10-26
+tags:
+  - stack
+  - vm-103
+  - productivity
+  - documents
+  - multi-container
+  - has-secrets
+  - external-access
+  - ocr
+  - postgresql
+  - redis
+aliases:
+  - Paperless-NGX
+  - Paperless
+  - Document Manager
+---
+
 # Paperless-NGX Stack
 
 **Service:** Paperless-NGX (Document Management System)

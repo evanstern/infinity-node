@@ -1,3 +1,39 @@
+---
+type: stack
+service: immich
+category: media
+vms: [103]
+priority: high
+status: running
+stack-type: multi-container
+has-secrets: true
+external-access: true
+ports: [2283]
+backup-priority: critical
+created: 2025-10-26
+updated: 2025-10-26
+tags:
+  - stack
+  - vm-103
+  - media
+  - photos
+  - videos
+  - ai
+  - ml
+  - face-recognition
+  - object-detection
+  - multi-container
+  - has-secrets
+  - postgresql
+  - redis
+  - mobile-app
+  - external-access
+  - raw-support
+aliases:
+  - Immich
+  - Photo Library
+---
+
 # Immich Stack
 
 **Service:** Immich (Photo and Video Management)

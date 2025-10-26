@@ -1,3 +1,33 @@
+---
+type: stack
+service: navidrome
+category: media
+vms: [103]
+priority: medium
+status: running
+stack-type: single-container
+has-secrets: false
+external-access: true
+ports: [4533]
+backup-priority: medium
+created: 2025-10-26
+updated: 2025-10-26
+tags:
+  - stack
+  - vm-103
+  - media
+  - music
+  - streaming
+  - single-container
+  - no-secrets
+  - external-access
+  - subsonic
+  - mobile-app
+aliases:
+  - Navidrome
+  - Music Server
+---
+
 # Navidrome Stack
 
 **Service:** Navidrome (Music Streaming Server)
