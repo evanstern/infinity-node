@@ -1,5 +1,6 @@
 ---
 type: task
+task-id: IN-001
 status: in-progress
 priority: high
 category: docker
@@ -13,7 +14,7 @@ tags:
   - documentation
 ---
 
-# Task: Import Existing Docker Configurations from VMs
+# Task: IN-001 - Import Existing Docker Configurations from VMs
 
 **✅ UNBLOCKED:** [[setup-vaultwarden-secret-storage]] completed - ready to import configs.
 
@@ -163,7 +164,7 @@ ssh evan@VM_IP "cd path/to/service && docker compose config"
 
 - [[docs/ARCHITECTURE|Architecture]] - Service locations
 - [[docs/agents/DOCKER|Docker Agent]] - Docker best practices
-- [[migrate-secrets-to-env]] - Blocks this task
+- [[tasks/current/IN-002-migrate-secrets-to-env|IN-002]] - Blocks this task
 - [[docs/DECISIONS|Decisions]] - ADR-002 (Docker for Services)
 
 ## Notes

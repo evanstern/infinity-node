@@ -1,5 +1,6 @@
 ---
 type: task
+task-id: IN-013
 status: not-started
 priority: high
 category: infrastructure
@@ -14,7 +15,7 @@ tags:
   - infrastructure-as-code
 ---
 
-# Task: Migrate Portainer Stack Configurations to Monorepo
+# Task: IN-013 - Migrate Portainer Stack Configurations to Monorepo
 
 **Goal:** Migrate all Portainer stacks from individual GitHub repos (e.g., `infinity-node-stack-audiobookshelf`) to this monorepo, using Portainer's API to automate the configuration updates.
 

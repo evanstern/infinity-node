@@ -1,11 +1,12 @@
 ---
 type: task
+task-id: IN-009
 status: pending
 priority: low
 category: documentation
 agent: documentation
 created: 2025-10-24
-updated: 2025-10-24
+updated: 2025-10-26
 tags:
   - task
   - documentation
@@ -14,7 +15,7 @@ tags:
   - security
 ---
 
-# Task: Document Cloudflare DNS Configuration
+# Task: IN-009 - Document Cloudflare DNS Configuration
 
 ## Description
 

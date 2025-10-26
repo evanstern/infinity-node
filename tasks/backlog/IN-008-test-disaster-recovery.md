@@ -1,11 +1,12 @@
 ---
 type: task
+task-id: IN-008
 status: pending
 priority: medium
 category: infrastructure
 agent: infrastructure
 created: 2025-10-24
-updated: 2025-10-24
+updated: 2025-10-26
 tags:
   - task
   - infrastructure
@@ -14,7 +15,7 @@ tags:
   - backup
 ---
 
-# Task: Test Disaster Recovery Procedures
+# Task: IN-008 - Test Disaster Recovery Procedures
 
 ## Description
 

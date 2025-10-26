@@ -1,11 +1,12 @@
 ---
 type: task
+task-id: IN-004
 status: pending
 priority: medium
 category: documentation
 agent: documentation
 created: 2025-10-24
-updated: 2025-10-24
+updated: 2025-10-26
 tags:
   - task
   - documentation
@@ -14,7 +15,7 @@ tags:
   - media
 ---
 
-# Task: Document Emby Service Configuration
+# Task: IN-004 - Document Emby Service Configuration
 
 ## Description
 

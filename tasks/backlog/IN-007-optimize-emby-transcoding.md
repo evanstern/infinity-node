@@ -1,11 +1,12 @@
 ---
 type: task
+task-id: IN-007
 status: pending
 priority: low
 category: media
 agent: media
 created: 2025-10-24
-updated: 2025-10-24
+updated: 2025-10-26
 tags:
   - task
   - media
@@ -14,7 +15,7 @@ tags:
   - optimization
 ---
 
-# Task: Optimize Emby Transcoding Performance
+# Task: IN-007 - Optimize Emby Transcoding Performance
 
 ## Description
 

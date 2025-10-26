@@ -1,11 +1,12 @@
 ---
 type: task
+task-id: IN-005
 status: pending
 priority: medium
 category: infrastructure
 agent: infrastructure
 created: 2025-10-24
-updated: 2025-10-24
+updated: 2025-10-26
 tags:
   - task
   - infrastructure
@@ -13,7 +14,7 @@ tags:
   - alerting
 ---
 
-# Task: Set Up Monitoring and Alerting
+# Task: IN-005 - Set Up Monitoring and Alerting
 
 ## Description
 

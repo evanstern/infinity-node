@@ -1,11 +1,12 @@
 ---
 type: task
+task-id: IN-006
 status: pending
 priority: medium
 category: security
 agent: security
 created: 2025-10-24
-updated: 2025-10-24
+updated: 2025-10-26
 tags:
   - task
   - security
@@ -13,7 +14,7 @@ tags:
   - audit
 ---
 
-# Task: Audit Current Secret Storage
+# Task: IN-006 - Audit Current Secret Storage
 
 ## Description
 
@@ -62,7 +63,7 @@ This audit informs the secret migration and backup strategy tasks.
 
 - [[docs/agents/SECURITY|Security Agent]]
 - [[docs/ARCHITECTURE|Architecture]]
-- Related task: [[migrate-secrets-to-env]]
+- Related task: [[tasks/current/IN-002-migrate-secrets-to-env|IN-002]]
 
 ## Notes
 

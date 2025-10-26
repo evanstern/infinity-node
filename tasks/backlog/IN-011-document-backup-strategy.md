@@ -1,11 +1,12 @@
 ---
 type: task
+task-id: IN-011
 status: pending
 priority: high
 category: infrastructure
 agent: infrastructure
 created: 2025-10-24
-updated: 2025-10-24
+updated: 2025-10-26
 tags:
   - task
   - infrastructure
@@ -13,7 +14,7 @@ tags:
   - disaster-recovery
 ---
 
-# Task: Document and Implement Backup Strategy
+# Task: IN-011 - Document and Implement Backup Strategy
 
 ## Description
 

@@ -1,5 +1,6 @@
 ---
 type: task
+task-id: IN-012
 status: pending
 priority: medium
 category: infrastructure
@@ -14,7 +15,7 @@ tags:
   - service-discovery
 ---
 
-# Task: Set Up Local DNS for Service Discovery
+# Task: IN-012 - Set Up Local DNS for Service Discovery
 
 ## Description
 

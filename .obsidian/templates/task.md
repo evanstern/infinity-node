@@ -1,5 +1,6 @@
 ---
 type: task
+task-id: IN-NNN
 status: pending
 priority: medium
 category:
@@ -10,7 +11,7 @@ tags:
   - task
 ---
 
-# Task: {{title}}
+# Task: IN-NNN - {{title}}
 
 ## Description
 Clear description of what needs to be done...

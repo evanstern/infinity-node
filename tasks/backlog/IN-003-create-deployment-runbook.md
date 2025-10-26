@@ -1,11 +1,12 @@
 ---
 type: task
+task-id: IN-003
 status: pending
 priority: medium
 category: documentation
 agent: documentation
 created: 2025-10-24
-updated: 2025-10-24
+updated: 2025-10-26
 tags:
   - task
   - documentation
@@ -13,7 +14,7 @@ tags:
   - deployment
 ---
 
-# Task: Create Service Deployment Runbook
+# Task: IN-003 - Create Service Deployment Runbook
 
 ## Description
 

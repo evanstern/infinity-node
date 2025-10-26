@@ -1,11 +1,12 @@
 ---
 type: task
+task-id: IN-010
 status: pending
 priority: medium
 category: infrastructure
 agent: infrastructure
 created: 2025-10-24
-updated: 2025-10-24
+updated: 2025-10-26
 tags:
   - task
   - infrastructure
@@ -14,7 +15,7 @@ tags:
   - automation
 ---
 
-# Task: Create Proxmox VM Template for New VMs
+# Task: IN-010 - Create Proxmox VM Template for New VMs
 
 ## Description
 
