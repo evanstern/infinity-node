@@ -2,7 +2,7 @@
 type: stack
 service: newt
 category: networking
-vms: [100, 103]
+vms: [100, 102, 103]
 priority: critical
 status: running
 stack-type: single-container
@@ -15,6 +15,7 @@ updated: 2025-10-26
 tags:
   - stack
   - vm-100
+  - vm-102
   - vm-103
   - networking
   - tunnel
@@ -31,7 +32,7 @@ aliases:
 # Newt Stack
 
 **Service:** Newt (Pangolin Tunnel Client)
-**VMs:** 100 (emby), 103 (misc) - Separate instances with unique credentials
+**VMs:** 100 (emby), 102 (arr), 103 (misc) - Separate instances with unique credentials
 **Priority:** Critical - Provides external access to services
 **Image:** `fosrl/newt:latest`
 
