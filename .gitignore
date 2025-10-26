@@ -18,6 +18,8 @@
 # Secret directories
 secrets/
 **/secrets/
+# Exception: scripts/secrets/ contains scripts, not actual secrets
+!scripts/secrets/
 
 # Backup files that might contain secrets
 *.backup

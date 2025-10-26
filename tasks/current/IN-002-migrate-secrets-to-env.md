@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-002
-status: pending
+status: in-progress
 priority: 1
 category: security
 agent: security
