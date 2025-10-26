@@ -436,16 +436,45 @@ User Streams Media
 
 ### Secret Management
 
-**Current:**
-- `.env` files on each VM (gitignored)
-- Vaultwarden for long-term storage
-- Some secrets in docker-compose (being migrated)
+**Strategy:** See [[docs/SECRET-MANAGEMENT|Secret Management]] for complete documentation
 
-**Target:**
-- All secrets in `.env` files
-- `.env.example` templates in git
-- Vaultwarden as source of truth
-- Encrypted backup of .env files
+**Vaultwarden Instance:**
+- **Location:** VM 103 (192.168.86.249:8111)
+- **Web UI:** https://vaultwarden.infinity-node.com (via Pangolin)
+- **CLI Access:** http://192.168.86.249:8111 (local IP required)
+- **Status:** Active, configured with folder structure
+- **Purpose:** Source of truth for all infrastructure secrets
+
+**Folder Organization:**
+```
+infinity-node/
+├── vm-100-emby/          # Media server secrets
+├── vm-101-downloads/     # Download client secrets
+├── vm-102-arr/           # Media automation secrets
+├── vm-103-misc/          # Supporting services secrets
+├── shared/               # Cross-VM secrets
+└── external/             # External service secrets
+```
+
+**Access Methods:**
+- **Manual:** Web UI at https://vaultwarden.infinity-node.com
+- **Automation:** Bitwarden CLI configured for local instance
+- **Limitation:** CLI requires local IP (not domain) due to Pangolin auth layer
+
+**Current State:**
+- ✅ Vaultwarden deployed and accessible
+- ✅ Bitwarden CLI installed and configured
+- ✅ Folder structure established
+- ✅ Documentation complete
+- ⏳ Migrating existing secrets to Vaultwarden
+- ⏳ Some secrets still in docker-compose files
+
+**Target State:**
+- All secrets in Vaultwarden (source of truth)
+- `.env` files on VMs reference secrets from Vaultwarden
+- `.env.example` templates in git (no actual secrets)
+- Automated secret retrieval for deployments
+- Local DNS resolves service names (eliminates IP dependency)
 
 ## Monitoring & Management
 
@@ -587,12 +616,12 @@ User Streams Media
 ## Known Issues & Technical Debt
 
 1. **Emby VM hostname has typo:** "ininity-node-emby"
-2. **Secret management incomplete:** Some secrets still in docker-compose files
-3. **No centralized monitoring:** Manual health checks
-4. **Backup strategy undefined:** Needs documentation and automation
-5. **No disaster recovery testing:** Recovery procedures untested
-6. **Resource monitoring needed:** Capacity planning requires data
-7. **Inspector user not created:** Testing Agent needs read-only access
+2. **Secret migration in progress:** Vaultwarden strategy established, secrets being migrated
+3. **No local DNS:** Services accessed via IP addresses (see [[tasks/backlog/setup-local-dns-service-discovery]])
+4. **No centralized monitoring:** Manual health checks
+5. **Backup strategy undefined:** Needs documentation and automation
+6. **No disaster recovery testing:** Recovery procedures untested
+7. **Resource monitoring needed:** Capacity planning requires data
 8. **Documentation incomplete:** Service-specific docs needed
 
 ## Future Enhancements

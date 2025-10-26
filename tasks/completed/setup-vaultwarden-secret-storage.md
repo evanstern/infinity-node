@@ -1,11 +1,12 @@
 ---
 type: task
-status: pending
+status: completed
 priority: high
 category: security
 agent: security
 created: 2025-10-25
-updated: 2025-10-25
+updated: 2025-10-26
+completed: 2025-10-26
 tags:
   - task
   - security
@@ -35,37 +36,37 @@ Vaultwarden is already running on VM 103 and will be our source of truth for all
 ## Acceptance Criteria
 
 ### Vaultwarden Organization
-- [ ] Create folder structure in Vaultwarden for infrastructure secrets
-- [ ] Define naming convention for secret items
-- [ ] Create example entries for reference
-- [ ] Document folder/organization structure
+- [x] Create folder structure in Vaultwarden for infrastructure secrets
+- [x] Define naming convention for secret items
+- [x] Create example entries for reference
+- [x] Document folder/organization structure
 
 ### API Access Setup
-- [ ] Install Bitwarden CLI (`bw`) on local machine
-- [ ] Configure API access to Vaultwarden instance
-- [ ] Test authentication with API key
-- [ ] Test retrieving secrets programmatically
-- [ ] Document API authentication process
-- [ ] Create example script for retrieving secrets
+- [x] Install Bitwarden CLI (`bw`) on local machine
+- [x] Configure API access to Vaultwarden instance
+- [x] Test authentication with API key (personal API key with scope: `api`)
+- [x] Test retrieving secrets programmatically
+- [x] Document API authentication process
+- [x] Create example script for retrieving secrets (scripts/deploy-with-secrets.sh)
 
 ### Documentation
-- [ ] Create docs/SECRET-MANAGEMENT.md with:
+- [x] Create docs/SECRET-MANAGEMENT.md with:
   - Organizational structure in Vaultwarden
   - Naming conventions
   - How to store new secrets
   - How to retrieve secrets manually
   - How to retrieve secrets via API
-  - API authentication setup
-- [ ] Update ARCHITECTURE.md with Vaultwarden reference
-- [ ] Update SECURITY agent docs with secret management process
-- [ ] Create template for documenting secrets in .env.example files
+  - API authentication setup (including personal API key approach)
+- [x] Update ARCHITECTURE.md with Vaultwarden reference
+- [x] Update SECURITY agent docs with secret management process
+- [x] Create template for documenting secrets in .env.example files (templates/.env.example)
 
 ### Workflow Testing
-- [ ] Store a test secret in Vaultwarden
-- [ ] Retrieve test secret via web UI
-- [ ] Retrieve test secret via CLI
-- [ ] Delete test secret
-- [ ] Document the complete workflow
+- [x] Store a test secret in Vaultwarden
+- [x] Retrieve test secret via web UI
+- [x] Retrieve test secret via CLI
+- [x] Delete test secret
+- [x] Document the complete workflow
 
 ## Dependencies
 

@@ -84,30 +84,72 @@ Acceptable secret storage locations:
 
 ### Secret Management
 
-#### Current Challenges
-- Secrets scattered across VMs
-- Some secrets in plain text in docker-compose files
-- No centralized secret management
-- Backup strategy for secrets needed
+**Documentation:** See [[docs/SECRET-MANAGEMENT|Secret Management]] for complete workflows
 
-#### Proposed Solution
-- **Vaultwarden** (already running): Central password manager
-- **Environment files** per VM: Local secrets, gitignored
-- **Secret template files** in repo: `.env.example` files documenting required secrets
-- **Backup strategy**: Encrypted backups with separate key storage
+#### Status: Active ✅
 
-#### Implementation
+**Vaultwarden is deployed and configured** as the source of truth for all infrastructure secrets.
+
+**Implementation:**
+
+**Vaultwarden Instance:**
+- **Location:** VM 103 (192.168.86.249:8111)
+- **Web UI:** https://vaultwarden.infinity-node.com
+- **CLI Access:** http://192.168.86.249:8111 (local IP required)
+- **Folder Structure:** Organized by VM and purpose
+  - `vm-100-emby/`, `vm-101-downloads/`, `vm-102-arr/`, `vm-103-misc/`
+  - `shared/` for cross-VM secrets
+  - `external/` for external service credentials
+
+**Bitwarden CLI:**
+- Installed and configured on local machine
+- Configured for local Vaultwarden instance
+- Enables programmatic secret retrieval for automation
+- Command: `bw get password "secret-name"`
+
+**Secret Storage Hierarchy:**
+1. **Vaultwarden** - Source of truth (all secrets stored here)
+2. **`.env` files on VMs** - Deployed secrets (gitignored)
+3. **`.env.example` in git** - Templates documenting required secrets
+
+**Naming Convention:**
+- Format: `<service>-<secret-type>`
+- Examples: `emby-api-key`, `radarr-api-key`, `nordvpn-credentials`
+- Custom fields: `service`, `vm`, `env_var_name`, `notes`
+
+#### Current State
+- ✅ Vaultwarden deployed and accessible
+- ✅ Bitwarden CLI installed and configured
+- ✅ Folder structure established
+- ✅ Documentation complete
+- ⏳ Migrating existing secrets to Vaultwarden
+- ⏳ Some secrets still in docker-compose files (being migrated)
+
+#### Secret Access Workflow
+
+**Adding a new secret:**
+1. Store in Vaultwarden via web UI (https://vaultwarden.infinity-node.com)
+2. Use naming convention: `<service>-<type>`
+3. Add custom fields: `vm`, `env_var_name`, `service`
+4. Place in appropriate folder
+5. Document in service's `.env.example` file
+
+**Retrieving for deployment:**
 ```bash
-# On each VM
-/home/evan/projects/infinity-node/.env          # Global secrets (gitignored)
-/home/evan/projects/infinity-node/stacks/SERVICE_NAME/.env  # Service secrets (gitignored)
+# Unlock vault
+export BW_SESSION=$(bw unlock --raw)
+
+# Retrieve secret
+SECRET=$(bw get password "service-api-key")
+
+# Deploy to VM
+ssh evan@192.168.86.172 "echo 'API_KEY=$SECRET' >> /path/to/.env"
 ```
 
-Repository includes:
-```bash
-.env.example                  # Template for global secrets
-stacks/SERVICE_NAME/.env.example  # Template for service secrets
-```
+#### Limitations
+- **CLI requires local IP:** Cannot use domain due to Pangolin auth layer
+- **IP dependency:** Will break when IPs change (see [[tasks/backlog/setup-local-dns-service-discovery]])
+- **No API key auth:** Must use username/password + session tokens
 
 ### Pangolin Tunnel Management
 
