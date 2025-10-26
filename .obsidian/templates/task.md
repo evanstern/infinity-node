@@ -2,7 +2,7 @@
 type: task
 task-id: IN-NNN
 status: pending
-priority: medium
+priority: 3
 category:
 agent:
 created: {{date}}
@@ -12,6 +12,8 @@ tags:
 ---
 
 # Task: IN-NNN - {{title}}
+
+<!-- Priority Scale: 0 (critical/urgent) → 1-2 (high) → 3-4 (medium) → 5-6 (low) → 7-9 (very low) -->
 
 ## Description
 Clear description of what needs to be done...

@@ -2,7 +2,7 @@
 type: task
 task-id: IN-007
 status: pending
-priority: low
+priority: 5
 category: media
 agent: media
 created: 2025-10-24

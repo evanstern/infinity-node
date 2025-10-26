@@ -2,7 +2,7 @@
 type: task
 task-id: IN-011
 status: pending
-priority: high
+priority: 1
 category: infrastructure
 agent: infrastructure
 created: 2025-10-24

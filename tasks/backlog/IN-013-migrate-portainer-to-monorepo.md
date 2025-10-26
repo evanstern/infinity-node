@@ -2,7 +2,7 @@
 type: task
 task-id: IN-013
 status: not-started
-priority: high
+priority: 1
 category: infrastructure
 agent: docker
 created: 2025-10-26

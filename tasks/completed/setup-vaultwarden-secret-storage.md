@@ -1,7 +1,7 @@
 ---
 type: task
 status: completed
-priority: high
+priority: 1
 category: security
 agent: security
 created: 2025-10-25

@@ -2,7 +2,7 @@
 type: task
 task-id: IN-006
 status: pending
-priority: medium
+priority: 3
 category: security
 agent: security
 created: 2025-10-24

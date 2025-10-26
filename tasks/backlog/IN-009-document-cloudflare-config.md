@@ -2,7 +2,7 @@
 type: task
 task-id: IN-009
 status: pending
-priority: low
+priority: 5
 category: documentation
 agent: documentation
 created: 2025-10-24

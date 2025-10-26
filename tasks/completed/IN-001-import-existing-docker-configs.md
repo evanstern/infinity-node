@@ -2,7 +2,7 @@
 type: task
 task-id: IN-001
 status: completed
-priority: high
+priority: 1
 category: docker
 agent: docker
 created: 2025-10-25
