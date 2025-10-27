@@ -19,16 +19,34 @@ Per [[../docs/DECISIONS#ADR-012|ADR-012: Script-Based Operational Automation]], 
 - ✅ **Building blocks** - Compose into larger workflows
 - ✅ **Runbook foundation** - Executable documentation
 
+**Proven Value** (from [[../tasks/completed/IN-002-migrate-secrets-to-env|IN-002]]):
+- `audit-secrets.sh` streamlined secret inventory across 19 stacks
+- `create-secret.sh` enabled efficient Vaultwarden backup workflow
+- Scripting approach reduced errors and made process repeatable
+- Scripts serve as documentation of actual procedures used
+
+**Continuous Improvement Approach:**
+
+Watch for script opportunities **while working on tasks**:
+- Running the same command multiple times? → Script candidate
+- Complex command sequence? → Simplify with script
+- Manual operation prone to errors? → Add error handling via script
+- Useful validation pattern? → Extract for reuse
+
+**Process:** Notice → Propose → Discuss → Create → Document → Use
+
 **When to create a script:**
 - Operation will be run multiple times
 - Need consistent, reproducible execution
 - Want to reduce human error
 - Building toward larger automation
+- **Pattern emerged during task work** (organic discovery)
 
 **When NOT to create a script:**
 - One-off tasks
 - Trivial single commands
 - Operations that change frequently
+- Would be more complex than just running the command
 
 ## Directory Structure
 

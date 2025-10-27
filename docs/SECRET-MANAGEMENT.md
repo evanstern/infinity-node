@@ -97,6 +97,27 @@ infinity-node/
 - `radarr-api-key`
 - `nordvpn-credentials`
 - `pangolin-emby-tunnel-secret`
+- `newt-config-misc` (for config files)
+
+### Item Types
+
+**Login Items** (most common):
+- Single-line secrets (passwords, API keys, tokens)
+- Use the "Password" field for the secret value
+- Use custom fields for metadata
+
+**Secure Notes** (for multi-line content):
+- Configuration files (e.g., `newt-config-emby`, `noip_duc.env`)
+- Multi-line secrets or structured data
+- Preserves formatting, line breaks, and special characters
+- **Lesson from IN-002:** Secure notes are ideal for config files like Pangolin tunnel configs
+
+**Example use cases:**
+- ✅ API key → Login item
+- ✅ Database password → Login item
+- ✅ Pangolin tunnel config file → Secure note
+- ✅ SSH config snippet → Secure note
+- ✅ Certificate/key pairs → Secure note
 
 ### Custom Fields
 
@@ -107,9 +128,10 @@ Each secret item should include these custom fields:
 - **`env_var_name`**: Environment variable name for .env file (e.g., "EMBY_API_KEY")
 - **`notes`**: Additional context or usage notes
 
-**Example secret item:**
+**Example login item:**
 
 ```
+Item Type: Login
 Item Name: emby-api-key
 Username: (not used for API keys)
 Password: abc123xyz789secretkey
@@ -118,6 +140,21 @@ Custom Fields:
   - vm: 100
   - env_var_name: EMBY_API_KEY
   - notes: API key for Emby media server integration
+```
+
+**Example secure note:**
+
+```
+Item Type: Secure Note
+Item Name: newt-config-emby
+Notes: (Contains full config file)
+ENDPOINT https://pangolin.infinity-node.com
+ID uy0wxbeuigh3zas
+SECRET KEY gaelyx2bmc8x3bpymf30umc7vrkqvrybrdedp5fps8uqrkgt
+Custom Fields:
+  - service: newt
+  - vm: 100
+  - file_path: /etc/newt/config
 ```
 
 ## Bitwarden CLI Setup

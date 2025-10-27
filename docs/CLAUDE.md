@@ -277,6 +277,7 @@ Claude Code has SSH access to:
    - Add improvements to the task file
    - Get user approval on revised plan
    - Ensure task is now robust before starting work
+   - **Be prepared for scope evolution:** Task may become different than originally described based on findings
 
 6. **When to Skip:**
    - Trivial tasks (documentation typo fixes, etc.)
@@ -285,6 +286,9 @@ Claude Code has SSH access to:
 
 **Example Issues Found in Real Tasks:**
 - IN-002: Missing secret inventory, no phased approach, vague testing
+  - **Outcome:** Pre-task review revealed infrastructure already in desired state
+  - **Scope evolved:** "Migration" task became "backup" task - still valuable work
+  - **Lesson:** Actual work may differ from description - that's OK!
 - IN-015: (Well-structured - good example to follow)
 
 **Benefits:**
@@ -292,6 +296,42 @@ Claude Code has SSH access to:
 - Reduces risk of breaking critical services
 - Makes execution clearer and more confident
 - Documents lessons learned for future tasks
+- **Allows scope to evolve appropriately** based on actual findings
+
+### Extracting Scripts During Work
+
+**IMPORTANT:** While working on tasks, actively watch for script opportunities.
+
+**Look for:**
+- Commands you run multiple times in a session
+- Complex command sequences that could be simplified
+- Validation/check patterns that would be useful in future
+- Operations that manual execution is error-prone
+- Commands that would benefit from error handling/logging
+
+**Process:**
+1. **Notice the pattern** - "I've run this 3 times now..."
+2. **Propose extraction** - "This would make a good script"
+3. **Discuss with user** - Get approval on scope and naming
+4. **Create script** - Add to appropriate scripts/ subdirectory
+5. **Document** - Update scripts/README.md
+6. **Use it immediately** - Validate the script works in current task
+
+**Examples from real work:**
+- IN-002: Created `audit-secrets.sh` after manually grepping for secrets
+- IN-002: Enhanced `create-secret.sh` to support custom fields
+- Future: Extract VM health check from repeated `docker ps` commands
+
+**Don't over-script:**
+- Truly one-off commands (task-specific, won't repeat)
+- Commands that are simpler than the script would be
+- Operations that change frequently (moving target)
+
+**Benefits:**
+- Builds script library organically based on real needs
+- Scripts are battle-tested (created from actual use)
+- Captures institutional knowledge as it's discovered
+- Reduces toil over time
 
 ### Deploying a New Service
 
