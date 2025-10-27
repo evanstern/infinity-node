@@ -165,6 +165,86 @@ scripts/
 - Consistent secret injection
 - Reducing manual steps
 
+### Validation (`validation/`)
+
+#### `check-vm-disk-space.sh`
+**Purpose:** Monitor disk space across all infinity-node VMs
+**Usage:** `./check-vm-disk-space.sh [--threshold PERCENT]`
+**Exit Codes:** 0 (all VMs OK), 1 (warnings), 2 (critical)
+
+**Example:**
+```bash
+# Check all VMs with default 80% warning threshold
+./scripts/validation/check-vm-disk-space.sh
+
+# Use custom threshold
+./scripts/validation/check-vm-disk-space.sh --threshold 70
+```
+
+**Use Cases:**
+- Proactive disk space monitoring
+- Prevent service failures from full disks
+- Identify VMs needing expansion
+- Cron job for automated monitoring
+- Pre-deployment capacity checks
+
+**Features:**
+- Checks all 4 VMs automatically via SSH
+- Color-coded status (OK/WARNING/CRITICAL)
+- Shows top disk consumers when above threshold
+- Returns exit codes suitable for cron/monitoring integration
+
+### Backup (`backup/`)
+
+#### `backup-vaultwarden.sh`
+**Purpose:** Automated Vaultwarden SQLite database backup to NAS via SCP
+**Usage:** `./backup-vaultwarden.sh`
+**Exit Codes:** 0 (success), 1 (source not found), 2 (backup failed), 3 (integrity check failed), 4 (NAS transfer failed), 5 (missing tools/credentials)
+**Location:** Deployed to VM 103 at `/home/evan/scripts/backup-vaultwarden.sh`
+**Dependencies:** `sqlite3`, `scp`, `expect`, password file at `~/.nas-backup-password` (chmod 600)
+
+**Setup:**
+```bash
+# On VM 103, create password file (run once)
+echo 'nas-backup-password' > ~/.nas-backup-password
+chmod 600 ~/.nas-backup-password
+```
+
+**Example:**
+```bash
+# Manual backup execution
+/home/evan/scripts/backup-vaultwarden.sh
+
+# Scheduled via cron (daily at 2 AM) - already configured on VM 103
+0 2 * * * /home/evan/scripts/backup-vaultwarden.sh >> /var/log/vaultwarden-backup.log 2>&1
+```
+
+**Use Cases:**
+- Daily automated backups of critical Vaultwarden secrets
+- Disaster recovery preparation
+- Pre-maintenance backups
+- Verification of backup integrity
+
+**Features:**
+- **Database consistency:** Uses SQLite VACUUM INTO (handles locks), falls back to cp+sync if needed
+- **Integrity verification:** SQLite PRAGMA integrity_check before upload
+- **Network transfer:** SCP with password authentication via expect
+- **Synology compatibility:** Handles Synology SFTP/SCP chroot to /volume1/
+- **Retention policy:** Automatically deletes backups older than 30 days
+- **Detailed logging:** Color-coded output for status tracking
+- **Error handling:** Proper exit codes for monitoring integration
+
+**Implementation Details:**
+- Backs up `/home/evan/data/vw-data/db.sqlite3` on VM 103
+- Transfers to `backup@192.168.86.43:/volume1/backups/vaultwarden/`
+- Note: Synology NAS requires paths relative to `/volume1/` for SCP (chroot)
+- backup user must be in `administrators` group for SSH/SCP access
+- Password stored securely in `~/.nas-backup-password` on VM 103
+
+**Related Tasks:**
+- [[../../tasks/completed/IN-017-implement-vaultwarden-backup|IN-017]] - Implementation
+- [[../../tasks/backlog/IN-019-automate-synology-user-management|IN-019]] - Future automation
+
 ### Setup (`setup/`)
 
 #### `setup-evan-nopasswd-sudo.sh`
@@ -256,7 +336,6 @@ Scripts planned but not yet implemented:
 **Backup:**
 - `backup-docker-configs.sh` - Backup all docker-compose files
 - `backup-env-files.sh` - Secure backup of .env files
-- `backup-vaultwarden.sh` - Backup Vaultwarden database
 
 **Deployment:**
 - `rollback-stack.sh` - Rollback to previous stack version

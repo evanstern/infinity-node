@@ -1,12 +1,13 @@
 ---
 type: task
 task-id: IN-017
-status: pending
+status: completed
 priority: 1
 category: security
 agent: security
 created: 2025-10-26
 updated: 2025-10-26
+completed: 2025-10-26
 tags:
   - task
   - security
@@ -308,3 +309,174 @@ fi
 - Blocks IN-002 Phase 2+ work (can't risk critical services without backup)
 - Quick fix available (< 1 day to implement)
 - Must be done before adding more secrets to Vaultwarden
+
+---
+
+## Completion Summary
+
+**Completed:** 2025-10-26
+**Solution Chosen:** Option 1 (Local Backup to NAS)
+
+### What Was Implemented
+
+**1. Vaultwarden Data Location Determined:**
+- Live data on local disk: `/home/evan/data/vw-data/db.sqlite3`
+- Not stored on NAS - local NAS backup is safe
+- Database size: 1.2MB, 589 ciphers
+
+**2. Backup Script Created:** `scripts/backup/backup-vaultwarden.sh`
+- Daily automated backups to NAS: `/mnt/video/backups/vaultwarden/`
+- Retention policy: 30 days
+- SQLite backup with fallback to `cp` for database lock handling
+- Integrity verification via `PRAGMA integrity_check`
+- Color-coded logging and error handling
+- Exit codes: 0 (success), 1 (source not found), 2 (backup failed), 3 (integrity failed), 4 (NAS unavailable)
+
+**3. Script Deployed to VM 103:**
+- Location: `/home/evan/scripts/backup-vaultwarden.sh` (executable)
+- Backup destination: `/mnt/video/backups/vaultwarden/`
+- Required sqlite3 package installed on VM 103
+
+**4. Automated Scheduling:**
+- Cron job configured for user `evan`
+- Schedule: Daily at 2 AM
+- Logs: `/var/log/vaultwarden-backup.log`
+- Command: `0 2 * * * /home/evan/scripts/backup-vaultwarden.sh >> /var/log/vaultwarden-backup.log 2>&1`
+
+**5. Testing Completed:**
+- ✅ Backup creation successful
+- ✅ Backup file integrity verified (PRAGMA check passed)
+- ✅ Restore procedure tested (restored 589 ciphers successfully)
+- ✅ Vaultwarden login and secret retrieval works from restored database
+- ✅ Cron job scheduled and verified
+
+**6. Bonus: VM Disk Space Monitoring:**
+- Created `scripts/validation/check-vm-disk-space.sh`
+- Checks all 4 VMs for disk space issues
+- Discovered VM 103 at CRITICAL 98% capacity (2.1G available)
+- Created IN-018 task for disk expansion and automation
+
+**7. VM Configuration Tracking:**
+- Created `docs/VM-CONFIGURATION.md` to track manual changes
+- Documented all changes made to VM 103 during this task
+- Foundation for future VM template/automation work
+
+### Acceptance Criteria Status
+
+**Phase 1: Quick Fix (URGENT)** ✅ COMPLETE
+- ✅ Determined NAS doesn't hold live Vaultwarden data
+- ✅ Implemented local backup (Option 1)
+- ✅ Created backup script
+- ✅ Tested backup creation
+- ✅ Scheduled daily automated backups (cron)
+- ✅ Verified backups being created
+- ✅ Documented backup location and retention policy
+
+**Phase 2: Backup Verification** ✅ COMPLETE
+- ✅ Tested restore procedure from backup
+- ✅ Verified restored database works (589 ciphers retrieved)
+- ✅ Calculated RTO: ~10 minutes (stop container, restore DB, start container)
+- ✅ Calculated RPO: 24 hours (daily backup at 2 AM)
+
+**Phase 3: Monitoring & Alerting** ⏳ FUTURE WORK
+- ⏳ Monitor backup success/failure (future: integrate with monitoring system)
+- ⏳ Alert if backup fails (future: alerting system)
+- ⏳ Alert if backup size changes dramatically (future)
+- ⏳ Dashboard showing last successful backup time (future)
+
+**Phase 4: Improvement** ⏳ FUTURE WORK
+- ⏳ Implement offsite backup (acceptable for now - low risk)
+- ⏳ Reduce RPO if needed (24 hours acceptable for current usage)
+- ⏳ Test restore regularly (monthly drill - to be scheduled)
+- ⏳ Document backup in IN-011 (overall backup strategy task)
+
+### Files Created/Modified
+
+**New Files:**
+- `scripts/backup/backup-vaultwarden.sh` - Automated backup script
+- `scripts/validation/check-vm-disk-space.sh` - VM disk monitoring
+- `docs/VM-CONFIGURATION.md` - Track manual VM changes
+- `tasks/backlog/IN-018-expand-vm-103-disk-space.md` - Disk expansion task
+
+**Modified Files:**
+- `scripts/README.md` - Documented new scripts
+
+**VM Changes (documented in VM-CONFIGURATION.md):**
+- Installed sqlite3 package on VM 103
+- Created `/home/evan/scripts/` directory
+- Created `/mnt/video/backups/vaultwarden/` directory
+- Deployed backup script
+- Configured cron job
+
+### Technical Details
+
+**Backup Method:**
+- Primary: SQLite `VACUUM INTO` command (handles locks better)
+- Fallback: `cp` with sync (if database locked by Vaultwarden)
+- Both methods tested and working
+
+**Backup Verification:**
+```bash
+# Integrity check
+sqlite3 backup.sqlite3 "PRAGMA integrity_check;"
+
+# Restore test
+docker compose -f ~/data/vw-data/docker-compose.yml down
+cp backup.sqlite3 ~/data/vw-data/db.sqlite3
+docker compose -f ~/data/vw-data/docker-compose.yml up -d
+
+# Verify
+bw sync
+bw list items | jq length  # Should show 589
+```
+
+**Recovery Procedure:**
+1. Stop Vaultwarden container
+2. Replace `/home/evan/data/vw-data/db.sqlite3` with backup
+3. Start Vaultwarden container
+4. Verify login and secret retrieval via Web UI and CLI
+5. Estimated RTO: 10 minutes
+
+### Lessons Learned
+
+**1. Database Lock Handling:**
+- SQLite `VACUUM INTO` can fail if database is actively locked
+- Script includes fallback to `cp` method
+- Both methods produce valid, restorable backups
+
+**2. Script Extraction in Action:**
+- Disk space check commands run multiple times during work
+- Extracted into `check-vm-disk-space.sh` script
+- Perfect example of organic script discovery
+
+**3. VM Configuration Tracking:**
+- Manual changes to VMs need documentation
+- Created VM-CONFIGURATION.md for this purpose
+- Essential for future VM template/automation work
+
+**4. Dependency Discovery:**
+- sqlite3 package not installed on VM 103 initially
+- Required installation before backup script would work
+- Added to VM documentation
+
+### Related Tasks
+
+- **UNBLOCKS:** IN-002 Phase 2+ (can now safely migrate critical service secrets)
+- **CREATED:** IN-018 (VM 103 disk expansion - discovered during this work)
+- **FUTURE:** IN-011 (overall backup strategy documentation)
+
+### Notes
+
+**Why Option 1 (Local NAS) is Acceptable:**
+- Live data on local disk, not NAS (no single point of failure)
+- NAS failure doesn't take out both live and backup
+- Quick to implement and test
+- Can add offsite backup in Phase 4 if needed
+- 1.2MB database = negligible storage/bandwidth cost
+
+**VM 103 Disk Space Issue:**
+- Discovered during backup setup: 98% full (91G / 97G)
+- Only 2.1G available - CRITICAL
+- Other VMs healthy (20-29% usage)
+- Created IN-018 to address with automation
+- Created monitoring script to prevent future issues

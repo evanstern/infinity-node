@@ -232,6 +232,50 @@ Claude Code has SSH access to:
 - Combine related commands with `&&`
 - Handle errors gracefully
 
+### Bitwarden Access
+
+Claude Code can access secrets from Bitwarden, but requires a session token from the user.
+
+**IMPORTANT:** Never attempt to run `bw` commands without a valid session token.
+
+**Process:**
+
+1. **When I need Bitwarden access**, I will say:
+   > "I need to access Bitwarden. Please run: `./scripts/utils/get-bw-session.sh` and provide me with the session token."
+
+2. **You run the script**:
+   ```bash
+   ./scripts/utils/get-bw-session.sh
+   ```
+   - Enter your master password when prompted
+   - Copy the session token that's displayed
+
+3. **You provide the token**:
+   > Here's the BW_SESSION: `<paste the long token string>`
+
+4. **I use the session in commands**:
+
+   **IMPORTANT:** Each Bash tool invocation is a separate shell, so I must prefix EVERY `bw` command with the session token:
+
+   ```bash
+   BW_SESSION="<token>" bw list items --search "nas"
+   BW_SESSION="<token>" bw get password "nas-admin"
+   ```
+
+   **DO NOT** try to use `export BW_SESSION` - it won't persist across tool invocations.
+
+**Session Management:**
+- Session tokens expire after ~30 minutes of inactivity
+- Token is only valid for the current conversation
+- Never commit session tokens to git
+- User must provide a new token at the start of each work session
+
+**Security Notes:**
+- This approach keeps the master password secure (user controls unlocking)
+- Session tokens have limited lifespan
+- Tokens are not persisted anywhere
+- User can revoke access by logging out: `bw lock`
+
 ## Common Workflows
 
 ### Pre-Task Review (Before Starting Work)
