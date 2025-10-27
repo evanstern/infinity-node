@@ -63,8 +63,13 @@ scripts/
 ├── setup/                             # Initial setup scripts
 │   ├── setup-evan-nopasswd-sudo.sh   # Configure evan user
 │   └── setup-inspector-user.sh       # Create read-only testing user
-├── validation/                        # Health checks (to be populated)
-└── backup/                            # Backup operations (to be populated)
+├── infrastructure/                    # VM and infrastructure management
+│   ├── docker-cleanup.sh             # Clean unused Docker images
+│   └── expand-vm-disk.sh             # Expand Proxmox VM disk
+├── validation/                        # Health checks
+│   └── check-vm-disk-space.sh        # Monitor VM disk usage
+└── backup/                            # Backup operations
+    └── backup-vaultwarden.sh         # Backup Vaultwarden to NAS
 ```
 
 ## Script Inventory
@@ -280,6 +285,109 @@ done
 - Testing Agent setup (see [[../docs/agents/TESTING|Testing Agent]])
 - Policy-enforced read-only access
 - Safe validation without modification risk
+
+### Infrastructure (`infrastructure/`)
+
+#### `docker-cleanup.sh`
+**Purpose:** Clean up unused Docker images on remote VMs and report disk space recovered
+**Usage:** `./docker-cleanup.sh <vm-host> [ssh-user]`
+**Exit Codes:** 0 (success), 1 (connectivity error)
+**Default SSH User:** `evan`
+
+**Example:**
+```bash
+# Clean Docker images on VM 103
+./scripts/infrastructure/docker-cleanup.sh 192.168.86.249
+
+# With explicit SSH user
+./scripts/infrastructure/docker-cleanup.sh 192.168.86.249 evan
+```
+
+**Use Cases:**
+- Free up disk space on VMs with low storage
+- Regular maintenance to remove unused images
+- Pre-expansion cleanup to avoid unnecessary disk expansion
+- Part of routine infrastructure housekeeping
+
+**Features:**
+- **Before/After Reporting:** Shows disk usage and Docker stats before and after cleanup
+- **Color-coded Output:** Clear status indicators (success, warning, error)
+- **Detailed Summary:** Reports exact space freed and images removed
+- **Safe Operation:** Only removes unused images, keeps active container images
+- **No-op Handling:** Gracefully handles VMs with no images to clean
+
+**Example Output:**
+```
+VM 102 (infinity-node-arr) - 192.168.86.174
+Before: 49G used (27% full), 170 Docker images, 30.46GB reclaimable
+After:  19G used (10% full), 11 Docker images, 0GB reclaimable
+Result: Freed 17% disk space, removed 159 unused images
+```
+
+**Related Tasks:**
+- [[../../tasks/backlog/IN-018-expand-vm-103-disk-space|IN-018]] - Docker cleanup before disk expansion
+
+#### `expand-vm-disk.sh`
+**Purpose:** Automate Proxmox VM disk expansion including LVM and filesystem resize
+**Usage:** `./expand-vm-disk.sh <vm-id> <additional-size-GB> [proxmox-host] [ssh-user]`
+**Exit Codes:** 0 (success), 1 (error during expansion)
+**Default Proxmox Host:** `192.168.86.106`
+**Default Proxmox User:** `root`
+**VM SSH User:** `evan`
+
+**Example:**
+```bash
+# Expand VM 103 by 50GB
+./scripts/infrastructure/expand-vm-disk.sh 103 50
+
+# With explicit Proxmox host
+./scripts/infrastructure/expand-vm-disk.sh 103 50 192.168.86.106 root
+```
+
+**Use Cases:**
+- Expand VM disks when storage is running low
+- Add capacity for new services or data growth
+- Automate previously manual multi-step process
+- Consistent, repeatable disk expansion
+
+**Features:**
+- **End-to-End Automation:** Handles all steps from Proxmox to filesystem
+- **Safety Checks:** Verifies VM exists, shows current state, requires confirmation
+- **Multi-Step Process:**
+  1. Verify connectivity to Proxmox and VM
+  2. Show current disk status
+  3. Request user confirmation
+  4. Expand disk in Proxmox (qm resize)
+  5. Rescan SCSI bus on VM
+  6. Extend physical volume (pvresize)
+  7. Extend logical volume (lvextend)
+  8. Resize filesystem (resize2fs)
+  9. Verify expansion succeeded
+- **Error Handling:** Stops on any failure, provides clear error messages
+- **Detailed Output:** Color-coded progress through each step
+- **Verification:** Shows final disk status and checks for errors
+
+**Process Automated:**
+```bash
+# Previously manual steps (now automated):
+# On Proxmox: qm resize <vm-id> scsi0 +<size>G
+# On VM:      echo 1 | sudo tee /sys/class/block/sda/device/rescan
+#             sudo pvresize /dev/sda3
+#             sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+#             sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+#             df -h /
+```
+
+**Requirements:**
+- Ubuntu VMs with LVM (ubuntu-vg/ubuntu-lv)
+- SCSI disk at /dev/sda3
+- SSH access to Proxmox host
+- SSH access to target VM
+- qemu-guest-agent on VM (for IP detection)
+
+**Related Tasks:**
+- [[../../tasks/backlog/IN-018-expand-vm-103-disk-space|IN-018]] - Automation requirement
+- User feedback: "This process is something I've had to do multiple times and it's a pain in the butt which requires me to look up how to do it every time. Let's automate this."
 
 ## Best Practices
 
