@@ -23,6 +23,7 @@ secrets/
 
 # Backup files that might contain secrets
 *.backup
+*.backup-*
 *.bak
 *.old
 *~
@@ -44,6 +45,9 @@ logs/
 tmp/
 temp/
 *.tmp
+
+# Working directory for scratch/temporary files
+.working/
 
 # Temporary secret migration file (delete after migrating to Vaultwarden)
 stacks/SECRETS-TO-MIGRATE.md

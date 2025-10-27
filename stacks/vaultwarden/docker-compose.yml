@@ -7,17 +7,6 @@ services:
     environment:
       DOMAIN: ${DOMAIN}
       ADMIN_TOKEN: ${ADMIN_TOKEN}
-      # Uncomment these lines if they're configured in .env
-      # SIGNUPS_ALLOWED: ${SIGNUPS_ALLOWED}
-      # SIGNUPS_VERIFY: ${SIGNUPS_VERIFY}
-      # SIGNUPS_DOMAINS_WHITELIST: ${SIGNUPS_DOMAINS_WHITELIST}
-      # SMTP_HOST: ${SMTP_HOST}
-      # SMTP_FROM: ${SMTP_FROM}
-      # SMTP_PORT: ${SMTP_PORT}
-      # SMTP_SSL: ${SMTP_SSL}
-      # SMTP_USERNAME: ${SMTP_USERNAME}
-      # SMTP_PASSWORD: ${SMTP_PASSWORD}
-      # WEB_VAULT_ENABLED: ${WEB_VAULT_ENABLED}
     volumes:
       - ${DATA_PATH}:/data/
     ports:

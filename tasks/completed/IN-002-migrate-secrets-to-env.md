@@ -1,12 +1,13 @@
 ---
 type: task
 task-id: IN-002
-status: in-progress
+status: completed
 priority: 1
 category: security
 agent: security
 created: 2025-10-24
 updated: 2025-10-26
+completed: 2025-10-26
 tags:
   - task
   - security
@@ -303,3 +304,124 @@ These services don't require authentication or use public data:
 - VPN connectivity critical for downloads - thorough testing required
 - arr services communicate with each other - coordinate API key updates
 - Keep rollback procedure ready at all times
+
+---
+
+## Completion Summary
+
+**Completed:** 2025-10-26
+
+### What We Actually Found
+
+The task description anticipated finding hardcoded secrets that needed migration to .env files. **However, Phase 0 audit revealed:**
+
+1. ✅ **ZERO hardcoded secrets found** - Excellent security posture!
+2. ✅ **.env files already exist** on all VMs with running services
+3. ✅ **docker-compose.yml files already use ${VAR_NAME}** syntax properly
+4. ✅ **.env.example files already exist** in repository
+5. ✅ **Only 4 commented secrets** found (cleanup items, not active secrets)
+
+**Conclusion:** The infrastructure was already correctly configured. The actual work needed was **backing up existing secrets to Vaultwarden**, not creating new .env files.
+
+### What We Accomplished
+
+**✅ Phase 0: Pre-Migration Audit (Complete)**
+- Created and ran `scripts/secrets/audit-secrets.sh` to scan all 19 stacks
+- Verified Vaultwarden healthy and accessible
+- Created .backup-20251026 copies of all docker-compose.yml files
+- Categorized services into 3 groups (env vars, UI-managed, no secrets)
+
+**✅ Secret Backup to Vaultwarden (Complete)**
+
+All existing .env file secrets backed up to Vaultwarden organization "infinity-node":
+
+**vm-103-misc collection:**
+- vaultwarden-admin-token
+- paperless-secrets (POSTGRES_PASSWORD, PAPERLESS_SECRET_KEY, PAPERLESS_ADMIN_PASSWORD)
+- linkwarden-secrets (NEXTAUTH_SECRET, POSTGRES_PASSWORD)
+- immich-secrets (DB_PASSWORD)
+- newt-config-misc (Pangolin tunnel config)
+
+**vm-101-downloads collection:**
+- downloads-secrets (PRIVATE_KEY, NZBGET_USER, NZBGET_PASS)
+- newshosting-usenet (username, password, server, port)
+- nzbgeek-indexer (username, key)
+- nordlynx-noip-duc-env (noip_duc.env file contents as secure note)
+
+**vm-102-arr collection:**
+- newt-config-arrs (Pangolin tunnel config)
+
+**vm-100-emby collection:**
+- newt-config-emby (Pangolin tunnel config)
+
+**✅ Google Doc Secret Migration (Complete)**
+- Migrated all secrets from Google Doc to Vaultwarden
+- Used secure notes for multi-line config files (NEWT configs, noip_duc.env)
+- Organized by VM/collection for easy retrieval
+- Google Doc deleted after successful migration
+
+**✅ Cleanup (Complete)**
+- Removed commented secrets from vaultwarden/docker-compose.yml
+- Removed commented secrets from watchtower/docker-compose.yml
+- Deleted temporary migration script (.working/migrate-google-doc-secrets.sh)
+- Verified all services functioning with current secrets
+
+### What We Did NOT Do (And Why)
+
+**Per-Service Migration Steps (Lines 96-108):**
+- ❌ Create .env files - **Already existed on VMs**
+- ❌ Update docker-compose.yml to use ${VAR_NAME} - **Already done**
+- ❌ Create .env.example files - **Already in repository**
+- ❌ Deploy with new configuration - **Services already running with correct config**
+- ❌ Update stack README.md files - **Out of scope, services already documented**
+
+**Phased Service Migration (Phases 1-5):**
+- ❌ Did not execute phased deployment - **Not needed, services already correctly configured**
+- ❌ Did not test individual service deployments - **Services validated as already functioning**
+
+**Rationale:** The infrastructure was already in the desired end state. The task became a **backup/documentation task** rather than a **migration task**.
+
+### Validation Performed
+
+- ✅ Confirmed all running containers match expected VM layout
+- ✅ Verified all .env files exist for services that need them
+- ✅ Verified all secrets now stored in Vaultwarden with proper organization
+- ✅ Services continue running without interruption
+- ✅ .gitignore properly configured to ignore .working/ and .env files
+
+### Related Tasks Created
+
+- [[tasks/backlog/IN-016-backup-ui-managed-secrets|IN-016]]: Backup UI-Managed Secrets (priority 2)
+  - Handles Group B services (arr stack) with API-based secret extraction
+  - Focus on automation and infrastructure-as-code
+
+- [[tasks/backlog/IN-017-implement-vaultwarden-backup|IN-017]]: Implement Vaultwarden Backup (priority 1)
+  - **CRITICAL:** No automated backup exists for Vaultwarden database
+  - **BLOCKS** migration of additional critical services
+  - Must complete before adding more secrets to Vaultwarden
+
+### Lessons Learned
+
+1. **Pre-task review was invaluable** - Identified that actual work differed from task description
+2. **Infrastructure was better than expected** - No hardcoded secrets is excellent
+3. **Scripting approach worked well** - audit-secrets.sh and create-secret.sh streamlined work
+4. **Secure notes useful for config files** - Multi-line content (NEWT configs) stored properly
+5. **Task scope evolved appropriately** - Backup instead of migration was the right approach
+
+### Files Modified
+
+**Repository:**
+- `.gitignore` - Added .working/ directory and *.backup-* pattern
+- `scripts/secrets/audit-secrets.sh` - Created (secret inventory automation)
+- `scripts/README.md` - Updated with new scripts documentation
+- `docs/DECISIONS.md` - Added ADR-012 (script-based automation)
+- `stacks/vaultwarden/docker-compose.yml` - Removed commented SMTP_PASSWORD
+- `stacks/watchtower/docker-compose.yml` - Removed commented email/registry secrets
+
+**VMs (no changes):**
+- All .env files remain unchanged on VMs
+- All services continue running without interruption
+
+**Vaultwarden:**
+- 10 new items created across 4 collections
+- All secrets organized by VM and properly labeled
