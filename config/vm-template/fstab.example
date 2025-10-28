@@ -1,0 +1,33 @@
+# NAS Mount Configuration for VM Template
+# This file shows the NAS mounts to be included in the VM template
+#
+# NAS Server: 192.168.86.43
+# Protocol: CIFS (Samba/Windows shares)
+# Authentication: Username/password (stored in fstab - consider keyring in future)
+#
+# IMPORTANT: Replace {{ nas_username }} and {{ nas_password }} with actual credentials
+# These will be managed by Ansible variables
+
+# Media share - for video content
+//192.168.86.43/media           /mnt/video      cifs    username={{ nas_username }},password={{ nas_password }},vers=2.0,rw,file_mode=0777,dir_mode=0777,nofail   0       0
+
+# Complete share - for completed downloads
+//192.168.86.43/complete        /mnt/complete   cifs    username={{ nas_username }},password={{ nas_password }},vers=2.0,rw,file_mode=0777,dir_mode=0777,nofail   0       0
+
+# Music share - for music content
+//192.168.86.43/music           /mnt/music      cifs    username={{ nas_username }},password={{ nas_password }},vers=2.0,rw,file_mode=0777,dir_mode=0777,nofail   0       0
+
+# Notes:
+# - vers=2.0: SMB protocol version
+# - rw: Read-write access
+# - file_mode=0777,dir_mode=0777: Full permissions (consider restricting in future)
+# - nofail: Don't prevent boot if NAS is unavailable
+#
+# Post-clone customization:
+# - Some VMs may not need all mounts (e.g., VM 103 doesn't use /mnt/complete)
+# - Use customize-vm-clone.sh script to disable unneeded mounts
+#
+# Security consideration:
+# - Credentials in plain text in fstab
+# - Acceptable for local network
+# - Future: Consider using credentials file or keyring

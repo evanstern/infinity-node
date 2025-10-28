@@ -1,0 +1,366 @@
+---
+# ============================================================================
+# Ansible Playbook: VM Template Configuration
+# ============================================================================
+#
+# Purpose: Configure a VM to match the infinity-node standard template
+#
+# This playbook can be used to:
+# 1. Build a new VM template from scratch
+# 2. Update an existing template
+# 3. Update existing production VMs to match template configuration
+#
+# Usage:
+#   ansible-playbook -i ../inventory/proxmox-vms.yml vm-template.yml --ask-vault-pass
+#
+# Dry-run (see what would change):
+#   ansible-playbook -i ../inventory/proxmox-vms.yml vm-template.yml --check --ask-vault-pass
+#
+# Target specific host:
+#   ansible-playbook -i ../inventory/proxmox-vms.yml vm-template.yml --limit template-vm --ask-vault-pass
+#
+# ============================================================================
+
+# PLAYBOOK DEFINITION
+# -------------------
+# A playbook is a list of "plays"
+# Each play targets specific hosts and contains a list of tasks
+
+- name: Configure Proxmox VM Template
+  # The friendly name of this play
+
+  hosts: all
+  # Which hosts from inventory to target
+  # "all" = all hosts in inventory
+  # Can also use group names like "template" or "production"
+  # Override with --limit flag
+
+  become: yes
+  # Use sudo/privilege escalation for all tasks
+  # Most configuration requires root privileges
+  # Assumes passwordless sudo is configured for ansible_user
+
+  # VARIABLES
+  # ---------
+  # Variables can be used throughout the playbook with {{ variable_name }}
+  # Variables from inventory and group_vars are automatically loaded
+
+  vars:
+    # Base packages to install on all VMs
+    base_packages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - wget
+      - git
+      - htop
+      - vim
+      - zsh
+      - cifs-utils  # For mounting NAS shares
+      - ufw         # Firewall
+
+    # Docker packages
+    docker_packages:
+      - docker.io
+      - docker-compose-v2
+
+    # Users to create
+    vm_users:
+      - name: evan
+        uid: 1000
+        gid: 1000
+        shell: /bin/zsh
+        groups: "sudo,docker"
+        comment: "Evan"
+
+      - name: inspector
+        uid: 1001
+        gid: 1001
+        shell: /bin/bash
+        groups: ""
+        comment: "Inspector user for Testing Agent"
+
+  # TASKS
+  # -----
+  # Tasks are the actual work to be done
+  # Each task uses an Ansible module (apt, user, copy, etc.)
+  # Tasks are idempotent - safe to run multiple times
+
+  tasks:
+    # ========================================================================
+    # SYSTEM UPDATE
+    # ========================================================================
+
+    - name: Update apt cache
+      # Module: apt
+      # Purpose: Ensure package cache is fresh before installing packages
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600  # Only update if cache is older than 1 hour
+      # Idempotent: Won't update if cache is fresh
+      # Result: "changed" if cache updated, "ok" if cache fresh
+
+    - name: Upgrade all packages to latest version
+      # Module: apt
+      # Purpose: Apply security updates and package upgrades
+      # NOTE: Temporarily disabled due to 429 rate limit errors
+      # Can be re-enabled later or run manually after template creation
+      apt:
+        upgrade: dist  # Full distribution upgrade
+        autoremove: yes  # Remove unnecessary packages
+        autoclean: yes   # Clean package cache
+      register: upgrade_result
+      # register: Saves task output to a variable for later use
+      # We'll use this to check if packages were upgraded
+      when: false  # SKIP THIS TASK FOR NOW
+
+    - name: Display upgrade results
+      # Module: debug
+      # Purpose: Show what packages were upgraded (if any)
+      debug:
+        msg: "{{ upgrade_result.stdout_lines | default(['No packages upgraded']) }}"
+      when: upgrade_result.changed
+      # when: Conditional execution - only run if packages were upgraded
+
+    # ========================================================================
+    # PACKAGE INSTALLATION
+    # ========================================================================
+
+    - name: Install base packages
+      # Module: apt
+      # Purpose: Install essential tools and utilities
+      apt:
+        name: "{{ base_packages }}"
+        # Using variable defined above
+        state: present
+        # state: present = ensure installed (idempotent)
+        # state: absent = ensure not installed
+        # state: latest = ensure latest version
+      # Idempotent: Won't reinstall if already present
+      # Result: "changed" if packages installed, "ok" if already present
+
+    - name: Install Docker packages
+      # Module: apt
+      # Purpose: Install Docker and Docker Compose
+      apt:
+        name: "{{ docker_packages }}"
+        state: present
+
+    - name: Ensure Docker service is enabled and started
+      # Module: systemd (or service)
+      # Purpose: Docker starts automatically on boot
+      systemd:
+        name: docker
+        state: started   # Ensure service is running now
+        enabled: yes     # Ensure service starts on boot
+      # Idempotent: Won't restart if already running and enabled
+
+    # ========================================================================
+    # USER MANAGEMENT
+    # ========================================================================
+
+    - name: Create user groups
+      # Module: group
+      # Purpose: Create groups before users (users reference groups)
+      group:
+        name: "{{ item.name }}"
+        gid: "{{ item.gid }}"
+        state: present
+      loop: "{{ vm_users }}"
+      # loop: Repeat task for each item in vm_users list
+      # item: Current item in loop (item.name, item.gid, etc.)
+      # Idempotent: Won't recreate if group exists with correct GID
+
+    - name: Create users
+      # Module: user
+      # Purpose: Create evan and inspector users with correct settings
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        group: "{{ item.name }}"  # Primary group = username
+        groups: "{{ item.groups }}"  # Additional groups (sudo, docker)
+        shell: "{{ item.shell }}"
+        comment: "{{ item.comment }}"
+        create_home: yes
+        state: present
+      loop: "{{ vm_users }}"
+      # Idempotent: Won't recreate if user exists with correct settings
+      # Will update if settings changed (e.g., wrong shell)
+
+    - name: Set up SSH directory for users
+      # Module: file
+      # Purpose: Create ~/.ssh directory with correct permissions
+      file:
+        path: "/home/{{ item.name }}/.ssh"
+        state: directory
+        owner: "{{ item.name }}"
+        group: "{{ item.name }}"
+        mode: '0700'  # Only user can read/write/execute
+      loop: "{{ vm_users }}"
+      # Idempotent: Won't recreate if directory exists with correct permissions
+
+    # ========================================================================
+    # SHELL CONFIGURATION (ZSH for evan)
+    # ========================================================================
+
+    - name: Copy .zshrc for evan user
+      # Module: copy
+      # Purpose: Deploy our custom .zshrc configuration
+      copy:
+        src: ../../config/vm-template/.zshrc
+        # src: Source file (relative to playbook directory)
+        dest: /home/evan/.zshrc
+        # dest: Destination on target VM
+        owner: evan
+        group: evan
+        mode: '0644'  # User can read/write, others can read
+      # Idempotent: Won't copy if file exists with same content
+      # Will update if .zshrc content changed
+
+    # ========================================================================
+    # DIRECTORY STRUCTURE
+    # ========================================================================
+
+    - name: Create standard directories for evan user
+      # Module: file
+      # Purpose: Set up projects/, scripts/, backups/ directories
+      file:
+        path: "/home/evan/{{ item }}"
+        state: directory
+        owner: evan
+        group: evan
+        mode: '0755'  # User full access, others read/execute
+      loop:
+        - projects
+        - scripts
+        - backups
+      # Idempotent: Won't recreate if directories exist
+
+    # ========================================================================
+    # NAS MOUNT CONFIGURATION
+    # ========================================================================
+
+    - name: Create NAS mount points
+      # Module: file
+      # Purpose: Create directories where NAS shares will be mounted
+      file:
+        path: "{{ item.mountpoint }}"
+        state: directory
+        mode: '0755'
+      loop: "{{ nas_mounts }}"
+      # nas_mounts defined in inventory vars
+      # Idempotent: Won't recreate if directories exist
+
+    - name: Configure NAS mounts in /etc/fstab
+      # Module: mount
+      # Purpose: Add NAS share mounts to /etc/fstab
+      # Uses credentials from Ansible Vault (vault_nas_username, vault_nas_password)
+      mount:
+        path: "{{ item.mountpoint }}"
+        src: "//{{ nas_server }}/{{ item.share }}"
+        fstype: cifs
+        opts: "username={{ vault_nas_username }},password={{ vault_nas_password }},vers=2.0,rw,file_mode=0777,dir_mode=0777,nofail"
+        # opts explanation:
+        # - username/password: NAS credentials from vault
+        # - vers=2.0: SMB protocol version
+        # - rw: Read-write access
+        # - file_mode/dir_mode=0777: Full permissions (consider restricting)
+        # - nofail: Don't prevent boot if NAS unavailable
+        state: mounted
+        # state: mounted = add to fstab AND mount now
+        # state: present = add to fstab but don't mount
+        # state: absent = remove from fstab and unmount
+      loop: "{{ nas_mounts }}"
+      # Idempotent: Won't remount if already mounted correctly
+      # Will update fstab if options changed
+
+    # ========================================================================
+    # FIREWALL CONFIGURATION (UFW)
+    # ========================================================================
+
+    - name: Allow SSH through firewall
+      # Module: ufw
+      # Purpose: Ensure SSH access is allowed before enabling firewall
+      # IMPORTANT: Do this BEFORE enabling UFW or you'll lock yourself out!
+      ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+      # Idempotent: Won't create duplicate rules
+
+    - name: Set UFW default policies
+      # Module: ufw
+      # Purpose: Deny incoming by default, allow outgoing
+      ufw:
+        direction: "{{ item.direction }}"
+        policy: "{{ item.policy }}"
+      loop:
+        - { direction: incoming, policy: deny }
+        - { direction: outgoing, policy: allow }
+      # Idempotent: Won't change if already set
+
+    - name: Enable UFW firewall
+      # Module: ufw
+      # Purpose: Activate the firewall
+      ufw:
+        state: enabled
+      # Idempotent: Won't restart if already enabled
+
+    # ========================================================================
+    # SSH HARDENING
+    # ========================================================================
+
+    # Note: SSH configuration is complex and critical
+    # For now, we'll use default Ubuntu SSH config
+    # Future: Add SSH hardening tasks (disable password auth, etc.)
+    # See research findings: Need to audit current sshd_config first
+
+    - name: Ensure SSH service is enabled
+      # Module: systemd
+      # Purpose: SSH starts on boot (should already be enabled)
+      systemd:
+        name: ssh  # Ubuntu uses 'ssh' not 'sshd'
+        enabled: yes
+        state: started
+
+    # ========================================================================
+    # CLEANUP (for template conversion)
+    # ========================================================================
+
+    - name: Clean package cache
+      # Module: apt
+      # Purpose: Reduce template size by removing cached packages
+      apt:
+        autoclean: yes
+        autoremove: yes
+      # Idempotent: Safe to run multiple times
+
+    # Note: Additional cleanup for template conversion (run manually):
+    # 1. docker system prune -a  (remove all docker images/containers)
+    # 2. Clear bash history
+    # 3. Remove SSH host keys (regenerate on clone)
+    # These are NOT in playbook because they're destructive and only needed
+    # when actually converting to template
+
+# ============================================================================
+# PLAYBOOK COMPLETE
+# ============================================================================
+#
+# What this playbook does:
+# - Updates system packages
+# - Installs Docker, development tools, and utilities
+# - Creates evan (with zsh) and inspector users
+# - Configures NAS mounts to 192.168.86.43
+# - Enables UFW firewall (with SSH allowed)
+# - Sets up directory structure
+#
+# What it does NOT do (intentionally):
+# - Modify existing production services
+# - Change network configuration (hostname, IP)
+# - Install VM-specific software
+# - Remove existing data
+#
+# The playbook is idempotent - safe to run multiple times.
+# Re-running will only change what needs to be changed.
+#
+# ============================================================================

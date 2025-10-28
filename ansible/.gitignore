@@ -1,0 +1,10 @@
+# Ansible Vault Password File
+# NEVER commit this file - it contains the decryption password
+.vault-pass
+*.vault-pass
+
+# Retry files (created when playbooks fail)
+*.retry
+
+# Local test files
+test-*.yml

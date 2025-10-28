@@ -561,12 +561,22 @@ Claude Code can access secrets from Bitwarden, but requires a session token from
 - Write for future readers
 - Include examples
 - Document "why" not just "what"
+- Follow `.docs/` pattern for context-specific documentation
 
 **Don't:**
 - Let docs become stale
 - Document secrets (use examples/templates)
 - Create unnecessary documentation
 - Over-document trivial things
+
+**Documentation Pattern: `.docs/` vs `docs/`:**
+- **`docs/`** (project-wide): Architecture, decisions, agents, runbooks that span multiple areas
+- **`.docs/`** (context-specific): Documentation that lives alongside the code/config it describes
+  - Example: `config/vm-template/.docs/vm-research-findings.md` - research specific to VM configs
+  - Example: `ansible/.docs/playbook-design.md` - Ansible-specific implementation notes
+  - Example: `services/.docs/architecture.md` - service-specific architecture
+- **Benefits**: Documentation stays close to what it documents, scales across entire project
+- **Rule**: If docs are only relevant to files in one directory, use `.docs/` in that directory
 
 ### Code & Configuration
 

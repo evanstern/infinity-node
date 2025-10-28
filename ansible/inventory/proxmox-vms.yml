@@ -1,0 +1,110 @@
+# Ansible Inventory for Proxmox VMs
+# This file defines all VMs that Ansible can manage
+#
+# Inventory Concepts:
+# - hosts: Individual VMs
+# - groups: Collections of VMs (e.g., "production", "testing")
+# - variables: Can be set per-host or per-group
+#
+# Usage:
+#   ansible-playbook -i inventory/proxmox-vms.yml playbooks/vm-template.yml
+
+---
+all:
+  children:
+    # Production VMs (existing, currently running services)
+    production:
+      hosts:
+        vm-100:
+          ansible_host: 192.168.86.172
+          ansible_user: evan
+          vm_id: 100
+          vm_name: emby
+          hostname: ininity-node-emby
+          # Note: hostname has typo "ininity" (should be "infinity")
+
+        vm-101:
+          ansible_host: 192.168.86.173
+          ansible_user: evan
+          vm_id: 101
+          vm_name: downloads
+          hostname: infinity-node-downloads
+          # Note: evan user has GID 988 instead of 1000 on this VM
+
+        vm-102:
+          ansible_host: 192.168.86.174
+          ansible_user: evan
+          vm_id: 102
+          vm_name: arrs
+          hostname: infinity-node-arr
+
+        vm-103:
+          ansible_host: 192.168.86.249
+          ansible_user: evan
+          vm_id: 103
+          vm_name: misc
+          hostname: infinity-node-misc
+          # Note: This VM is missing /mnt/complete NAS mount
+
+    # Testing VMs (for development and testing)
+    testing:
+      hosts:
+        # Placeholder for test VM - will be created in Phase 2
+        # Uncomment and update when test VM is created:
+        # test-vm:
+        #   ansible_host: 192.168.86.XXX
+        #   ansible_user: evan
+        #   vm_id: TBD
+        #   vm_name: test
+        #   hostname: infinity-node-test
+
+    # Template VM (for building the Proxmox template)
+    template:
+      hosts:
+        template-vm:
+          ansible_host: 192.168.86.24
+          ansible_user: evan
+          vm_id: 9000
+          vm_name: ubuntu-template
+          hostname: ubuntu-template
+
+  # Variables applied to ALL hosts
+  vars:
+    # SSH connection settings
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+    ansible_python_interpreter: /usr/bin/python3
+
+    # Become (sudo) settings
+    ansible_become: yes
+    ansible_become_method: sudo
+    # Note: Assumes passwordless sudo is configured for evan user
+
+    # Common VM settings
+    nas_server: "192.168.86.43"
+    nas_protocol: "cifs"
+
+    # NAS mount points (default - all VMs get these)
+    nas_mounts:
+      - name: video
+        share: "media"
+        mountpoint: "/mnt/video"
+      - name: complete
+        share: "complete"
+        mountpoint: "/mnt/complete"
+      - name: music
+        share: "music"
+        mountpoint: "/mnt/music"
+
+# Group-specific variables can be set in group_vars/
+# Host-specific variables can be set in host_vars/
+#
+# Example: group_vars/production.yml
+# Example: host_vars/vm-103.yml
+
+# Notes:
+# 1. Production VMs should NOT be modified without testing first
+# 2. Always test playbooks on test-vm before applying to production
+# 3. Use --limit flag to target specific VMs:
+#    ansible-playbook ... --limit test-vm
+# 4. Use --check flag for dry-run (see what would change):
+#    ansible-playbook ... --check

@@ -64,6 +64,7 @@ scripts/
 │   ├── setup-evan-nopasswd-sudo.sh   # Configure evan user
 │   └── setup-inspector-user.sh       # Create read-only testing user
 ├── infrastructure/                    # VM and infrastructure management
+│   ├── create-test-vm.sh             # Automate Proxmox VM creation
 │   ├── docker-cleanup.sh             # Clean unused Docker images
 │   └── expand-vm-disk.sh             # Expand Proxmox VM disk
 ├── validation/                        # Health checks
@@ -288,6 +289,60 @@ done
 
 ### Infrastructure (`infrastructure/`)
 
+#### `create-test-vm.sh`
+**Purpose:** Automate creation of Proxmox VMs using Ubuntu cloud images
+**Usage:** `./create-test-vm.sh [OPTIONS] [VM_ID] [VM_NAME] [CORES] [RAM_MB] [DISK_GB]`
+**Options:** `--yes` or `-y` to skip confirmation prompt
+**Exit Codes:** 0 (success), 1 (error during creation)
+**Default Values:** VM ID 900, name "test-template", 2 cores, 4GB RAM, 20GB disk
+
+**Example:**
+```bash
+# Create VM with defaults (interactive)
+./scripts/infrastructure/create-test-vm.sh
+
+# Create VM with custom settings, skip confirmation
+./scripts/infrastructure/create-test-vm.sh --yes 9000 ubuntu-template 2 4096 20
+
+# Create VM with specific ID and name
+./scripts/infrastructure/create-test-vm.sh 105 new-service
+```
+
+**Use Cases:**
+- Rapidly create test VMs for development
+- Build VM templates from scratch
+- Automate VM provisioning workflows
+- Create consistent base VMs for Ansible configuration
+
+**Features:**
+- **Cloud-init Integration:** Uses Ubuntu cloud images for fast deployment
+- **Automated Download:** Fetches Ubuntu 24.04 cloud image to Proxmox
+- **SSH Key Injection:** Configures SSH access using your public key
+- **Network Configuration:** Sets up DHCP networking automatically
+- **Safety Checks:** Verifies prerequisites and prevents duplicate VM IDs
+- **Detailed Output:** Shows configuration before creation and provides post-creation instructions
+
+**Process Automated:**
+```bash
+# Previously manual steps (now automated):
+# 1. Download Ubuntu cloud image
+# 2. Create VM with qm create
+# 3. Import disk image
+# 4. Attach disk and configure boot
+# 5. Add cloud-init drive
+# 6. Configure user and SSH keys
+# 7. Start VM
+```
+
+**Requirements:**
+- SSH access to Proxmox host (192.168.86.106 by default)
+- SSH public key at `~/.ssh/id_rsa.pub`
+- Internet access on Proxmox (to download cloud image)
+- Proxmox storage named `local-lvm`
+
+**Related Tasks:**
+- [[../../tasks/backlog/IN-010-create-vm-template|IN-010]] - VM template creation
+
 #### `docker-cleanup.sh`
 **Purpose:** Clean up unused Docker images on remote VMs and report disk space recovered
 **Usage:** `./docker-cleanup.sh <vm-host> [ssh-user]`
@@ -388,6 +443,35 @@ Result: Freed 17% disk space, removed 159 unused images
 **Related Tasks:**
 - [[../../tasks/backlog/IN-018-expand-vm-103-disk-space|IN-018]] - Automation requirement
 - User feedback: "This process is something I've had to do multiple times and it's a pain in the butt which requires me to look up how to do it every time. Let's automate this."
+
+## Documentation Pattern: `.docs/` for Context-Specific Documentation
+
+We follow a `.docs/` pattern for keeping documentation close to the code/config it describes:
+
+**Pattern:** Create a `.docs/` subdirectory in any directory that needs context-specific documentation.
+
+**Examples:**
+- `config/vm-template/.docs/vm-research-findings.md` - Research about VM configurations
+- `ansible/.docs/playbook-design.md` - Ansible-specific design decisions
+- `services/.docs/architecture.md` - Service architecture explanations
+
+**When to use `.docs/`:**
+- Documentation specific to files in that directory
+- Research findings for configurations
+- Context that would clutter main docs
+- Implementation notes for specific modules
+
+**When NOT to use `.docs/` (use `docs/` instead):**
+- Project-wide documentation (ARCHITECTURE.md, CLAUDE.md)
+- Cross-cutting concerns (SECRET-MANAGEMENT.md)
+- Runbooks that span multiple areas
+- Agent definitions
+
+**Benefits:**
+- Keeps documentation close to what it documents
+- Scalable pattern across the entire project
+- Clear separation: `docs/` = project-wide, `.docs/` = context-specific
+- Easy to find relevant docs when working in a specific area
 
 ## Best Practices
 
