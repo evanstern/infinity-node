@@ -2,11 +2,11 @@
 type: task
 task-id: IN-012
 status: pending
-priority: 3
+priority: 2
 category: infrastructure
 agent: infrastructure
 created: 2025-10-26
-updated: 2025-10-26
+updated: 2025-10-27
 tags:
   - task
   - infrastructure
@@ -327,7 +327,15 @@ bw config server $VAULTWARDEN_URL
 
 ### Priority Rationale
 
-**Medium priority** because:
+**Priority Update (2025-10-27):**
+Priority increased from 3→2 due to:
+- Blocks seamless IP address migration (critical when moving locations)
+- Improves automation reliability significantly
+- Relatively quick to implement with dnsmasq
+- High value-to-effort ratio
+- Should be completed before any location/network changes
+
+**Original rationale (medium priority):**
 - Blocks seamless IP address migration (high impact when moving)
 - Improves automation reliability (medium impact)
 - Reduces configuration maintenance burden

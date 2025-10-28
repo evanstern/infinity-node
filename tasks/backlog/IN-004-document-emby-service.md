@@ -2,11 +2,11 @@
 type: task
 task-id: IN-004
 status: pending
-priority: 3
+priority: 2
 category: documentation
 agent: documentation
 created: 2025-10-24
-updated: 2025-10-26
+updated: 2025-10-27
 tags:
   - task
   - documentation
@@ -68,6 +68,14 @@ Currently, Emby configuration is not fully documented.
 - Template: .obsidian/templates/service.md
 
 ## Notes
+
+**Priority Update (2025-10-27):**
+Priority increased from 3→2 due to:
+- Task description identifies Emby as "MOST CRITICAL service"
+- Affects household users (99.9% uptime requirement)
+- Critical service documentation should be higher priority
+- Essential for quick troubleshooting and disaster recovery
+- No comprehensive documentation currently exists
 
 **Key topics to cover:**
 

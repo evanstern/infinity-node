@@ -2,11 +2,11 @@
 type: task
 task-id: IN-005
 status: pending
-priority: 3
+priority: 2
 category: infrastructure
 agent: infrastructure
 created: 2025-10-24
-updated: 2025-10-26
+updated: 2025-10-27
 tags:
   - task
   - infrastructure
@@ -69,6 +69,14 @@ This is especially important for critical services that affect household users.
 - [[docs/agents/INFRASTRUCTURE|Infrastructure Agent]]
 
 ## Notes
+
+**Priority Update (2025-10-27):**
+Priority increased from 3→2 due to:
+- Zero automated monitoring currently in place (all manual)
+- Recent IN-018 crisis showed need for proactive alerting (VM 103 reached 98% before discovery)
+- Critical services (Emby, downloads, arr) affect household users
+- Overlaps with IN-020 (disk-specific monitoring), but this task has broader scope
+- High value-to-effort ratio for preventing service disruptions
 
 **Monitoring solution options:**
 

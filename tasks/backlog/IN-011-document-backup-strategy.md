@@ -6,7 +6,7 @@ priority: 1
 category: infrastructure
 agent: infrastructure
 created: 2025-10-24
-updated: 2025-10-26
+updated: 2025-10-27
 tags:
   - task
   - infrastructure
@@ -67,6 +67,23 @@ Critical services (Emby, downloads, arr) require reliable backups to minimize do
 - Future: docs/runbooks/backup-restore.md
 
 ## Notes
+
+**Progress Update (2025-10-27):**
+
+**Completed Work:**
+- ✅ Vaultwarden database backup implemented via [[../completed/IN-017-implement-vaultwarden-backup|IN-017]]
+  - Automated daily backups to NAS (nightly at 2 AM)
+  - Retention: 7 daily, 4 weekly, 12 monthly backups
+  - Encryption and verification in place
+  - Script: `scripts/backup-vaultwarden.sh`
+
+**Remaining Scope:**
+This task should now focus on:
+- VM snapshots/backups (Proxmox-level)
+- Service database backups (Emby, *arr, Immich, Paperless)
+- .env file backups (critical secrets) - see [[IN-016-backup-ui-managed-secrets|IN-016]]
+- Comprehensive backup documentation and runbook
+- Testing restore procedures (see [[IN-008-test-disaster-recovery|IN-008]])
 
 **Items to backup:**
 - Proxmox VM configurations
