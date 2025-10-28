@@ -12,7 +12,7 @@ This directory contains operational automation scripts for managing the infinity
 
 ## Philosophy
 
-Per [[../docs/DECISIONS#ADR-012|ADR-012: Script-Based Operational Automation]], we maintain scripts for:
+Per [[../docs/adr/012-script-based-operational-automation|ADR-012: Script-Based Operational Automation]], we maintain scripts for:
 - ✅ **Reproducible operations** - Run the same way every time
 - ✅ **Common tasks** - Operations performed multiple times
 - ✅ **Validation & health checks** - Verify system state
@@ -546,7 +546,7 @@ See [[../tasks/backlog/IN-003-create-deployment-runbook|IN-003]] for runbook aut
 - [[../docs/CLAUDE|Claude Code Guide]] - Working with Claude Code
 - [[../docs/agents/DOCKER|Docker Agent]] - Docker operations
 - [[../docs/agents/SECURITY|Security Agent]] - Secret management
-- [[../docs/DECISIONS#ADR-012|ADR-012]] - Script-based automation decision
+- [[../docs/adr/012-script-based-operational-automation|ADR-012]] - Script-based automation decision
 - [[../docs/SECRET-MANAGEMENT|Secret Management]] - Vaultwarden workflows
 
 ## Contributing
