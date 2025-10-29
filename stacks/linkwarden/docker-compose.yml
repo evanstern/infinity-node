@@ -2,6 +2,8 @@ name: linkwarden
 services:
   postgres:
     image: postgres:16-alpine
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     restart: always
     volumes:
       - ./pgdata:/var/lib/postgresql/data
@@ -21,6 +23,8 @@ services:
 
   meilisearch:
     image: getmeili/meilisearch:v1.12.8
+    environment:
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-}
     restart: always
     volumes:
       - ./meili_data:/meili_data
