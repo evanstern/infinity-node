@@ -144,8 +144,11 @@ completed/ (completed)
 
 **When Starting a Task:**
 1. **FIRST**: Update task status to `in-progress` in frontmatter
-2. **THEN**: Move task file from `backlog/` to `current/`
-3. Begin work on Phase 1
+2. **THEN**: Move task file from `backlog/` to `current/` using `git mv`
+3. **COMMIT** the task status change and move immediately
+   - This prevents git from collapsing multiple moves later
+   - Commit message: `chore: start task IN-XXX`
+4. Begin work on Phase 1
 
 **During Task Execution:**
 1. **Check off acceptance criteria** in real-time as items are completed
@@ -167,8 +170,9 @@ completed/ (completed)
 3. **WAIT** for user approval
 4. **After user approves**:
    - Update status to `completed` in frontmatter
-   - Move task from `current/` to `completed/`
-   - Propose git commit with descriptive message
+   - Move task from `current/` to `completed/` using `git mv`
+   - Commit all work + task completion together
+   - Commit message follows conventional commits format
 
 ### Task IDs and References
 

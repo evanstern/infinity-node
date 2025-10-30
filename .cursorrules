@@ -52,17 +52,19 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 
 *When starting:*
 1. Update status to `in-progress` in frontmatter
-2. Move task from `backlog/` to `current/`
+2. Move task from `backlog/` to `current/` (use `git mv`)
+3. **Commit immediately** (`chore: start task IN-XXX`)
+   - Prevents git from collapsing multiple moves
 
 *During execution:*
-3. Check off acceptance criteria as completed (real-time)
-4. After each phase: pause, reflect, add notes to work log
-5. Document decisions, discoveries, and any needed changes
+4. Check off acceptance criteria as completed (real-time)
+5. After each phase: pause, reflect, add notes to work log
+6. Document decisions, discoveries, and any needed changes
 
 *When complete:*
-6. **DO NOT mark complete immediately**
-7. Present work to user for review and approval
-8. After approval: mark complete, move to `completed/`, propose commit
+7. **DO NOT mark complete immediately**
+8. Present work to user for review and approval
+9. After approval: mark complete, `git mv` to `completed/`, commit all work
 
 **Full details:** See `docs/CLAUDE.md` sections on MDTD
 
@@ -212,23 +214,25 @@ Each service has:
 **Before starting task:**
 1. Read the task completely if working from MDTD
 2. Conduct pre-task review for non-trivial work
-3. **Update task status to `in-progress` and move to `current/`**
-4. Identify which agent(s) should handle the work
-5. Check if critical services are affected
-6. Plan rollback strategy if needed
+3. **Update task status to `in-progress`**
+4. **Move to `current/` with `git mv`**
+5. **Commit immediately** (`chore: start task IN-XXX`)
+6. Identify which agent(s) should handle the work
+7. Check if critical services are affected
+8. Plan rollback strategy if needed
 
 **During task execution:**
-7. **Check off acceptance criteria as completed (real-time updates)**
-8. **After each phase: pause, reflect, add notes to work log**
-9. Document decisions and discoveries as work progresses
-10. Suggest changes if new information warrants it
-11. Test changes thoroughly
-12. Coordinate with Testing Agent for validation
+9. **Check off acceptance criteria as completed (real-time updates)**
+10. **After each phase: pause, reflect, add notes to work log**
+11. Document decisions and discoveries as work progresses
+12. Suggest changes if new information warrants it
+13. Test changes thoroughly
+14. Coordinate with Testing Agent for validation
 
 **When task work is complete:**
-13. **Present work to user for review (DO NOT mark complete yet)**
-14. Wait for user approval
-15. After approval: mark complete, move to `completed/`, propose commit
+15. **Present work to user for review (DO NOT mark complete yet)**
+16. Wait for user approval
+17. After approval: mark complete, `git mv` to `completed/`, commit all work
 
 ## Success Criteria
 
