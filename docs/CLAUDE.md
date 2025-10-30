@@ -727,6 +727,8 @@ Claude Code can access secrets from Bitwarden, but requires a session token from
 
 ## Reference Quick Links
 
+- [[CURSOR|Cursor IDE Guide]] - How to use Cursor features effectively
+- [[CODEBASE|Codebase Overview]] - Quick reference for AI queries
 - [[agents/README|Agent System]]
 - [[tasks/README|MDTD System]]
 - [[DASHBOARD|Task Dashboard]]

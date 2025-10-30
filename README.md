@@ -122,12 +122,13 @@ All other services are important but primarily affect only the system owner.
 
 ## Getting Started
 
-### Working with Claude Code
+### Working with AI Assistants
 
-1. Read [[docs/CLAUDE|Claude Code Guide]] for best practices
-2. Understand the [[docs/agents/README|Agent System]]
-3. Check [[DASHBOARD|Task Dashboard]] for current work
-4. Follow agent guidelines for your task type
+1. **For Cursor users**: Read [[docs/CURSOR|Cursor Guide]] for IDE-specific features
+2. **For AI collaboration**: Read [[docs/CLAUDE|AI Collaboration Guide]] for workflows
+3. **Quick reference**: Use [[docs/CODEBASE|Codebase Overview]] for structure queries
+4. Understand the [[docs/agents/README|Agent System]]
+5. Check [[DASHBOARD|Task Dashboard]] for current work
 
 ### Deploying a New Service
 
@@ -147,7 +148,12 @@ All other services are important but primarily affect only the system owner.
 
 ## Documentation
 
-- [[docs/CLAUDE|Claude Code Guide]]: How to work with Claude Code
+### AI Collaboration
+- [[docs/CURSOR|Cursor Guide]]: How to use Cursor IDE effectively
+- [[docs/CLAUDE|AI Collaboration Guide]]: Working with AI assistants
+- [[docs/CODEBASE|Codebase Overview]]: Quick reference for @Codebase queries
+
+### Infrastructure
 - [[docs/ARCHITECTURE|Architecture]]: Infrastructure architecture
 - [[docs/DECISIONS|Decisions]]: Architectural decision records
 - [[docs/agents/README|Agent System]]: Specialized agent roles

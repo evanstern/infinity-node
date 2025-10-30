@@ -1,0 +1,93 @@
+{
+  // File associations for proper syntax highlighting
+  "files.associations": {
+    ".cursorrules": "markdown",
+    ".env.example": "properties",
+    "*.md": "markdown"
+  },
+
+  // Files to exclude from the explorer
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.working": true,
+    "**/__pycache__": true,
+    "**/*.pyc": true
+  },
+
+  // Files to exclude from search
+  "search.exclude": {
+    "**/.git": true,
+    "**/.obsidian/workspace*.json": true,
+    "**/.obsidian/cache": true,
+    "**/.working": true,
+    "**/node_modules": true,
+    "**/*.log": true,
+    "**/*.backup": true,
+    "**/*.bak": true
+  },
+
+  // Markdown validation and formatting
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "other": "on",
+      "comments": "off",
+      "strings": "off"
+    },
+    "editor.formatOnSave": false,
+    "editor.rulers": [80, 120]
+  },
+
+  // YAML validation and formatting
+  "[yaml]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.formatOnSave": false
+  },
+
+  // Docker compose file settings
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced"
+  },
+
+  // Shell script settings
+  "[shellscript]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "files.eol": "\n"
+  },
+
+  // Enable markdown link validation
+  "markdown.validate.enabled": true,
+  "markdown.validate.fileLinks.enabled": "warning",
+  "markdown.validate.fragmentLinks.enabled": "warning",
+  "markdown.validate.referenceLinks.enabled": "warning",
+
+  // Git settings
+  "git.ignoreLimitWarning": true,
+  "git.confirmSync": false,
+
+  // Editor settings
+  "editor.formatOnSave": false,
+  "editor.rulers": [80, 120],
+  "editor.renderWhitespace": "boundary",
+  "editor.trimAutoWhitespace": true,
+
+  // Files settings
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  // Exclude patterns for file watching (performance)
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.obsidian/cache/**": true,
+    "**/.working/**": true
+  }
+}
