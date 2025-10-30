@@ -53,18 +53,20 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 *When starting:*
 1. Update status to `in-progress` in frontmatter
 2. Move task from `backlog/` to `current/` (use `git mv`)
-3. **Commit immediately** (`chore: start task IN-XXX`)
-   - Prevents git from collapsing multiple moves
+3. 🚨 **DO NOT COMMIT** - All commits happen at end only
+4. Begin work on task phases
 
 *During execution:*
-4. Check off acceptance criteria as completed (real-time)
-5. After each phase: pause, reflect, add notes to work log
-6. Document decisions, discoveries, and any needed changes
+5. 🚨 **Check off execution plan items IN REAL-TIME** as each phase completes (REQUIRED)
+6. Check off acceptance criteria as completed
+7. After each phase: pause, reflect, add notes to work log
+8. Document decisions, discoveries, and any needed changes
 
 *When complete:*
-7. **DO NOT mark complete immediately**
-8. Present work to user for review and approval
-9. After approval: mark complete, `git mv` to `completed/`, commit all work
+9. **DO NOT mark complete immediately**
+10. 🚨 **DO NOT COMMIT** - Wait for user approval first
+11. Present work to user for review and approval
+12. After approval: mark complete, `git mv` to `completed/`, **ASK to commit** all work
 
 **Full details:** See `docs/AI-COLLABORATION.md` sections on MDTD
 
@@ -105,13 +107,21 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 
 ## Git Workflow
 
-**CRITICAL RULES:**
+**🚨 CRITICAL RULES - READ BEFORE EVERY TASK:**
 - **NEVER commit without explicit user approval** - Always ask first
 - **NEVER push without explicit user approval** - Always ask first
+- **NEVER commit during task execution** - Only commit at the very end after user approval
+- **NO intermediate commits** - All task work commits together in one commit
 - Use conventional commit format for messages
 - Reference task IDs in commits (e.g., "Addresses IN-024")
 - Commit logical units of work
 - Review changes before committing
+
+**Why This Matters:**
+- User reviews ALL work before it's committed
+- Intermediate commits break the review workflow
+- Clean git history, not cluttered with partial work
+- If you commit early, user will make you back it out
 
 **What NEVER goes in git:**
 - Secrets (passwords, API keys, tokens)
@@ -216,23 +226,26 @@ Each service has:
 2. Conduct pre-task review for non-trivial work
 3. **Update task status to `in-progress`**
 4. **Move to `current/` with `git mv`**
-5. **Commit immediately** (`chore: start task IN-XXX`)
+5. 🚨 **DO NOT COMMIT YET** - Only commit at end
 6. Identify which agent(s) should handle the work
 7. Check if critical services are affected
 8. Plan rollback strategy if needed
 
 **During task execution:**
-9. **Check off acceptance criteria as completed (real-time updates)**
-10. **After each phase: pause, reflect, add notes to work log**
-11. Document decisions and discoveries as work progresses
-12. Suggest changes if new information warrants it
-13. Test changes thoroughly
-14. Coordinate with Testing Agent for validation
+9. 🚨 **Check off execution plan items IN REAL-TIME** as each phase completes (REQUIRED)
+10. **Check off acceptance criteria as completed**
+11. **After each phase: pause, reflect, add notes to work log**
+12. Document decisions and discoveries as work progresses
+13. Suggest changes if new information warrants it
+14. Test changes thoroughly
+15. Coordinate with Testing Agent for validation
+16. 🚨 **DO NOT COMMIT during execution** - Wait for approval
 
 **When task work is complete:**
-15. **Present work to user for review (DO NOT mark complete yet)**
-16. Wait for user approval
-17. After approval: mark complete, `git mv` to `completed/`, commit all work
+17. **Present work to user for review (DO NOT mark complete yet)**
+18. 🚨 **DO NOT COMMIT** - Wait for approval first
+19. Wait for user approval
+20. After approval: mark complete, `git mv` to `completed/`, **ASK to commit** all work
 
 ## Success Criteria
 

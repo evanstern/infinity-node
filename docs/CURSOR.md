@@ -218,15 +218,23 @@ Loads and begins work on the specified task, following MDTD workflow.
 **What it does:**
 - Reads the task file and understands requirements
 - Updates task status to `in-progress`
-- Moves task from `backlog/` to `current/`
+- Uses `git mv` to move task from `backlog/` to `current/`
+- 🚨 **Does NOT commit** - all commits happen at end only
 - Works through execution plan phases
+- 🚨 **Checks off execution plan items IN REAL-TIME** as each phase completes (REQUIRED)
 - Checks off acceptance criteria in real-time
 - Pauses after each phase for reflection and documentation
 - Presents completed work for review before marking complete
+- 🚨 **Waits for user approval before committing anything**
 
 **When to use:**
 - Starting work on any existing MDTD task
 - Resuming work on a task in progress
+
+**Critical Workflow Rules:**
+1. **NO commits during execution** - Only commit at end after user approval
+2. **Real-time execution plan updates** - Check off `- [x]` items as phases complete
+3. **Git moves without commits** - Task moves don't need intermediate commits
 
 ### /create-task - Create New MDTD Tasks
 
@@ -440,30 +448,38 @@ Analyzes staged changes and creates a conventional commit message following the 
 
 2. **AI updates status and moves task:**
    - Updates frontmatter to `status: in-progress`
-   - Moves from `tasks/backlog/` to `tasks/current/`
+   - Uses `git mv` to move from `tasks/backlog/` to `tasks/current/`
+   - 🚨 **Does NOT commit** - commits only at end
 
 3. **Work through phases:**
+   - 🚨 AI checks off execution plan items IN REAL-TIME as each phase completes
    - AI checks off acceptance criteria as completed
    - After each phase: pause, reflect, document
    - Update work log with decisions/discoveries
+   - 🚨 **No commits during execution**
 
 4. **Complete task:**
    - AI presents work for review (doesn't mark complete yet)
+   - 🚨 **AI does NOT commit** - waits for approval
    - You review and approve
-   - AI marks complete, moves to `tasks/completed/`, proposes commit
+   - AI marks complete, moves to `tasks/completed/`
+   - AI **asks permission** to commit all work together
 
 ### Example Task Session
 
 ```
 User: /task IN-026
 
-AI: [Reads task, updates status to in-progress, moves to current/]
+AI: [Reads task, updates status to in-progress, git mv to current/]
+    🚨 Not committing yet - will commit at end only
+
     Starting work on IN-026: Create deployment automation scripts
 
     Phase 1: Create backup script
     [Implements script]
 
-    ✓ Checked off: backup-stack.sh created
+    ✓ Checked off execution plan: Phase 1 complete
+    ✓ Checked off acceptance criteria: backup-stack.sh created
 
     Pausing after Phase 1:
     - Created backup-stack.sh with error handling
@@ -477,19 +493,30 @@ User: Yes, continue
 AI: Phase 2: Create deploy script
     [Implements script]
 
-    ✓ Checked off: deploy-stack.sh created
+    ✓ Checked off execution plan: Phase 2 complete
+    ✓ Checked off acceptance criteria: deploy-stack.sh created
 
     Work complete! Ready for review:
     - Created backup-stack.sh and deploy-stack.sh
     - Added error handling and logging
     - Documented usage in scripts/README.md
     - All acceptance criteria met
+    - All execution plan phases checked off
 
-    Should I mark this complete and propose a commit?
+    🚨 NOT committing yet - waiting for your approval
 
 User: Yes, looks good!
 
-AI: [Updates status to completed, moves to completed/, proposes commit]
+AI: [Updates status to completed, git mv to completed/]
+    May I commit these changes?
+
+    Proposed commit:
+    feat(scripts): add deployment automation scripts (Addresses IN-026)
+
+User: Yes, commit it
+
+AI: [Commits all work together]
+    ✓ Changes committed
 ```
 
 ## Configuration Files

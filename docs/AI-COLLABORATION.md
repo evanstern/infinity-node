@@ -152,14 +152,20 @@ completed/ (completed)
 
 ### Task Execution Workflow
 
+**🚨 CRITICAL: Read this entire workflow before starting any task**
+
 **When Starting a Task:**
 1. **FIRST**: Update task status to `in-progress` in frontmatter
-2. **THEN**: Move task file from `backlog/` to `current/` (rename the file)
+2. **THEN**: Use `git mv` to move task file from `backlog/` to `current/`
+   - ⚠️ **DO NOT COMMIT YET** - All work commits at end only
 3. Begin work on the task phases
 
 **During Task Execution:**
-1. **Check off acceptance criteria** in real-time as items are completed
-2. **Update execution plan items** as phases are completed
+1. **🚨 Check off execution plan items IN REAL-TIME** as phases are completed
+   - This is REQUIRED, not optional
+   - Update the task file after each phase completes
+   - Never skip this step - it tracks progress
+2. **Check off acceptance criteria** as items are completed
 3. **After each phase completes**: Pause to reflect
    - Add notes to work log about decisions made
    - Document discoveries or issues encountered
@@ -169,19 +175,52 @@ completed/ (completed)
 
 **When Task Work is Complete:**
 1. **DO NOT immediately mark as complete**
-2. **PAUSE** and present work to user for review:
+2. **🚨 DO NOT COMMIT ANYTHING** - Wait for approval first
+3. **PAUSE** and present work to user for review:
    - Summarize what was accomplished
    - Show what changed
    - Highlight any deviations from original plan
    - Note any remaining acceptance criteria that need user validation
-3. **WAIT** for user approval
-4. **After user approves**:
+4. **WAIT** for user approval
+5. **After user approves**:
    - Update status to `completed` in frontmatter
-   - Move task from `current/` to `completed/` (rename the file)
-   - **Ask user to commit** all work + task completion together
+   - Use `git mv` to move task from `current/` to `completed/`
+   - **ASK user for permission to commit** all work + task completion together
    - Use conventional commits format
 
-**IMPORTANT**: Only commit when user explicitly approves. Never commit during task execution.
+**🚨 CRITICAL COMMIT DISCIPLINE:**
+- **NEVER commit without explicit user approval** - Always ask first
+- **NEVER commit during task execution** - Only commit at the very end after user approval
+- **NO intermediate commits** - All work should be in a single commit (or user will tell you to split)
+- **Reason**: User reviews all work before it's committed; intermediate commits break this workflow
+
+### Critical Workflow Requirements
+
+**⚠️ These requirements are NON-NEGOTIABLE and must be followed on every task:**
+
+**1. NO Commits Without Approval**
+- **Problem**: AI assistants commit work during task execution without asking
+- **Impact**: Breaks review workflow, requires backing out commits, clutters git history
+- **Requirement**: Only commit after user explicitly approves all work
+- **What to do**: Ask "May I commit these changes?" and wait for approval
+
+**2. Real-Time Execution Plan Updates**
+- **Problem**: AI assistants forget to check off execution plan items as phases complete
+- **Impact**: Task documentation incomplete, progress unclear, work appears unfinished
+- **Requirement**: Check off `- [x]` execution plan items immediately after completing each phase
+- **What to do**: After finishing any phase, update the task file to mark that phase complete
+
+**3. Git Move Without Intermediate Commit**
+- **Problem**: When moving tasks to `current/`, AI assistants commit immediately
+- **Impact**: Extra commits that serve no purpose, breaks single-commit workflow
+- **Requirement**: Use `git mv` to move task files but DO NOT commit
+- **What to do**: Only commit once at the very end with all completed work
+
+**Why These Matter:**
+- Git history stays clean and reviewable
+- All work is reviewed before being committed
+- Task documentation accurately reflects progress
+- User maintains control over what gets committed
 
 ### Task IDs and References
 
