@@ -1,0 +1,234 @@
+# infinity-node Cursor Configuration
+
+## Project Context
+
+**What is this project?**
+infinity-node is a Proxmox-based home server infrastructure running containerized services across multiple VMs. The project manages a complete media server stack (Emby, *arr services, download clients) along with supporting services (Vaultwarden, Paperless-NGX, Immich, etc.).
+
+**Primary goals:**
+1. Document everything about the setup
+2. Maintain reliable services (especially critical media services)
+3. Automate deployment, updates, and recovery
+4. Learn and improve processes over time
+
+**Infrastructure:**
+- **Hypervisor:** Proxmox VE at 192.168.86.106
+- **VMs:**
+  - VM 100 (emby): Media streaming - CRITICAL
+  - VM 101 (downloads): Download clients with VPN - CRITICAL
+  - VM 102 (arr): Media automation (*arr services) - CRITICAL
+  - VM 103 (misc): Supporting services - Important
+- **Storage:** 57TB Synology NAS (192.168.86.43) via NFS
+- **External Access:** Pangolin tunnels for secure remote access
+
+## Agent System
+
+This project uses a **specialized agent system** where different agents handle specific domains. Each agent has defined responsibilities, permissions, and restrictions.
+
+**Available Agents:**
+- **Testing Agent** - Read-only validation and quality assurance
+- **Docker Agent** - Container orchestration and stack management
+- **Infrastructure Agent** - Proxmox, VMs, networking, storage
+- **Security Agent** - Secrets, tunnels, VPN, security practices
+- **Media Stack Agent** - Emby, *arr services, downloads (CRITICAL services)
+- **Documentation Agent** - Knowledge management, MDTD tasks, runbooks
+
+**Agent coordination:**
+Complex tasks require multiple agents working together. For example, deploying a new service involves Documentation (create task), Security (setup secrets), Docker (create compose), Infrastructure (check resources), Testing (validate), and Documentation (document) agents.
+
+**Full details:** See `docs/agents/README.md`
+
+## MDTD Task Management
+
+All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
+
+- **Task files:** Markdown files in `tasks/` with frontmatter metadata
+- **Task IDs:** Sequential format `IN-NNN` (e.g., IN-001, IN-024)
+- **Lifecycle:** `backlog/` → `current/` → `completed/`
+- **Priority:** Numeric 0-9 (0=critical, 1-2=high, 3-4=medium, 5-6=low, 7-9=very low)
+- **Pre-task review:** Before starting non-trivial tasks, conduct critical analysis to identify gaps, risks, and improvements
+
+**Task workflow summary:**
+1. Create task in `tasks/backlog/` using template
+2. Move to `tasks/current/` and set status to `in-progress`
+3. Update acceptance criteria as completed
+4. Document lessons learned
+5. Move to `tasks/completed/` when done
+
+**Full details:** See `docs/CLAUDE.md` sections on MDTD
+
+## Critical Services - Safety First
+
+**CRITICAL services that affect household users:**
+- **Emby** (VM 100): Primary media streaming - 99.9% uptime target
+- **Downloads** (VM 101): Active downloads must not corrupt
+- **arr services** (VM 102): Media automation pipeline must stay active
+
+**Safety requirements for critical services:**
+- ⚠️ Test in non-production when possible
+- ⚠️ Always backup configurations before changes
+- ⚠️ Deploy during low-usage windows (3-6 AM preferred)
+- ⚠️ Have rollback plan ready
+- ⚠️ Monitor closely after changes
+- ⚠️ Coordinate with Testing Agent for validation
+
+## Security Guidelines
+
+**Secrets Management:**
+- **NEVER commit secrets to git** (passwords, API keys, tokens, credentials)
+- **Source of truth:** Vaultwarden instance on VM 103 (192.168.86.249:8111)
+- **Storage pattern:** `.env` files on VMs (gitignored), `.env.example` in git
+- **Access:** Bitwarden CLI for automation, web UI for manual management
+- **Full details:** See `docs/SECRET-MANAGEMENT.md`
+
+**Secret workflow:**
+1. Store all secrets in Vaultwarden
+2. Retrieve via Bitwarden CLI or web UI
+3. Create `.env` files on VMs
+4. Never commit actual secret values
+
+**SSH Access:**
+- **Proxmox:** `root@192.168.86.106`
+- **VMs (full access):** `evan@<VM_IP>` (passwordless sudo for automation)
+- **VMs (read-only):** `inspector@<VM_IP>` (Testing Agent only, policy-enforced)
+
+## Git Workflow
+
+**CRITICAL RULES:**
+- **NEVER commit without explicit user approval** - Always ask first
+- **NEVER push without explicit user approval** - Always ask first
+- Use conventional commit format for messages
+- Reference task IDs in commits (e.g., "Addresses IN-024")
+- Commit logical units of work
+- Review changes before committing
+
+**What NEVER goes in git:**
+- Secrets (passwords, API keys, tokens)
+- `.env` files (use `.env.example` templates)
+- Backup files
+- Obsidian workspace files
+- Session tokens
+
+## Communication Style
+
+**Do:**
+- Be clear and concise
+- Explain reasoning for recommendations
+- Ask questions when unclear
+- Admit when uncertain
+- Suggest alternatives
+- Challenge assumptions respectfully
+- Work as co-workers, not boss/assistant
+
+**Don't:**
+- Use emojis (unless explicitly requested)
+- Be overly formal or deferential
+- Make assumptions about requirements
+- Proceed with destructive operations without confirmation
+
+## Obsidian Vault Structure
+
+**This repository is an Obsidian vault:**
+- Use wiki-links: `[[DOCKER]]` not `[Docker](DOCKER.md)`
+- All documentation includes frontmatter for Dataview queries
+- Works without Obsidian but enhanced with it
+
+**Documentation patterns:**
+- `docs/` - Project-wide documentation (architecture, agents, runbooks)
+- `.docs/` - Context-specific documentation alongside code
+- Use `.docs/` when documentation only relevant to one directory
+
+## Key Files to Reference
+
+**Core documentation:**
+- `docs/CLAUDE.md` - Complete AI collaboration guide and workflows
+- `docs/agents/README.md` - Agent system details
+- `docs/ARCHITECTURE.md` - Infrastructure architecture and topology
+- `docs/SECRET-MANAGEMENT.md` - Secret management practices
+- `docs/DECISIONS.md` - Architectural decisions
+
+**Operational:**
+- `tasks/DASHBOARD.md` - Task overview and priorities
+- `scripts/README.md` - Available automation scripts
+- `stacks/README.md` - Docker stack overview
+
+**Agent specifications:**
+- `docs/agents/TESTING.md` - Testing Agent (read-only validation)
+- `docs/agents/DOCKER.md` - Docker Agent (container orchestration)
+- `docs/agents/INFRASTRUCTURE.md` - Infrastructure Agent (Proxmox, VMs)
+- `docs/agents/SECURITY.md` - Security Agent (secrets, tunnels)
+- `docs/agents/MEDIA.md` - Media Stack Agent (critical services)
+- `docs/agents/DOCUMENTATION.md` - Documentation Agent (knowledge management)
+
+## Tool Usage
+
+**Preferred tools:**
+- Use specialized file tools (read_file, search_replace, write) not terminal commands
+- Use grep tool for searching, not bash grep
+- Use glob_file_search for finding files by pattern
+- Reserve terminal for actual system commands (SSH, git, docker)
+- Never use terminal commands to communicate with user
+
+**SSH patterns:**
+- Run commands via SSH, don't maintain sessions
+- Combine related commands with `&&`
+- Use absolute paths when possible
+
+**Bitwarden CLI:**
+- Requires session token from user (ask user to run `./scripts/utils/get-bw-session.sh`)
+- Prefix EVERY `bw` command with `BW_SESSION="<token>"` (shells don't persist)
+- Never attempt `bw` commands without valid session
+
+## Service Organization
+
+**Directory structure:**
+```
+infinity-node/
+├── docs/           # Documentation
+├── tasks/          # MDTD task management
+├── stacks/         # Docker compose configurations
+├── scripts/        # Automation scripts
+├── ansible/        # Configuration management
+└── config/         # Configuration templates
+```
+
+**Stack pattern:**
+Each service has:
+- `docker-compose.yml` - Service definition
+- `.env.example` - Template for secrets
+- `README.md` - Service documentation
+
+## Best Practices
+
+**Before making changes:**
+1. Read the task completely if working from MDTD
+2. Conduct pre-task review for non-trivial work
+3. Identify which agent(s) should handle the work
+4. Check if critical services are affected
+5. Plan rollback strategy if needed
+
+**During work:**
+6. Update task progress in real-time
+7. Document decisions and discoveries
+8. Test changes thoroughly
+9. Coordinate with Testing Agent for validation
+
+**After work:**
+10. Update documentation
+11. Complete task acceptance criteria
+12. Record lessons learned
+13. Ask for approval before committing
+
+## Success Criteria
+
+- Critical services maintain 99.9% uptime
+- All infrastructure documented
+- Changes tracked via MDTD
+- Secrets never in git
+- Automation simplifies management
+- Knowledge captured for future
+
+---
+
+**Remember:** We're building this together. Question assumptions, suggest improvements, and work as partners to create great infrastructure!
+

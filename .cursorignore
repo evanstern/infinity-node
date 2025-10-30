@@ -1,0 +1,82 @@
+# Cursor Indexing Exclusions
+# Files and directories that should not be indexed by Cursor
+
+# Obsidian workspace and cache files (personal settings, generated data)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/hotkeys.json
+.obsidian/graph.json
+.obsidian/cache/
+.obsidian/.trash/
+
+# Backup files that might contain outdated or sensitive data
+*.backup
+*.backup-*
+*.bak
+*.old
+*~
+
+# Logs (noise, not useful for code context)
+*.log
+logs/
+
+# OS-specific files (not relevant to project)
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Temporary and working directories
+tmp/
+temp/
+*.tmp
+.working/
+
+# Git directory (internal git state, not code)
+.git/
+
+# Environment files with secrets (should never be indexed)
+.env
+**/.env
+.env.*
+*.env.local
+# Exception: .env.example files ARE indexed (they're templates)
+
+# Secret directories
+secrets/
+**/secrets/
+# Exception: scripts/secrets/ IS indexed (contains scripts, not secrets)
+
+# Task ID counter (local state file)
+tasks/.task-id-counter
+
+# Node modules if any get added
+node_modules/
+**/node_modules/
+
+# Python virtual environments if any get created
+venv/
+.venv/
+env/
+.env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Editor and IDE files
+*.swp
+*.swo
+*~
+.idea/
+*.iml
+
