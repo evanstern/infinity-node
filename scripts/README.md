@@ -53,9 +53,12 @@ Watch for script opportunities **while working on tasks**:
 ```
 scripts/
 ├── README.md                          # This file
+├── utils/                             # Utility scripts
+│   └── bw-setup-session.sh           # Setup Bitwarden CLI session
 ├── secrets/                           # Secret management
 │   ├── audit-secrets.sh              # Scan for hardcoded secrets
 │   ├── create-secret.sh              # Store secret in Vaultwarden
+│   ├── list-vaultwarden-structure.sh # List Vaultwarden collections
 │   ├── update-secret.sh              # Update existing secret
 │   └── delete-secret.sh              # Remove secret from Vaultwarden
 ├── deployment/                        # Deployment automation
@@ -74,6 +77,40 @@ scripts/
 ```
 
 ## Script Inventory
+
+### Utilities (`utils/`)
+
+#### `bw-setup-session.sh`
+**Purpose:** Setup Bitwarden CLI session for Claude Code access
+**Usage:** `./utils/bw-setup-session.sh`
+**Dependencies:** Bitwarden CLI (`bw`), unlocked vault
+**Exit Codes:** 0 (success), 1 (BW_SESSION not set in shell)
+
+**Example:**
+```bash
+# First, unlock Bitwarden in your shell
+export BW_SESSION=$(bw unlock --raw)
+
+# Then run setup script
+./scripts/utils/bw-setup-session.sh
+```
+
+**Use Cases:**
+- Enable Claude Code to access Vaultwarden secrets
+- Set up session at start of work session
+- Avoid repeatedly providing session token
+
+**Features:**
+- Checks if BW_SESSION is set in user's current shell
+- Saves session token to `~/.bw-session` (chmod 600)
+- Claude Code can then read session with `export BW_SESSION=$(cat ~/.bw-session)`
+- Session persists until `bw lock` or session expires
+
+**Security Notes:**
+- Session file is chmod 600 (user read/write only)
+- Token has limited lifespan (~30 minutes of inactivity)
+- Delete session file with `rm ~/.bw-session` to revoke access
+- User controls unlocking (keeps master password secure)
 
 ### Secret Management (`secrets/`)
 
@@ -100,25 +137,144 @@ scripts/
 - Verify no secrets before git commit
 - CI/CD secret scanning
 
-#### `create-secret.sh`
-**Purpose:** Create and store a secret in Vaultwarden
-**Usage:** `./create-secret.sh <name> <value> <folder> [notes]`
-**Dependencies:** Bitwarden CLI (`bw`), authenticated session
+#### `get-vw-secret.sh`
+**Purpose:** Retrieve a secret value from Vaultwarden (generic utility)
+**Usage:** `./get-vw-secret.sh <secret-name> <collection-name> [field-name]`
+**Dependencies:** Bitwarden CLI (`bw`), authenticated session, `jq`
+**Exit Codes:** 0 (success), 1 (prerequisites), 2 (not found), 3 (field not found)
 
 **Example:**
 ```bash
-# Store an API key
+# Get password (default)
+TOKEN=$(./scripts/secrets/get-vw-secret.sh "portainer-api-token-vm-100" "shared")
+
+# Get custom field
+URL=$(./scripts/secrets/get-vw-secret.sh "portainer-api-token-vm-100" "shared" "url")
+
+# Use in a script
+DB_PASS=$(./scripts/secrets/get-vw-secret.sh "paperless-secrets" "vm-103-misc" "postgres_password")
+```
+
+**Use Cases:**
+- Generic secret retrieval for any automation
+- Building block for other scripts (see query-portainer-stacks.sh)
+- Retrieving API tokens, passwords, or custom fields
+- CI/CD pipelines needing secret access
+
+**Features:**
+- **Generic design:** Works with any secret in any collection
+- **Field support:** Retrieve password or any custom field by name
+- **Clean output:** Returns just the value (no newline) for easy piping
+- **Error handling:** Clear error messages for debugging
+- **Collection-aware:** Works with infinity-node organization structure
+
+**Related:**
+- Used by `query-portainer-stacks.sh` for automatic credential retrieval
+- Complements `create-secret.sh` for full secret lifecycle
+
+#### `create-secret.sh`
+**Purpose:** Create and store a secret in Vaultwarden (organization or personal vault)
+**Usage:** `./create-secret.sh [--personal] <item-name> <collection-name> <password> [custom-fields-json]`
+**Dependencies:** Bitwarden CLI (`bw`), authenticated session, `jq`
+**Exit Codes:** 0 (success), 1 (error)
+
+**Example:**
+```bash
+# Organization secret (default) - stores in infinity-node org
+./scripts/secrets/create-secret.sh \
+  "portainer-api-token-vm-103" \
+  "shared" \
+  "ptr_ABC123..." \
+  '{"service":"portainer","vm":"103","purpose":"API automation"}'
+
+# Organization secret with metadata fields
 ./scripts/secrets/create-secret.sh \
   "radarr-api-key" \
-  "abc123..." \
   "vm-102-arr" \
-  "API key for Radarr media automation"
+  "abc123..." \
+  '{"service":"radarr","env_var_name":"RADARR_API_KEY"}'
+
+# Personal vault secret
+./scripts/secrets/create-secret.sh --personal \
+  "personal-key" \
+  "my-folder" \
+  "secret123"
 ```
 
 **Use Cases:**
 - Migrating secrets to Vaultwarden
-- Creating new service secrets
+- Creating new service secrets with metadata
+- Storing infrastructure credentials (API tokens, passwords)
 - Rotating existing credentials
+
+**Features:**
+- **Organization support:** Creates secrets in `infinity-node` organization by default
+- **Personal vault:** Use `--personal` flag for personal folders
+- **Custom fields:** Add metadata via JSON (service, vm, purpose, url, etc.)
+- **Collection-based:** Organizes by collection (vm-100-emby, shared, external, etc.)
+- **Validation:** Prevents duplicates, validates prerequisites
+- **Auto-sync:** Syncs vault after creation
+
+#### `list-vaultwarden-structure.sh`
+**Purpose:** Display Vaultwarden organization collection structure and item counts
+**Usage:** `./list-vaultwarden-structure.sh`
+**Dependencies:** Bitwarden CLI (`bw`), authenticated session, `jq`
+**Exit Codes:** 0 (success), 1 (organization not found or BW_SESSION not set)
+
+**Example:**
+```bash
+# First ensure BW_SESSION is available
+export BW_SESSION=$(cat ~/.bw-session)
+
+# List all collections and their secrets
+./scripts/secrets/list-vaultwarden-structure.sh
+```
+
+**Output:**
+```
+=== Vaultwarden Collection Structure ===
+
+Organization: infinity-node
+Organization ID: d3777135-ea0c-4589-aa05-00b06b19ca65
+
+Collections:
+  shared
+    Collection ID: 747f7e21-5569-420b-b465-fba39c1673f2
+    Items: 1
+    Secrets:
+      - portainer-api-token-vm-103
+
+  vm-103-misc
+    Collection ID: 928e99cc-3a75-4c64-a23d-0f13625bb461
+    Items: 5
+    Secrets:
+      - immich-secrets
+      - linkwarden-secrets
+      ...
+
+=== Summary ===
+Total Collections: 7
+Total Items in Organization: 13
+```
+
+**Use Cases:**
+- Understand secret organization before storing new secrets
+- Verify secrets are in correct collections
+- Audit secret inventory across infrastructure
+- Document current Vaultwarden structure
+- Choose appropriate collection for new secrets
+
+**Features:**
+- **Collection listing:** Shows all collections in infinity-node org
+- **Item counts:** Reports number of secrets in each collection
+- **Secret names:** Lists all secret names per collection
+- **Summary statistics:** Total collections and items
+- **Auto-sync:** Syncs with Vaultwarden before listing
+- **Color-coded:** Clear visual output
+
+**Related:**
+- Use with `create-secret.sh` to choose appropriate collection
+- See [[../../docs/agents/SECURITY|Security Agent]] for collection organization
 
 #### `update-secret.sh`
 **Purpose:** Update an existing secret in Vaultwarden
@@ -288,6 +444,60 @@ done
 - Safe validation without modification risk
 
 ### Infrastructure (`infrastructure/`)
+
+#### `query-portainer-stacks.sh`
+**Purpose:** Query Portainer stacks from a VM (dual-mode: direct or Vaultwarden)
+**Usage:**
+- Direct mode: `./query-portainer-stacks.sh --token TOKEN --url URL [--json]`
+- Vaultwarden mode: `./query-portainer-stacks.sh --secret SECRET_NAME --collection COLLECTION_NAME [--json]`
+**Dependencies:** `curl`, `jq`, and for Vaultwarden mode: `get-vw-secret.sh` and `BW_SESSION`
+**Exit Codes:** 0 (success), 1 (invalid args), 2 (VW retrieval failed), 3 (API failed)
+
+**Example:**
+```bash
+# Direct mode (provide token and URL manually)
+./scripts/infrastructure/query-portainer-stacks.sh \
+  --token "ptr_ABC123..." \
+  --url "https://192.168.86.172:9443"
+
+# Vaultwarden mode (auto-retrieve credentials)
+./scripts/infrastructure/query-portainer-stacks.sh \
+  --secret "portainer-api-token-vm-100" \
+  --collection "shared"
+
+# JSON output for scripting
+./scripts/infrastructure/query-portainer-stacks.sh \
+  --secret "portainer-api-token-vm-103" \
+  --collection "shared" \
+  --json
+```
+
+**Use Cases:**
+- Inventory all deployed stacks on a VM
+- Verify Git configuration and auto-update settings
+- Migration validation (check stacks before/after)
+- Monitoring and reporting on stack status
+- Automated audits of Portainer deployments
+
+**Features:**
+- **Dual-mode design:** Direct (manual credentials) or Vaultwarden (automatic retrieval)
+- **Composable:** Uses `get-vw-secret.sh` in Vaultwarden mode
+- **Detailed output:** Shows stack status, Git config, auto-update settings
+- **JSON output:** Optional machine-readable format for scripting
+- **Color-coded:** Clear visual output for human readability
+
+**Output Information:**
+- Stack name and ID
+- Type (Docker Compose, Swarm)
+- Status (Active, Inactive)
+- Git repository URL (if configured)
+- Git branch and compose file path
+- Auto-update status and interval
+
+**Related:**
+- Created during IN-013 (Portainer migration inventory)
+- Uses `get-vw-secret.sh` for credential retrieval
+- See `docs/portainer-migration-inventory.md` for usage example
 
 #### `create-test-vm.sh`
 **Purpose:** Automate creation of Proxmox VMs using Ubuntu cloud images

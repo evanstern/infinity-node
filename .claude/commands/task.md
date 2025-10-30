@@ -134,7 +134,21 @@ This command guides you through the complete lifecycle of executing a MDTD task,
    - Document trade-offs
    - Prioritize what must be addressed now vs. later
 
-5. **Present Strategy**
+5. **Consult with Agents and Plan Agent Usage**
+   - Identify which specialized agents are relevant to this task
+   - Consult agent documentation to understand their capabilities and constraints
+   - Decide which agents should be engaged during execution:
+     - Security Agent for secrets, tunnels, access control
+     - Docker Agent for container configurations
+     - Infrastructure Agent for VM/Proxmox changes
+     - Testing Agent for validation and verification
+     - Media Stack Agent for critical services (Emby, downloads, arr)
+     - Documentation Agent for docs and runbooks
+   - Document agent assignments in strategy
+   - Note any agent coordination requirements
+   - Consider agent-specific constraints (e.g., Testing Agent read-only access)
+
+6. **Present Strategy**
    - Share analysis with user
    - Explain recommended approach
    - Discuss alternative options if relevant

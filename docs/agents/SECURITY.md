@@ -96,10 +96,12 @@ Acceptable secret storage locations:
 - **Location:** VM 103 (192.168.86.249:8111)
 - **Web UI:** https://vaultwarden.infinity-node.com
 - **CLI Access:** http://192.168.86.249:8111 (local IP required)
-- **Folder Structure:** Organized by VM and purpose
-  - `vm-100-emby/`, `vm-101-downloads/`, `vm-102-arr/`, `vm-103-misc/`
-  - `shared/` for cross-VM secrets
-  - `external/` for external service credentials
+- **Organization:** `infinity-node` organization with collection-based structure
+- **Collection Structure:** Organized by VM and purpose
+  - `vm-100-emby`, `vm-101-downloads`, `vm-102-arr`, `vm-103-misc` (VM-specific secrets)
+  - `shared` for infrastructure management secrets
+  - `external` for third-party service credentials
+  - `synology` for NAS-related credentials
 
 **Bitwarden CLI:**
 - Installed and configured on local machine
@@ -146,10 +148,50 @@ SECRET=$(bw get password "service-api-key")
 ssh evan@192.168.86.172 "echo 'API_KEY=$SECRET' >> /path/to/.env"
 ```
 
+#### Available Scripts
+
+The Security Agent has several helper scripts for working with Vaultwarden and secrets:
+
+**`scripts/utils/bw-setup-session.sh`**
+- Sets up Bitwarden CLI session for Claude Code access
+- Saves BW_SESSION token to `~/.bw-session` (chmod 600)
+- Run once per work session after unlocking Bitwarden
+- Usage: `./scripts/utils/bw-setup-session.sh`
+
+**`scripts/secrets/create-secret.sh`**
+- Creates secrets in Vaultwarden via CLI
+- Supports both organization collections and personal folders
+- Can add custom fields for metadata
+- Validates prerequisites and prevents duplicates
+- Usage:
+  ```bash
+  # Organization secret (default)
+  ./scripts/secrets/create-secret.sh "secret-name" "collection-name" "password" \
+    '{"service":"servicename","vm":"103","purpose":"description"}'
+
+  # Personal vault secret
+  ./scripts/secrets/create-secret.sh --personal "secret-name" "folder-name" "password"
+  ```
+
+**`scripts/secrets/list-vaultwarden-structure.sh`**
+- Lists all collections in infinity-node organization
+- Shows item counts and names per collection
+- Useful for understanding secret organization
+- Usage: `./scripts/secrets/list-vaultwarden-structure.sh`
+
+**Secret Naming & Organization:**
+- **Collections:** `vm-100-emby`, `vm-101-downloads`, `vm-102-arr`, `vm-103-misc`, `shared`, `external`, `synology`
+- **VM collections:** Secrets used BY services running ON that VM
+- **Shared collection:** Infrastructure secrets FOR managing infrastructure (Portainer tokens, Proxmox creds, etc.)
+- **External collection:** Third-party service credentials
+- **Recommended fields:** `service`, `vm`, `purpose`, `created`, `url`, `env_var_name`
+- **Tagging scheme:** Use tags for filtering: `vm-103`, `portainer`, `infrastructure`, `api-token`, `automation`
+
 #### Limitations
 - **CLI requires local IP:** Cannot use domain due to Pangolin auth layer
 - **IP dependency:** Will break when IPs change (see [[tasks/backlog/setup-local-dns-service-discovery]])
 - **No API key auth:** Must use username/password + session tokens
+- **No tag support in create script:** Tags must be added via Vaultwarden web UI
 
 ### Pangolin Tunnel Management
 
