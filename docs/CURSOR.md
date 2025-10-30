@@ -200,14 +200,183 @@ Search the internet for information (uses Exa AI).
 
 ## Slash Commands
 
+Cursor supports custom slash commands that streamline common workflows. The infinity-node project uses several specialized commands for task management and workflow automation.
+
+**Available Commands:**
+- **`/task IN-NNN`** - Start or resume work on an MDTD task
+- **`/create-task [description]`** - Create a new MDTD task with guided workflow
+- **`/commit`** - Generate conventional commit message for staged changes
+- **`/edit`** - Switch to edit mode
+- **`/help`** - Show all available commands
+
 ### /task - Work on MDTD Tasks
 ```
 /task IN-024
 ```
 Loads and begins work on the specified task, following MDTD workflow.
 
+**What it does:**
+- Reads the task file and understands requirements
+- Updates task status to `in-progress`
+- Moves task from `backlog/` to `current/`
+- Works through execution plan phases
+- Checks off acceptance criteria in real-time
+- Pauses after each phase for reflection and documentation
+- Presents completed work for review before marking complete
+
+**When to use:**
+- Starting work on any existing MDTD task
+- Resuming work on a task in progress
+
+### /create-task - Create New MDTD Tasks
+
+```
+/create-task [brief description]
+/create-task [description] --simple
+```
+
+Interactive command that guides you through creating a new MDTD task with proper structure, critical thinking, and metadata.
+
+**Philosophy:**
+- **Good task creation = better execution** - Invest time upfront to understand problems, consider alternatives, identify risks, and plan execution
+- **Pragmatic approach** - Simple tasks get simple treatment; complex tasks get thorough analysis
+- **Flexible depth** - Can override with `--simple` flag or by saying "keep it simple" or "explore thoroughly"
+
+**Quick Options:**
+- **Normal flow** - Appropriate depth based on task complexity (recommended)
+- **`--simple` flag** - Skip exploration, create basic task quickly (for trivial work)
+
+**Examples:**
+```
+/create-task Add Cursor configuration
+/create-task Fix broken service --simple
+/create-task Setup monitoring for critical services
+```
+
+**8-Phase Workflow:**
+
+**Phase 1: Understanding & Classification**
+- Gather initial information (title, problem, category, priority)
+- AI assesses complexity (simple/moderate/complex)
+- Present assessment and recommended approach
+- User can override depth if needed
+
+**Phase 2: Solution Design** (Moderate/Complex only)
+- Explore 2-3 possible approaches
+- Recommend one with rationale
+- User chooses or suggests alternatives
+- Document chosen approach
+- Simple tasks skip to Phase 3
+
+**Phase 3: Risk Assessment & Dependencies**
+- Identify potential pitfalls
+- Define mitigations for each risk
+- Check prerequisites and dependencies
+- Special attention if critical services affected
+- Include rollback plan for infrastructure/docker/security
+
+**Phase 4: Scope Definition**
+- Define what's in scope (specific, actionable items)
+- Explicitly list what's out of scope (prevent scope creep)
+- Identify MVP (minimum viable completion)
+
+**Phase 5: Execution Planning**
+- Break work into phases if needed
+- Assign agents to each task
+- Mark dependencies and blocking items
+- Generate specific, testable acceptance criteria
+
+**Phase 6: Task Generation**
+- Determine next task ID (from `.task-id-counter` or by scanning)
+- Generate filename in format: `IN-NNN-task-title-kebab-case.md`
+- Fill complete task template with all gathered information
+
+**Phase 7: Review & Approval**
+- Present complete task design
+- User can approve, request revisions, or cancel
+- Iterate on revisions if needed
+- Create file in `tasks/backlog/` when approved
+
+**Phase 8: Post-Creation**
+- Confirm creation with task ID
+- Update `.task-id-counter`
+- Suggest next steps (add to DASHBOARD, related tasks)
+- Optionally start work immediately with `/task IN-NNN`
+
+**Complexity Levels:**
+
+- **Simple** (< 2h): Well-understood, routine work with single approach, low risk
+  - Example: Fix typo, add link, restart service
+  - Process: Skip alternatives exploration, use standard template
+
+- **Moderate** (2-6h): Some design decisions, 2-3 viable approaches, moderate risk/impact
+  - Example: Add feature, update config, create documentation
+  - Process: Brief alternatives review, standard risk assessment
+
+- **Complex** (6+ hours): Significant unknowns, multiple approaches with trade-offs, high risk/impact
+  - Example: Infrastructure migration, major refactor, critical service changes
+  - Process: Full exploration, detailed planning, phased approach
+
+**Smart Defaults by Category:**
+
+The command uses intelligent defaults based on task category:
+
+- **Infrastructure**: Agent=infrastructure, always include rollback plan
+- **Docker**: Agent=docker, focus on container/volume/network risks
+- **Security**: Agent=security, audit trail and secret validation required
+- **Media**: Agent=media, backup/rollback/timing required (critical services)
+- **Documentation**: Agent=documentation, test links and accuracy
+- **Testing**: Agent=testing, reproducible tests and coverage
+
+**Task ID Management:**
+
+Tasks use sequential IDs in format `IN-NNN` (e.g., IN-001, IN-024):
+- IDs managed via `tasks/.task-id-counter` (gitignored local state)
+- Counter auto-increments after each task creation
+- If counter missing, system scans tasks and rebuilds it
+- Self-healing: delete counter file to force rescan
+
+**Critical Service Considerations:**
+
+If task affects Emby, downloads, or arr services, the command automatically:
+- Flags it as critical service
+- Requires backup plan
+- Requires rollback procedure
+- Requires timing consideration (low-usage window)
+- Adds extra validation steps
+
+**Overriding Depth:**
+
+You can adjust the exploration depth at any point:
+- Say **"keep it simple"** - Use less depth than AI recommends
+- Say **"explore thoroughly"** - Use more depth for careful planning
+- Use **`--simple` flag** - Skip straight to basic task creation
+
+**When to Use:**
+- Creating any new work item that's non-trivial
+- Planning significant changes or new features
+- Before starting complex or risky work
+- To capture and structure ideas for future work
+
+**When NOT to Use:**
+- Truly trivial fixes (typos, etc.) - just do them
+- Emergency fixes where speed is critical
+- Work that's already well-documented in a task
+
+### /commit - Create Conventional Commits
+
+```
+/commit
+```
+
+Analyzes staged changes and creates a conventional commit message following the project's commit format.
+
+**When to use:**
+- After completing a logical unit of work
+- Required for all commits (never commit without using this)
+
 ### Other Common Commands
-- `/commit` - Create a conventional commit message
+
 - `/edit` - Switch to edit mode
 - `/help` - Show available commands
 
