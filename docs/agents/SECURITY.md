@@ -254,7 +254,7 @@ The Security Agent has several helper scripts for working with Vaultwarden and s
 - **Backup status:** Are current secrets backed up before changes?
 - **Testing plan:** How will we validate security still works after changes?
 
-See [[docs/CLAUDE#Pre-Task Review|Pre-Task Review in CLAUDE.md]] for complete process.
+See [[AI-COLLABORATION#Pre-Task Review|Pre-Task Review in AI-COLLABORATION.md]] for complete process.
 
 ### Setting Up Pangolin Tunnel
 

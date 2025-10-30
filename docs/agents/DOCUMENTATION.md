@@ -53,7 +53,7 @@ The Documentation Agent is responsible for creating, maintaining, and organizing
 infinity-node/
 ├── README.md                    # Project overview
 ├── docs/
-│   ├── CLAUDE.md               # Guide for working with Claude Code
+│   ├── AI-COLLABORATION.md     # Guide for working with AI assistants
 │   ├── ARCHITECTURE.md         # Infrastructure architecture
 │   ├── DECISIONS.md            # Architectural decision records
 │   ├── SETUP.md                # Initial setup procedures
@@ -182,7 +182,7 @@ How this will be validated...
 - Add improvements to the task file
 - Get user approval on revised plan
 
-See [[docs/CLAUDE#Pre-Task Review|Pre-Task Review in CLAUDE.md]] for full details.
+See [[AI-COLLABORATION#Pre-Task Review|Pre-Task Review in AI-COLLABORATION.md]] for full details.
 
 ### Architectural Decision Records (ADR)
 

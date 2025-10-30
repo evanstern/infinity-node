@@ -167,7 +167,7 @@ Validation steps:
 
 - [[DECISIONS|Architectural Decisions]] - File to be refactored
 - `.obsidian/templates/adr.md` - ADR template
-- [[CLAUDE|Claude Code Guide]] - References DECISIONS.md
+- [[AI-COLLABORATION|AI Collaboration Guide]] - References DECISIONS.md
 - [[agents/README|Agent System]] - Referenced by ADR-010
 
 ## Implementation Notes

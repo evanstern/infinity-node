@@ -668,7 +668,7 @@ infinity-node/
 
 ## Related Documentation
 
-- [[CLAUDE|Claude Code Guide]]
+- [[AI-COLLABORATION|AI Collaboration Guide]]
 - [[agents/README|Agent System]]
 - [[agents/INFRASTRUCTURE|Infrastructure Agent]]
 - [[agents/DOCKER|Docker Agent]]

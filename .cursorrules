@@ -66,7 +66,7 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 8. Present work to user for review and approval
 9. After approval: mark complete, `git mv` to `completed/`, commit all work
 
-**Full details:** See `docs/CLAUDE.md` sections on MDTD
+**Full details:** See `docs/AI-COLLABORATION.md` sections on MDTD
 
 ## Critical Services - Safety First
 
@@ -152,7 +152,7 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 ## Key Files to Reference
 
 **Core documentation:**
-- `docs/CLAUDE.md` - Complete AI collaboration guide and workflows
+- `docs/AI-COLLABORATION.md` - Complete AI collaboration guide and workflows
 - `docs/agents/README.md` - Agent system details
 - `docs/ARCHITECTURE.md` - Infrastructure architecture and topology
 - `docs/SECRET-MANAGEMENT.md` - Secret management practices
@@ -246,4 +246,3 @@ Each service has:
 ---
 
 **Remember:** We're building this together. Question assumptions, suggest improvements, and work as partners to create great infrastructure!
-

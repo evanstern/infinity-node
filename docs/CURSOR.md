@@ -405,7 +405,7 @@ Analyzes staged changes and creates a conventional commit message following the 
 
 1. **Be specific with context:**
    - Add files/folders explicitly rather than assuming
-   - Reference specific sections: "in the MDTD section of docs/CLAUDE.md"
+   - Reference specific sections: "in the MDTD section of docs/AI-COLLABORATION.md"
 
 2. **Pause and reflect:**
    - After each phase, review changes
@@ -587,7 +587,7 @@ Tell me about the project
 
 ## Related Documentation
 
-- [[CLAUDE|Working with AI Assistants]] - AI collaboration workflows
+- [[AI-COLLABORATION|Working with AI Assistants]] - AI collaboration workflows
 - [[agents/README|Agent System]] - Specialized agent personas
 - [[CODEBASE|Project Structure]] - Quick reference for AI queries
 - [[ARCHITECTURE|Infrastructure Architecture]] - System overview

@@ -261,6 +261,6 @@ All changes to agent specifications should be:
 ---
 
 **Related Documentation:**
-- [CLAUDE.md](../CLAUDE.md) - How to work with Claude Code
+- [AI-COLLABORATION.md](../AI-COLLABORATION.md) - How to work with AI assistants
 - [ARCHITECTURE.md](../ARCHITECTURE.md) - Infrastructure architecture
 - [MDTD System](../../tasks/README.md) - Task management system

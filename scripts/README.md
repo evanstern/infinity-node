@@ -672,7 +672,7 @@ We follow a `.docs/` pattern for keeping documentation close to the code/config 
 - Implementation notes for specific modules
 
 **When NOT to use `.docs/` (use `docs/` instead):**
-- Project-wide documentation (ARCHITECTURE.md, CLAUDE.md)
+- Project-wide documentation (ARCHITECTURE.md, AI-COLLABORATION.md)
 - Cross-cutting concerns (SECRET-MANAGEMENT.md)
 - Runbooks that span multiple areas
 - Agent definitions

@@ -343,6 +343,6 @@ grep -r "agent: docker" tasks/
 See [[DASHBOARD|Task Dashboard]] for live overview using Dataview queries.
 
 ## Related Documentation
-- [[CLAUDE|Claude Code Guide]] - How Claude works with MDTD
+- [[AI-COLLABORATION|AI Collaboration Guide]] - How AI assistants work with MDTD
 - [[agents/README|Agent System]] - Specialized agent roles
 - [[DOCUMENTATION|Documentation Agent]] - Managing documentation

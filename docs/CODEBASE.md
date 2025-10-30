@@ -31,7 +31,7 @@ infinity-node/
 │   │   └── DOCUMENTATION.md      # Knowledge management
 │   ├── adr/                       # Architectural Decision Records
 │   ├── runbooks/                  # Operational procedures
-│   ├── CLAUDE.md                  # AI collaboration guide
+│   ├── AI-COLLABORATION.md        # AI collaboration guide
 │   ├── CURSOR.md                  # Cursor IDE usage guide
 │   ├── CODEBASE.md                # This file
 │   ├── ARCHITECTURE.md            # Infrastructure architecture
@@ -140,7 +140,7 @@ See: `docs/agents/README.md`
   3. Complete: Present for review → wait for approval → mark complete
 - **Files:** Markdown with frontmatter metadata
 
-See: `docs/CLAUDE.md` sections on MDTD
+See: `docs/AI-COLLABORATION.md` sections on MDTD
 
 ### Secret Management
 - **Source of Truth:** Vaultwarden on VM 103 (192.168.86.249:8111)
@@ -208,7 +208,7 @@ BW_SESSION="<token>" bw get password "service-secret"
 - **Decisions:** `docs/DECISIONS.md`
 - **Secrets:** `docs/SECRET-MANAGEMENT.md`
 - **Cursor usage:** `docs/CURSOR.md`
-- **AI collaboration:** `docs/CLAUDE.md`
+- **AI collaboration:** `docs/AI-COLLABORATION.md`
 
 ## Safety Rules
 

@@ -1,14 +1,24 @@
 ---
 type: documentation
 tags:
-  - claude-code
+  - ai-assistant
+  - collaboration
   - guide
   - workflow
 ---
 
-# Working with Claude Code
+# Working with AI Assistants
 
-This guide explains how to effectively work with Claude Code in the infinity-node project. It's designed for both the human collaborator (Evan) and Claude Code itself.
+This guide explains how to effectively work with AI assistants in the infinity-node project. It's designed for both the human collaborator (Evan) and the AI assistant itself.
+
+## Compatibility
+
+This project works with multiple AI models and tools:
+- **Claude Sonnet 4.5** (currently using in Cursor)
+- **Claude Code** (previously used)
+- Other AI assistants that support the agent system pattern
+
+The workflows and patterns described here are tool-agnostic, though specific tools may be mentioned when discussing their unique features.
 
 ## Core Principles
 
@@ -19,7 +29,7 @@ This guide explains how to effectively work with Claude Code in the infinity-nod
 - Respectful, lighthearted, casual communication
 
 ### 2. Agent-Based Workflow
-- Claude adopts specialized agent personas based on task domain
+- The AI assistant adopts specialized agent personas based on task domain
 - Each agent has specific permissions and restrictions
 - Agents coordinate on complex tasks
 - See [[agents/README|Agent System]] for details
@@ -63,7 +73,7 @@ infinity-node/
 
 ### Agent Selection
 
-Claude Code automatically adopts the appropriate agent persona based on task context:
+The AI assistant automatically adopts the appropriate agent persona based on task context:
 
 **Examples:**
 - "Set up a new Docker stack for X" → [[agents/DOCKER|Docker Agent]]
@@ -144,11 +154,8 @@ completed/ (completed)
 
 **When Starting a Task:**
 1. **FIRST**: Update task status to `in-progress` in frontmatter
-2. **THEN**: Move task file from `backlog/` to `current/` using `git mv`
-3. **COMMIT** the task status change and move immediately
-   - This prevents git from collapsing multiple moves later
-   - Commit message: `chore: start task IN-XXX`
-4. Begin work on Phase 1
+2. **THEN**: Move task file from `backlog/` to `current/` (rename the file)
+3. Begin work on the task phases
 
 **During Task Execution:**
 1. **Check off acceptance criteria** in real-time as items are completed
@@ -170,9 +177,11 @@ completed/ (completed)
 3. **WAIT** for user approval
 4. **After user approves**:
    - Update status to `completed` in frontmatter
-   - Move task from `current/` to `completed/` using `git mv`
-   - Commit all work + task completion together
-   - Commit message follows conventional commits format
+   - Move task from `current/` to `completed/` (rename the file)
+   - **Ask user to commit** all work + task completion together
+   - Use conventional commits format
+
+**IMPORTANT**: Only commit when user explicitly approves. Never commit during task execution.
 
 ### Task IDs and References
 
@@ -204,12 +213,12 @@ completed/ (completed)
 
 ### TodoWrite Tool
 
-Claude Code has a built-in TodoWrite tool for session-based task tracking. This is **separate** from MDTD:
+AI assistants may have built-in todo/task tracking tools for session-based work. This is **separate** from MDTD:
 
 **TodoWrite (Session Tasks):**
 - Ephemeral, lives only in current chat session
 - Quick task breakdown for immediate work
-- Helps Claude track progress within a conversation
+- Helps AI assistant track progress within a conversation
 - NOT persisted to repository
 
 **MDTD (Project Tasks):**
@@ -243,7 +252,7 @@ Claude Code has a built-in TodoWrite tool for session-based task tracking. This 
 
 ### SSH Access
 
-Claude Code has SSH access to:
+The AI assistant has SSH access to:
 - **Proxmox**: `root@192.168.86.106`
 - **VMs (full access)**: `evan@192.168.86.{172,173,174,249}` (passwordless sudo)
 - **VMs (read-only)**: `inspector@192.168.86.{172,173,174,249}` (Testing Agent only)
@@ -261,7 +270,7 @@ Claude Code has SSH access to:
 
 ### Bitwarden Access
 
-Claude Code can access secrets from Bitwarden, but requires a session token from the user.
+The AI assistant can access secrets from Bitwarden, but requires a session token from the user.
 
 **IMPORTANT:** Never attempt to run `bw` commands without a valid session token.
 
@@ -640,15 +649,14 @@ Claude Code can access secrets from Bitwarden, but requires a session token from
 ### Git & Version Control
 
 **IMPORTANT:**
-- **ALWAYS use `/commit` command** for creating commits (follows conventional commit format)
 - **NEVER commit without explicit user approval** - ask first
 - **NEVER push to remote repository without explicit user approval** - ask first
+- **Do NOT commit during task execution** - only at the end after user approval
 
 **Do:**
-- Use `/commit` slash command for all commits
 - Commit logical units of work
 - Write clear commit messages following Conventional Commits format
-- Reference MDTD tasks in commits (use "Fixes task-name" or "Addresses task-name")
+- Reference MDTD tasks in commits (e.g., "Addresses IN-027", "Fixes IN-015")
 - Keep commits focused
 - Review changes before committing
 - Wait for user approval before committing or pushing
@@ -706,26 +714,26 @@ Claude Code can access secrets from Bitwarden, but requires a session token from
 - Regular leak testing
 - Monitor connectivity
 
-## Troubleshooting Claude Code Issues
+## Troubleshooting AI Assistant Issues
 
-### If Claude Code seems confused:
+### If the AI assistant seems confused:
 - Clarify which agent should handle the task
 - Reference relevant documentation explicitly
 - Break large tasks into smaller ones
 - Create MDTD tasks for complex work
 
-### If Claude Code is too cautious:
+### If the AI assistant is too cautious:
 - Explicitly approve the action
 - Acknowledge the risk level
 - Confirm it's acceptable
 
-### If Claude Code makes mistakes:
+### If the AI assistant makes mistakes:
 - Point out the issue directly
 - Explain what should have happened
-- Claude will learn and adjust
+- The assistant will learn and adjust
 
 ### If uncertain about approach:
-- Claude should ask questions
+- The assistant should ask questions
 - Discuss options and trade-offs
 - Make informed decision together
 

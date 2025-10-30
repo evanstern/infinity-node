@@ -22,17 +22,22 @@ tags:
   - process-improvement
 ---
 
-# Task: IN-029 - Enforce Task Start Workflow
+# Task: IN-029 - Enforce Critical Task Workflow Steps
 
-> **Quick Summary**: Ensure Claude follows the 3-step task start workflow consistently to prevent duplicate file issues
+> **Quick Summary**: Ensure AI assistants follow critical workflow steps consistently: task start process, real-time execution plan updates, and commit discipline
 
 ## Problem Statement
 
 **What problem are we solving?**
-IN-026 created a duplicate file issue because Claude didn't follow the documented workflow step 3: "COMMIT immediately after moving to current/". The workflow is documented in `.cursorrules` and `docs/CLAUDE.md`, but Claude skipped the immediate commit step, causing git to collapse moves.
+Multiple recurring issues where AI assistants skip critical documented workflow steps:
+1. **IN-026, IN-024**: Didn't commit immediately after moving to current/, causing duplicate files
+2. **IN-027**: Didn't check off execution plan items in real-time as phases completed
+3. **IN-027**: Created intermediate commits during task execution instead of only at the end
+
+These workflows are documented in `.cursorrules` and `docs/AI-COLLABORATION.md`, but critical steps are being skipped.
 
 **Why now?**
-This is the second time this has happened (also occurred in IN-024). We fixed the documentation after IN-024, but the issue recurred, indicating we need stronger enforcement mechanisms.
+These issues have happened multiple times. Documentation exists and is correct, but AI assistants aren't following it consistently. Need stronger enforcement mechanisms and clearer emphasis.
 
 **Who benefits?**
 - **User**: Clean git history, no manual cleanup of duplicate files
@@ -43,58 +48,93 @@ This is the second time this has happened (also occurred in IN-024). We fixed th
 
 ### Recommended Approach
 
-**Make the workflow self-enforcing through explicit checkpoints:**
+**Make critical workflow steps self-enforcing through explicit emphasis:**
 
-1. **Add explicit "checkpoint" language** in `.cursorrules` that Claude must acknowledge
-2. **Create a simple checklist format** that's harder to skip
-3. **Update docs/CURSOR.md** to document this for users
-4. **Consider adding emphasis/formatting** to make step 3 unmissable
+**Issue 1: Task Start Process (duplicate files)**
+- Add explicit "🚨 CRITICAL" markers in `.cursorrules` and `docs/AI-COLLABORATION.md`
+- Emphasize the rationale inline: "Git will collapse moves if you skip this"
+- Make step formatting unmissable
 
-**Key insight:** Documentation exists and is correct. Problem is execution/attention, not knowledge.
+**Issue 2: Real-time Execution Plan Updates**
+- Add prominent reminder in "During Task Execution" section
+- Emphasize: "Check off execution plan items AS YOU COMPLETE each phase"
+- Link back to task workflow documentation
+- Make it clear this is REQUIRED, not optional
+
+**Issue 3: Commit Discipline**
+- Emphasize "NEVER commit without explicit user approval"
+- Add warnings about intermediate commits breaking workflow
+- Make "wait for approval" step unmissable
+- Update `.cursorrules` to be explicit about this
+
+**Key insight:** Documentation exists and is correct. Problem is execution/attention, not knowledge. Need visual emphasis and repetition of critical steps.
 
 ## Execution Plan
 
-### Phase 1: Strengthen Documentation
+### Phase 1: Update AI-COLLABORATION.md
 
 **Primary Agent**: `documentation`
 
-- [ ] **Update .cursorrules with explicit checkpoints**
-  - Add "🚨 CRITICAL CHECKPOINT" markers
-  - Reformat step 3 to be unmissable
-  - Add rationale inline: "Git will collapse moves if you skip this"
+- [ ] **Update "Task Execution Workflow" section**
+  - Add 🚨 markers for critical steps
+  - Emphasize "During Task Execution" must include real-time execution plan updates
+  - Make commit discipline unmissable: "NEVER commit without explicit user approval"
+  - Add inline rationale for each critical step
 
-- [ ] **Update docs/CLAUDE.md similarly**
-  - Make step 3 visually distinct
-  - Add inline warning about consequences
-  - Emphasize the IMMEDIATE part
+- [ ] **Add prominent "Critical Workflow Requirements" section**
+  - List all three critical issues with emphasis
+  - Make it impossible to miss
+  - Include consequences of skipping steps
 
-- [ ] **Update docs/CURSOR.md**
-  - Document the workflow for users to understand
-  - Explain why the immediate commit matters
-  - Show the consequences of skipping it
+### Phase 2: Update .cursorrules
 
-### Phase 2: Validation
+**Primary Agent**: `documentation`
+
+- [ ] **Strengthen MDTD workflow section**
+  - Add 🚨 CRITICAL markers
+  - Emphasize: "Check off execution plan items AS YOU COMPLETE THEM"
+  - Make commit discipline explicit: "Do NOT commit during task execution"
+  - Add inline rationale
+
+- [ ] **Add enforcement reminders**
+  - Repeat critical points for emphasis
+  - Use formatting to break reading flow (force attention)
+
+### Phase 3: Update docs/CURSOR.md
+
+**Primary Agent**: `documentation`
+
+- [ ] **Document the complete workflow**
+  - Explain task start process and why immediate commit matters
+  - Document real-time execution plan updates requirement
+  - Explain commit discipline and why it matters
+  - Show consequences of skipping steps
+
+### Phase 4: Validation
 
 **Primary Agent**: `testing`
 
 - [ ] **Review updated documentation**
-  - Verify checkpoints are clear
-  - Ensure formatting is effective
+  - Verify all three critical issues are addressed
+  - Ensure formatting makes steps unmissable
   - Check that rationale is inline where needed
+  - Confirm emphasis/markers are effective
 
 - [ ] **Test in practice**
-  - Next time starting a task, verify workflow is followed
-  - Confirm no duplicate files created
+  - Next task start: verify no intermediate commits, proper file handling
+  - During task: verify execution plan items checked off in real-time
+  - Task completion: verify commit only happens after user approval
 
 ## Acceptance Criteria
 
 **Done when all of these are true:**
-- [ ] `.cursorrules` updated with checkpoint markers for step 3
-- [ ] `docs/CLAUDE.md` updated with emphasis on immediate commit
-- [ ] `docs/CURSOR.md` updated to document workflow for users
+- [ ] `docs/AI-COLLABORATION.md` updated with 🚨 markers for all three critical issues
+- [ ] `.cursorrules` strengthened with explicit checkpoints and commit discipline
+- [ ] `docs/CURSOR.md` updated to document complete workflow for users
+- [ ] All three recurring issues addressed with inline rationale
 - [ ] Documentation reviewed for clarity and effectiveness
-- [ ] Changes committed
-- [ ] Process tested on next task start (IN-030 or later)
+- [ ] Changes committed (after user approval)
+- [ ] Process tested on next task (IN-030 or later)
 
 ## Testing Plan
 
@@ -112,8 +152,8 @@ This is the second time this has happened (also occurred in IN-024). We fixed th
 ## Related Documentation
 
 - [[.cursorrules|Project Rules]]
-- [[docs/CLAUDE|Working with AI Assistants]]
-- [[docs/CURSOR|Cursor IDE Guide]]
+- [[AI-COLLABORATION|Working with AI Assistants]]
+- [[CURSOR|Cursor IDE Guide]]
 - [[tasks/README|MDTD System]]
 
 ## Notes
@@ -121,20 +161,32 @@ This is the second time this has happened (also occurred in IN-024). We fixed th
 **Root Cause Analysis:**
 - Documentation: ✅ Correct and clear
 - Visibility: ⚠️ Present but not emphasized enough
-- Execution: ❌ Claude skipped step 3
-- Impact: Duplicate file requiring manual cleanup
+- Execution: ❌ AI assistants skipping critical steps repeatedly
+- Impact:
+  - Duplicate files requiring manual cleanup
+  - Incomplete task documentation (execution plan not checked off)
+  - Extra commits that need to be backed out
 
 **Why This Happened:**
-- Claude focused on task execution over process adherence
-- Step 3 looks like "just another step" not a critical checkpoint
+- AI assistant focused on task execution over process adherence
+- Critical steps look like "just another step" not critical checkpoints
 - No visual/formatting cues to emphasize importance
-- Easy to skip when eager to start actual work
+- Easy to skip when eager to start actual work or move to next phase
+
+**Recurring Issues:**
+1. **IN-024**: Duplicate file from skipping immediate commit
+2. **IN-026**: Same issue - didn't commit after move to current/
+3. **IN-027**:
+   - Created intermediate commits (had to back out 2 commits)
+   - Didn't check off execution plan items in real-time
+   - Fixed after user intervention
 
 **Solution:**
-- Make step 3 visually unmissable
+- Make ALL critical steps visually unmissable with 🚨 markers
 - Add inline rationale so context is immediate
 - Use checkpoint language that demands acknowledgment
 - Format to break the reading flow (forcing attention)
+- Repeat critical requirements for emphasis
 
 **Future Improvements:**
 - Could create a `/start-task IN-XXX` command that automates steps 1-3

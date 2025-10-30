@@ -138,7 +138,7 @@ These decisions haven't been made yet but should be documented when addressed:
 
 ## Related Documentation
 
-- [[CLAUDE|Claude Code Guide]] - Working with Claude Code
+- [[AI-COLLABORATION|AI Collaboration Guide]] - Working with AI assistants
 - [[ARCHITECTURE|Infrastructure Architecture]] - System architecture overview
 - [[agents/README|Agent System]] - Agent roles and responsibilities
 - `.obsidian/templates/adr.md` - ADR template file
