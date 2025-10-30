@@ -186,6 +186,11 @@ completed/ (completed)
 5. **After user approves**:
    - Update status to `completed` in frontmatter
    - Use `git mv` to move task from `current/` to `completed/`
+   - Stage all changes with `git add`
+   - **🚨 VERIFY no lingering task files**: Run `git status` and check for:
+     - Task files in wrong locations (duplicate IN-XXX files)
+     - Unstaged deletions (old task file not removed from git)
+     - If found, clean up before committing (delete duplicates, stage deletions)
    - **ASK user for permission to commit** all work + task completion together
    - Use conventional commits format
 

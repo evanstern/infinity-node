@@ -225,6 +225,8 @@ Loads and begins work on the specified task, following MDTD workflow.
 - Checks off acceptance criteria in real-time
 - Pauses after each phase for reflection and documentation
 - Presents completed work for review before marking complete
+- After approval: moves to `completed/`, stages changes
+- 🚨 **Verifies clean state** with `git status` - checks for lingering task files
 - 🚨 **Waits for user approval before committing anything**
 
 **When to use:**

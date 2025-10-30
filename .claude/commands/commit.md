@@ -19,10 +19,14 @@ Analyzes current code changes, runs quality checks, and creates a well-structure
 ### Commit Phase
 1. **Manual Approval Required**: All commits require manual approval
 2. **Stage Changes**: Add all changes or specific files
-3. **Prepare Commit Message**: Generate a conventional commit message and present it for approval
-4. **Require Approval**: Ask for explicit user approval before creating the commit
-5. **Create Commit**: Upon approval, create the commit using the approved message
-6. **Confirm Success**: Show the commit hash and message
+3. **Verify Clean State**: Run `git status` to check for:
+   - Lingering task files in wrong locations (duplicate IN-XXX files)
+   - Unstaged deletions (old task files not removed from git)
+   - If found, clean up before proceeding (delete duplicates, stage deletions)
+4. **Prepare Commit Message**: Generate a conventional commit message and present it for approval
+5. **Require Approval**: Ask for explicit user approval before creating the commit
+6. **Create Commit**: Upon approval, create the commit using the approved message
+7. **Confirm Success**: Show the commit hash and message
 
 ## Commit Message Format
 

@@ -260,13 +260,20 @@ This command guides you through the complete lifecycle of executing a MDTD task,
    - Set frontmatter: `status: completed`
 
 3. **Move to Completed**
-   - Move task from `tasks/current/` to `tasks/completed/`
+   - Use `git mv` to move task from `tasks/current/` to `tasks/completed/`
+   - Stage all changes with `git add`
 
-4. **Update References**
-   - Update wiki-links in other documents
-   - Update DASHBOARD.md
+4. **Verify Clean State**
+   - Run `git status` to check for:
+     - Lingering task files in wrong locations (duplicate IN-XXX files in backlog/ or current/)
+     - Unstaged deletions (old task file not removed from git)
+   - If found, clean up before committing (delete duplicates, stage deletions)
 
-5. **Ask About Commit**
+5. **Update References**
+   - Update wiki-links in other documents if needed
+   - Update DASHBOARD.md if needed
+
+6. **Ask About Commit**
    - Present summary of changes made
    - **ASK USER**: "Would you like me to commit these changes?"
    - **NEVER commit without explicit approval**

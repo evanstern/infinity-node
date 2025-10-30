@@ -66,7 +66,9 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 9. **DO NOT mark complete immediately**
 10. 🚨 **DO NOT COMMIT** - Wait for user approval first
 11. Present work to user for review and approval
-12. After approval: mark complete, `git mv` to `completed/`, **ASK to commit** all work
+12. After approval: mark complete, `git mv` to `completed/`, stage changes
+13. 🚨 **VERIFY** with `git status` - check for lingering task files in wrong folders, clean up if found
+14. **ASK to commit** all work
 
 **Full details:** See `docs/AI-COLLABORATION.md` sections on MDTD
 
@@ -245,7 +247,9 @@ Each service has:
 17. **Present work to user for review (DO NOT mark complete yet)**
 18. 🚨 **DO NOT COMMIT** - Wait for approval first
 19. Wait for user approval
-20. After approval: mark complete, `git mv` to `completed/`, **ASK to commit** all work
+20. After approval: mark complete, `git mv` to `completed/`, stage changes
+21. 🚨 **VERIFY** with `git status` - check for lingering task files in wrong folders, clean up if found
+22. **ASK to commit** all work
 
 ## Success Criteria
 
