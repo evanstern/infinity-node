@@ -297,7 +297,7 @@ Interactive command that guides you through creating a new MDTD task with proper
 **Phase 6: Task Generation**
 - Determine next task ID (from `.task-id-counter` or by scanning)
 - Generate filename in format: `IN-NNN-task-title-kebab-case.md`
-- Fill complete task template with all gathered information
+- Fill complete task template (`templates/task-template.md`) with all gathered information
 
 **Phase 7: Review & Approval**
 - Present complete task design

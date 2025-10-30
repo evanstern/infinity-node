@@ -115,8 +115,9 @@ The [[agents/MEDIA|Media Stack Agent]] manages services that affect household us
 ### Creating Tasks
 
 1. **Use Template**
-   - Obsidian: CMD+P → "Templates: Insert template" → "task"
-   - Manual: Copy `.obsidian/templates/task.md`
+   - **Cursor AI**: Use `/create-task` command (automatically uses template)
+   - **Manual**: Copy `templates/task-template.md`
+   - See [[templates/README|Template Documentation]] for details
 
 2. **Fill Metadata**
    ```yaml

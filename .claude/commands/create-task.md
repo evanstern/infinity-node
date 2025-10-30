@@ -178,7 +178,7 @@ Format: `IN-NNN-task-title-kebab-case.md`
 - Use descriptive keywords
 
 **Fill Template:**
-Use the template from `.obsidian/templates/task.md`, populating:
+Use the template from `templates/task-template.md`, populating:
 
 - Frontmatter with all metadata
 - Problem Statement section
@@ -397,7 +397,7 @@ Execution Plan:
 Phase 1: Implementation (agent:documentation)
   - Create .cursorrules with project context
   - Create .cursorignore with exclusions
-  
+
 Phase 2: Validation (agent:testing)
   - Test with Claude Sonnet 4.5
   - Verify AI follows guidelines
@@ -433,7 +433,7 @@ Proceed? Or override with "keep it simple"?
 ### Core Rules
 
 1. **Always ask for approval** before creating the task file
-2. **Never commit** the task file without explicit user permission  
+2. **Never commit** the task file without explicit user permission
 3. **Validate task ID** is unique and sequential
 4. **Respect user overrides**:
    - `--simple` flag: Skip exploration, create quickly
@@ -496,7 +496,7 @@ Proceed? Or override with "keep it simple"?
 
 13. **Define boundaries clearly**:
     - Explicit "in scope" list
-    - Explicit "out of scope" list  
+    - Explicit "out of scope" list
     - MVP definition for complex tasks
     - Prevents scope creep during execution
 
@@ -589,4 +589,3 @@ If counter gets out of sync (manual task creation, etc.), simply delete `tasks/.
 - Affects critical services
 - Requires phased approach
 - Examples: Infrastructure migration, major refactor, new system integration
-
