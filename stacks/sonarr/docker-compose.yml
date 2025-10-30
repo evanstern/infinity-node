@@ -18,6 +18,7 @@ services:
       - ${CONFIG_PATH}:/config
       - ${TV_PATH}:/tv
       - ${DOWNLOADS_PATH}:/downloads
+      - ${COMPLETE_PATH:-/mnt/complete}:/complete
 
     deploy:
       resources:
