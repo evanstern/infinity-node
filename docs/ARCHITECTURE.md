@@ -27,10 +27,12 @@ infinity-node is a Proxmox-based home server environment running containerized s
 |------|-----|---------|--------|
 | Proxmox | 192.168.86.106 | Hypervisor | SSH (root), Web (8006) |
 | NAS | 192.168.86.43 | Synology Storage | Web (5000), NFS |
-| VM 100 (emby) | 192.168.86.172 | Media server | SSH (evan) |
-| VM 101 (downloads) | 192.168.86.173 | Download clients | SSH (evan) |
-| VM 102 (arr) | 192.168.86.174 | Media automation | SSH (evan) |
-| VM 103 (misc) | 192.168.86.249 | Supporting services | SSH (evan) |
+| VM 100 (emby) | 192.168.86.172 | Media server | SSH (evan), Portainer (9443) |
+| VM 101 (downloads) | 192.168.86.173 | Download clients | SSH (evan), Portainer (32768) |
+| VM 102 (arr) | 192.168.86.174 | Media automation | SSH (evan), Portainer (9443) |
+| VM 103 (misc) | 192.168.86.249 | Supporting services | SSH (evan), Portainer (9443) |
+
+**Note:** VM 101 uses non-standard Portainer port 32768 (not 9443 like other VMs).
 
 ### External Services
 - **Pangolin Server**: 45.55.78.215 (Digital Ocean)
@@ -477,11 +479,23 @@ infinity-node/
 
 ### Container Management
 
-**Portainer:**
-- Instance on each VM
-- Web UI for container management
-- Stack deployment
-- Log viewing
+**Portainer CE:**
+- Instance running on each VM
+- **Access URLs:**
+  - VM 100: https://192.168.86.172:9443
+  - VM 101: https://192.168.86.173:32768 *(non-standard port)*
+  - VM 102: https://192.168.86.174:9443
+  - VM 103: https://192.168.86.249:9443
+- **Features:**
+  - Web UI for container management
+  - Git-based stack deployment (GitOps)
+  - Automatic updates via polling (5-minute interval)
+  - Environment variable management
+  - Log viewing and container stats
+- **API Access:**
+  - Tokens stored in Vaultwarden (shared collection)
+  - Used by automation scripts for stack management
+  - See `scripts/infrastructure/` for management tools
 
 **Watchtower:**
 - Automatic image updates
@@ -667,6 +681,7 @@ infinity-node/
 |------|--------|--------|
 | 2025-10-24 | Initial architecture documentation | Claude Code + Evan |
 | 2025-10-26 | Completed infrastructure import (IN-001): 24 service stacks documented, wiki-links added to all services, Known Issues section updated | Claude Code + Evan |
+| 2025-10-29 | Enhanced Portainer documentation: Added Portainer URLs to Key Hosts table, documented VM 101 non-standard port, expanded Portainer CE section with GitOps features and API access details (IN-013) | Claude Code + Evan |
 
 ---
 
