@@ -49,5 +49,8 @@ temp/
 # Working directory for scratch/temporary files
 .working/
 
+# Task ID counter (local state, not committed)
+tasks/.task-id-counter
+
 # Temporary secret migration file (delete after migrating to Vaultwarden)
 stacks/SECRETS-TO-MIGRATE.md
