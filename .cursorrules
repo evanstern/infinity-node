@@ -49,11 +49,20 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 - **Pre-task review:** Before starting non-trivial tasks, conduct critical analysis to identify gaps, risks, and improvements
 
 **Task workflow summary:**
-1. Create task in `tasks/backlog/` using template
-2. Move to `tasks/current/` and set status to `in-progress`
-3. Update acceptance criteria as completed
-4. Document lessons learned
-5. Move to `tasks/completed/` when done
+
+*When starting:*
+1. Update status to `in-progress` in frontmatter
+2. Move task from `backlog/` to `current/`
+
+*During execution:*
+3. Check off acceptance criteria as completed (real-time)
+4. After each phase: pause, reflect, add notes to work log
+5. Document decisions, discoveries, and any needed changes
+
+*When complete:*
+6. **DO NOT mark complete immediately**
+7. Present work to user for review and approval
+8. After approval: mark complete, move to `completed/`, propose commit
 
 **Full details:** See `docs/CLAUDE.md` sections on MDTD
 
@@ -200,24 +209,26 @@ Each service has:
 
 ## Best Practices
 
-**Before making changes:**
+**Before starting task:**
 1. Read the task completely if working from MDTD
 2. Conduct pre-task review for non-trivial work
-3. Identify which agent(s) should handle the work
-4. Check if critical services are affected
-5. Plan rollback strategy if needed
+3. **Update task status to `in-progress` and move to `current/`**
+4. Identify which agent(s) should handle the work
+5. Check if critical services are affected
+6. Plan rollback strategy if needed
 
-**During work:**
-6. Update task progress in real-time
-7. Document decisions and discoveries
-8. Test changes thoroughly
-9. Coordinate with Testing Agent for validation
+**During task execution:**
+7. **Check off acceptance criteria as completed (real-time updates)**
+8. **After each phase: pause, reflect, add notes to work log**
+9. Document decisions and discoveries as work progresses
+10. Suggest changes if new information warrants it
+11. Test changes thoroughly
+12. Coordinate with Testing Agent for validation
 
-**After work:**
-10. Update documentation
-11. Complete task acceptance criteria
-12. Record lessons learned
-13. Ask for approval before committing
+**When task work is complete:**
+13. **Present work to user for review (DO NOT mark complete yet)**
+14. Wait for user approval
+15. After approval: mark complete, move to `completed/`, propose commit
 
 ## Success Criteria
 

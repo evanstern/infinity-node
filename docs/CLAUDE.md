@@ -140,12 +140,35 @@ current/ (in-progress)
 completed/ (completed)
 ```
 
-### Task Updates
+### Task Execution Workflow
 
-- **Start work**: Move to `current/`, set status to `in-progress`
-- **Check off criteria**: As each is completed
-- **Add notes**: Document issues, solutions, learnings
-- **Complete**: Set status to `completed`, move to `completed/`
+**When Starting a Task:**
+1. **FIRST**: Update task status to `in-progress` in frontmatter
+2. **THEN**: Move task file from `backlog/` to `current/`
+3. Begin work on Phase 1
+
+**During Task Execution:**
+1. **Check off acceptance criteria** in real-time as items are completed
+2. **Update execution plan items** as phases are completed
+3. **After each phase completes**: Pause to reflect
+   - Add notes to work log about decisions made
+   - Document discoveries or issues encountered
+   - Suggest changes if new information warrants it
+   - Update any affected sections of the task
+4. Continue to next phase
+
+**When Task Work is Complete:**
+1. **DO NOT immediately mark as complete**
+2. **PAUSE** and present work to user for review:
+   - Summarize what was accomplished
+   - Show what changed
+   - Highlight any deviations from original plan
+   - Note any remaining acceptance criteria that need user validation
+3. **WAIT** for user approval
+4. **After user approves**:
+   - Update status to `completed` in frontmatter
+   - Move task from `current/` to `completed/`
+   - Propose git commit with descriptive message
 
 ### Task IDs and References
 
