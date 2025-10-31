@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-030
-status: backlog
+status: pending
 priority: 3
 category: infrastructure
 agent: infrastructure

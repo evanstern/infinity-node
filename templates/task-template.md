@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-XXX
-status: backlog
+status: pending
 priority: 5
 category: CATEGORY_HERE
 agent: AGENT_HERE
