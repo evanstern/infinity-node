@@ -344,9 +344,15 @@ GPU visible in VM, Emby using NVENC for transcoding, measurable 10-20x improveme
     ```
   - Validate syntax: `docker-compose config`
 
-- [ ] **Deploy updated Emby stack** `[agent:docker]`
-  - Pull latest image: `cd stacks/emby && docker-compose pull`
-  - Recreate with GPU: `docker-compose up -d`
+- [ ] **Deploy updated Emby stack via Portainer** `[agent:docker]`
+  - Commit docker-compose changes to git
+  - Use Portainer API to redeploy from Git:
+    ```bash
+    ./scripts/infrastructure/redeploy-git-stack.sh \
+      --secret "portainer-api-token-vm-100" \
+      --stack-name "emby"
+    ```
+  - OR use Portainer UI: Stacks → emby → "Pull and redeploy"
   - Check logs: `docker logs emby --tail 50`
   - Verify no GPU-related errors
 
