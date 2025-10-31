@@ -61,14 +61,23 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 6. Check off acceptance criteria as completed
 7. After each phase: pause, reflect, add notes to work log
 8. Document decisions, discoveries, and any needed changes
+9. 🚨 **Document lessons learned as you go** - capture important learnings that could affect future work
 
-*When complete:*
-9. **DO NOT mark complete immediately**
-10. 🚨 **DO NOT COMMIT** - Wait for user approval first
-11. Present work to user for review and approval
-12. After approval: mark complete, `git mv` to `completed/`, stage changes
-13. 🚨 **VERIFY** with `git status` - check for lingering task files in wrong folders, clean up if found
-14. **ASK to commit** all work
+*When work complete:*
+10. **DO NOT mark complete immediately**
+11. 🚨 **DO NOT COMMIT** - Wait for user approval first
+12. Present work to user for review and approval
+
+*After approval - Lessons Learned Review:*
+13. Review lessons learned section - what affects future work?
+14. Decide on documentation updates needed
+15. Decide on follow-up tasks needed
+16. Present review findings to user for approval
+
+*Finalize task:*
+17. After review approval: mark complete, `git mv` to `completed/`, stage changes
+18. 🚨 **VERIFY** with `git status` - check for lingering task files in wrong folders, clean up if found
+19. **ASK to commit** all work
 
 **Full details:** See `docs/AI-COLLABORATION.md` sections on MDTD
 
@@ -238,18 +247,27 @@ Each service has:
 10. **Check off acceptance criteria as completed**
 11. **After each phase: pause, reflect, add notes to work log**
 12. Document decisions and discoveries as work progresses
-13. Suggest changes if new information warrants it
-14. Test changes thoroughly
-15. Coordinate with Testing Agent for validation
-16. 🚨 **DO NOT COMMIT during execution** - Wait for approval
+13. 🚨 **Document lessons learned as you go** - capture important learnings that could affect future work
+14. Suggest changes if new information warrants it
+15. Test changes thoroughly
+16. Coordinate with Testing Agent for validation
+17. 🚨 **DO NOT COMMIT during execution** - Wait for approval
 
 **When task work is complete:**
-17. **Present work to user for review (DO NOT mark complete yet)**
-18. 🚨 **DO NOT COMMIT** - Wait for approval first
-19. Wait for user approval
-20. After approval: mark complete, `git mv` to `completed/`, stage changes
-21. 🚨 **VERIFY** with `git status` - check for lingering task files in wrong folders, clean up if found
-22. **ASK to commit** all work
+18. **Present work to user for review (DO NOT mark complete yet)**
+19. 🚨 **DO NOT COMMIT** - Wait for approval first
+20. Wait for user approval
+
+**After approval - Lessons Learned Review:**
+21. **Review lessons learned section** - what affects future work?
+22. **Decide on documentation updates** needed (runbooks, ADRs, etc.)
+23. **Decide on follow-up tasks** needed
+24. **Present review findings** to user for approval
+
+**Finalize task:**
+25. After review approval: mark complete, `git mv` to `completed/`, stage changes
+26. 🚨 **VERIFY** with `git status` - check for lingering task files in wrong folders, clean up if found
+27. **ASK to commit** all work
 
 ## Success Criteria
 

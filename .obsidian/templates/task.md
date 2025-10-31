@@ -52,12 +52,12 @@ tags:
 **Rationale**: [Why this approach? What makes it the right choice?]
 
 > [!abstract]- 🔀 Alternative Approaches Considered
-> 
+>
 > **Option A: [Name]**
 > - ✅ Pros: [advantages]
-> - ❌ Cons: [disadvantages]  
+> - ❌ Cons: [disadvantages]
 > - **Decision**: Not chosen because [reason]
-> 
+>
 > **Option B: [Name]**
 > - ✅ Pros: [advantages]
 > - ❌ Cons: [disadvantages]
@@ -90,10 +90,10 @@ tags:
 **Services Affected**: None | Emby | Downloads | Arr services | [Other]
 
 > [!warning]- ⚠️ Critical Service Handling (if applicable)
-> 
-> **Timing**: [When to do this - low usage window 3-6 AM?]  
-> **Backup Plan**: [What to backup first]  
-> **Rollback Procedure**: [How to undo if things go wrong]  
+>
+> **Timing**: [When to do this - low usage window 3-6 AM?]
+> **Backup Plan**: [What to backup first]
+> **Rollback Procedure**: [How to undo if things go wrong]
 > **Monitoring**: [What to watch during/after change]
 
 ### Rollback Plan
@@ -188,30 +188,38 @@ tags:
 ---
 
 > [!note]- 📋 Work Log
-> 
+>
 > *Added during execution - document decisions, discoveries, issues encountered*
-> 
+>
 > ### [YYYY-MM-DD HH:MM] - [Phase/Activity]
 > [Notes, decisions, discoveries made during work]
-> 
+>
 > ### [YYYY-MM-DD HH:MM] - [Phase/Activity]
 > [More notes]
 
 > [!tip]- 💡 Lessons Learned
-> 
-> *Added during/after execution*
-> 
+>
+> *Fill this in AS YOU GO during task execution. Not every task needs extensive notes here, but capture important learnings that could affect future work.*
+>
 > **What Worked Well:**
-> - Item 1
-> - Item 2
-> 
+> - [What patterns/approaches were successful that we should reuse?]
+> - [What tools/techniques proved valuable?]
+>
 > **What Could Be Better:**
-> - Item 1
-> - Item 2
-> 
+> - [What would we do differently next time?]
+> - [What unexpected challenges did we face?]
+> - [What gaps in documentation/tooling did we discover?]
+>
+> **Key Discoveries:**
+> - [Did we learn something that affects other systems/services?]
+> - [Are there insights that should be documented elsewhere (runbooks, ADRs)?]
+> - [Did we uncover technical debt or improvement opportunities?]
+>
 > **Scope Evolution:**
-> [Did the task change during work? What changed and why?]
-> 
-> **Future Improvements:**
-> - Suggestion 1
-> - Suggestion 2
+> - [How did the scope change from original plan and why?]
+> - [Were there surprises that changed our approach?]
+>
+> **Follow-Up Needed:**
+> - [Documentation that should be updated based on this work]
+> - [New tasks that should be created]
+> - [Process improvements to consider]

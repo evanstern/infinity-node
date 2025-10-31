@@ -261,18 +261,27 @@ tags:
 
 > [!tip]- 💡 Lessons Learned
 >
-> *Added during/after execution*
+> *Fill this in AS YOU GO during task execution. Not every task needs extensive notes here, but capture important learnings that could affect future work.*
 >
 > **What Worked Well:**
-> - [Success 1]
-> - [Success 2]
+> - [What patterns/approaches were successful that we should reuse?]
+> - [What tools/techniques proved valuable?]
 >
 > **What Could Be Better:**
-> - [Learning 1]
-> - [Learning 2]
+> - [What would we do differently next time?]
+> - [What unexpected challenges did we face?]
+> - [What gaps in documentation/tooling did we discover?]
+>
+> **Key Discoveries:**
+> - [Did we learn something that affects other systems/services?]
+> - [Are there insights that should be documented elsewhere (runbooks, ADRs)?]
+> - [Did we uncover technical debt or improvement opportunities?]
 >
 > **Scope Evolution:**
-> - [How scope changed and why]
+> - [How did the scope change from original plan and why?]
+> - [Were there surprises that changed our approach?]
 >
-> **Future Improvements:**
-> - [Idea for next time]
+> **Follow-Up Needed:**
+> - [Documentation that should be updated based on this work]
+> - [New tasks that should be created]
+> - [Process improvements to consider]

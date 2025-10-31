@@ -172,7 +172,13 @@ completed/ (completed)
    - Document discoveries or issues encountered
    - Suggest changes if new information warrants it
    - Update any affected sections of the task
-4. Continue to next phase
+4. **🚨 Document lessons learned as you go**:
+   - Not every task needs extensive lessons, but capture important learnings
+   - What worked well that could be reused?
+   - What could be improved next time?
+   - Did we discover something that affects other systems/services?
+   - Are there patterns or insights that should be documented elsewhere?
+5. Continue to next phase
 
 **When Task Work is Complete:**
 1. **DO NOT immediately mark as complete**
@@ -183,16 +189,37 @@ completed/ (completed)
    - Highlight any deviations from original plan
    - Note any remaining acceptance criteria that need user validation
 4. **WAIT** for user approval
-5. **After user approves**:
-   - Update status to `completed` in frontmatter
-   - Use `git mv` to move task from `current/` to `completed/`
-   - Stage all changes with `git add`
-   - **🚨 VERIFY no lingering task files**: Run `git status` and check for:
-     - Task files in wrong locations (duplicate IN-XXX files)
-     - Unstaged deletions (old task file not removed from git)
-     - If found, clean up before committing (delete duplicates, stage deletions)
-   - **ASK user for permission to commit** all work + task completion together
-   - Use conventional commits format
+
+**After User Approves Task Work - Lessons Learned Review Phase:**
+1. **Review the Lessons Learned section** of the task:
+   - Is there anything we figured out that affects future work?
+   - Did we discover gaps in documentation?
+   - Did we learn something that should be captured in runbooks or ADRs?
+   - Are there follow-up improvements needed?
+2. **Decide on documentation updates**:
+   - Does any existing documentation need updating based on what we learned?
+   - Should we create new documentation (runbooks, ADRs, etc.)?
+   - Note specific doc updates needed in the task
+3. **Decide on follow-up tasks**:
+   - Should new tasks be created based on discoveries?
+   - List specific follow-up tasks in the task notes
+   - Don't create the tasks yet - just document what's needed
+4. **Present review findings to user**:
+   - Summarize lessons learned
+   - Propose any documentation updates
+   - Propose any follow-up tasks
+   - Get approval on what should be done
+
+**After Lessons Learned Review - Finalize Task:**
+1. **Update status to `completed`** in frontmatter
+2. **Use `git mv`** to move task from `current/` to `completed/`
+3. **Stage all changes** with `git add`
+4. **🚨 VERIFY no lingering task files**: Run `git status` and check for:
+   - Task files in wrong locations (duplicate IN-XXX files)
+   - Unstaged deletions (old task file not removed from git)
+   - If found, clean up before committing (delete duplicates, stage deletions)
+5. **ASK user for permission to commit** all work + task completion together
+6. Use conventional commits format
 
 **🚨 CRITICAL COMMIT DISCIPLINE:**
 - **NEVER commit without explicit user approval** - Always ask first
