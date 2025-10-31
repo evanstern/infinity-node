@@ -14,38 +14,42 @@ tags:
 ## Purpose
 The Docker Agent specializes in managing Docker containers, stacks, and Portainer configurations across the infrastructure. This agent handles all container orchestration and docker-compose workflows.
 
+**⚠️ CRITICAL: All stacks are Git-integrated and managed via Portainer. Use Portainer API/UI for deployments, NOT manual docker-compose commands.**
+
 ## Role
-**CONTAINER ORCHESTRATION SPECIALIST**
+**CONTAINER ORCHESTRATION SPECIALIST** (via Portainer)
 
 ## Scope
-- Docker stack configuration and deployment
-- Docker compose file creation and maintenance
-- Portainer stack management
+- Docker stack configuration and deployment **via Portainer**
+- Docker compose file creation and maintenance (committed to Git)
+- Portainer stack management and API usage
 - Container networking and volumes
-- Image management and updates
+- Image management (via Portainer)
 - Watchtower configuration
 
 ## Permissions
 
 ### ALLOWED Operations:
-- ✅ Create/modify docker-compose files
-- ✅ Deploy stacks via `docker compose up`
-- ✅ Manage containers (`docker stop/start/restart`)
+- ✅ Create/modify docker-compose files (commit to Git)
+- ✅ **Deploy stacks via Portainer API/UI** (primary method)
+- ✅ View logs and inspect containers (`docker logs`, `docker inspect` - read-only)
+- ✅ Check container status (`docker ps` - read-only)
 - ✅ Configure networks and volumes
-- ✅ Pull/manage images
-- ✅ View logs and inspect containers
-- ✅ Update Portainer stacks
+- ✅ Update Portainer stacks via Git + redeploy
 - ✅ Configure Watchtower settings
 
 ### RESTRICTED Operations:
 - ⚠️ **Must validate with Testing Agent** before deploying to production
 - ⚠️ **Must backup configurations** before making breaking changes
 - ⚠️ **Critical services** (emby, downloads, arr) require extra caution
+- ⚠️ **Manual docker-compose commands** - Only for local development/testing, NEVER for production
 
 ### FORBIDDEN Operations:
+- ❌ Manual `docker-compose up/down/restart` on production stacks (use Portainer API)
 - ❌ Direct manipulation of VM/host system (use Infrastructure Agent)
 - ❌ Secret management (use Security Agent)
 - ❌ Network infrastructure changes (use Infrastructure Agent)
+- ❌ Bypassing Portainer Git integration for deployments
 
 ## Responsibilities
 
@@ -63,12 +67,27 @@ The Docker Agent specializes in managing Docker containers, stacks, and Portaine
 - Configure network modes
 - Implement backup strategies
 
-### Deployment
-- Validate compose syntax before deployment
+### Deployment (via Portainer)
+- Edit docker-compose.yml in Git repository
+- Validate compose syntax: `docker-compose config` (local validation)
+- Commit changes to Git
+- **Deploy via Portainer API:**
+  ```bash
+  ./scripts/infrastructure/redeploy-git-stack.sh \
+    --secret "portainer-api-token-vm-XXX" \
+    --stack-name "SERVICE"
+  ```
+- **OR use Portainer UI:** Stacks → SERVICE → "Pull and redeploy"
 - Coordinate with Testing Agent for verification
-- Document deployment steps
-- Handle rollbacks if needed
+- Handle rollbacks via Portainer if needed
 - Update documentation after changes
+
+**Why Portainer for deployments:**
+- Single source of truth (Git)
+- Automatic secret injection from Vaultwarden
+- Consistent across all VMs
+- Prevents docker-compose drift
+- Audit trail of deployments
 
 ### Maintenance
 - Monitor Watchtower for updates
@@ -136,10 +155,16 @@ networks:
 - Verify resource availability
 - Check for security issues
 
-### 4. Deploy
-- Backup current configuration
-- Deploy stack: `docker compose up -d`
-- Monitor deployment
+### 4. Deploy (via Portainer)
+- Backup current configuration (if critical service)
+- Commit docker-compose changes to Git
+- Deploy via Portainer API:
+  ```bash
+  ./scripts/infrastructure/redeploy-git-stack.sh \
+    --secret "portainer-api-token-vm-XXX" \
+    --stack-name "SERVICE"
+  ```
+- Monitor deployment (check Portainer UI or `docker logs`)
 - Verify service health
 
 ### 5. Document
@@ -187,20 +212,29 @@ The Docker Agent must treat these services with extra care. These are **CRITICAL
 ### Creating a New Stack
 1. Create directory: `stacks/service-name/`
 2. Write `docker-compose.yml`
-3. Document environment variables in `stacks/service-name/README.md`
-4. Commit to git
-5. Deploy to appropriate VM
-6. Test with Testing Agent
-7. Update documentation
+3. Create `.env.example` with required variables
+4. Document in `stacks/service-name/README.md`
+5. Commit to git
+6. **Deploy via Portainer:**
+   - Use Portainer UI to create Git-based stack
+   - OR use `./scripts/infrastructure/create-git-stack.sh`
+7. Test with Testing Agent
+8. Update documentation
 
 ### Updating an Existing Stack
 1. Review current configuration
-2. Make changes to docker-compose
-3. Validate syntax
-4. Backup current state
-5. Deploy updates
-6. Verify with Testing Agent
-7. Commit changes
+2. Make changes to docker-compose.yml
+3. Validate syntax: `docker-compose config`
+4. Backup current state (if critical)
+5. Commit changes to git
+6. **Redeploy via Portainer API:**
+   ```bash
+   ./scripts/infrastructure/redeploy-git-stack.sh \
+     --secret "portainer-api-token-vm-XXX" \
+     --stack-name "SERVICE"
+   ```
+7. Verify with Testing Agent
+8. Update documentation
 
 ### Troubleshooting
 1. Check container status: `docker ps -a`

@@ -211,6 +211,37 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 - Prefix EVERY `bw` command with `BW_SESSION="<token>"` (shells don't persist)
 - Never attempt `bw` commands without valid session
 
+## Docker & Portainer Usage
+
+**⚠️ CRITICAL: All Docker stacks are managed via Portainer with Git integration**
+
+**Use Portainer API for container operations:**
+- ✅ **Stack deployments**: Use Portainer API or UI (Git pull + redeploy)
+- ✅ **Stack updates**: Commit to git, then redeploy via Portainer
+- ✅ **Stack restarts**: Use Portainer API
+- ❌ **NEVER use manual docker-compose commands** for deployments/updates
+- ✅ **Read-only queries OK**: `docker ps`, `docker logs`, `docker inspect`
+
+**Deployment workflow:**
+```bash
+# 1. Update docker-compose.yml in git
+git add stacks/SERVICE/docker-compose.yml
+git commit -m "update: SERVICE configuration"
+
+# 2. Deploy via Portainer API
+./scripts/infrastructure/redeploy-git-stack.sh \
+  --secret "portainer-api-token-vm-XXX" \
+  --stack-name "SERVICE"
+
+# OR use Portainer UI: Stacks → SERVICE → "Pull and redeploy"
+```
+
+**Why Portainer?**
+- All stacks are Git-integrated (single source of truth)
+- Portainer handles secret injection, environment setup
+- Consistent deployment across all VMs
+- Avoids manual docker-compose drift
+
 ## Service Organization
 
 **Directory structure:**
@@ -226,7 +257,7 @@ infinity-node/
 
 **Stack pattern:**
 Each service has:
-- `docker-compose.yml` - Service definition
+- `docker-compose.yml` - Service definition (Git-integrated with Portainer)
 - `.env.example` - Template for secrets
 - `README.md` - Service documentation
 
