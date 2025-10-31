@@ -55,6 +55,8 @@ scripts/
 ├── README.md                          # This file
 ├── utils/                             # Utility scripts
 │   └── bw-setup-session.sh           # Setup Bitwarden CLI session
+├── tasks/                             # Task lifecycle management
+│   └── move-task.sh                  # Move task between lifecycle stages
 ├── secrets/                           # Secret management
 │   ├── audit-secrets.sh              # Scan for hardcoded secrets
 │   ├── create-secret.sh              # Store secret in Vaultwarden
@@ -77,6 +79,47 @@ scripts/
 ```
 
 ## Script Inventory
+
+### Task Lifecycle Management (`tasks/`)
+
+#### `move-task.sh`
+**Purpose:** Atomically move task between lifecycle stages (backlog → current → completed)
+**Usage:** `./scripts/tasks/move-task.sh <TASK_ID> <FROM> <TO>`
+**Arguments:**
+- `TASK_ID`: Task identifier (e.g., IN-007)
+- `FROM`: Source directory (backlog, current, or completed)
+- `TO`: Destination directory (backlog, current, or completed)
+
+**What it does:**
+1. Finds task file in FROM directory
+2. Updates status frontmatter to match TO stage
+3. Sets completed date if moving to completed
+4. Moves file to TO directory
+5. Verifies no duplicates exist across all task directories
+6. Stages both deletion and addition in git
+7. Shows final git status for review
+
+**Exit Codes:** 
+- 0 (success)
+- 1 (error: file not found, duplicates detected, invalid arguments)
+
+**Example:**
+```bash
+# Move task from current to completed
+./scripts/tasks/move-task.sh IN-007 current completed
+
+# Move task from backlog to current
+./scripts/tasks/move-task.sh IN-024 backlog current
+```
+
+**Use Cases:**
+- Mark tasks as complete without manual file operations
+- Prevent duplicate task files across directories
+- Ensure consistent status frontmatter updates
+- Atomic task lifecycle transitions
+
+**Why this exists:**
+Manual task file moves with `git mv` are error-prone and often leave duplicate files in multiple directories. This script handles the entire operation atomically with verification.
 
 ### Utilities (`utils/`)
 

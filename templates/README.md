@@ -88,6 +88,68 @@ See these completed tasks as examples:
 
 ---
 
+## Research Artifact Template
+
+**File**: `research-artifact-template.md`
+
+The research artifact template provides the standardized structure for research documentation stored in `docs/research/`.
+
+### When to Use
+
+Use this template when documenting:
+- Hardware/software capability assessments
+- Performance analysis and benchmarking
+- Feasibility studies for new approaches
+- Technology evaluations and comparisons
+- Security audits
+- Troubleshooting investigations
+
+### Template Structure
+
+The template includes:
+
+**Frontmatter**:
+- Research metadata (title, date, status, type)
+- Task and ADR relationships
+- Comprehensive tagging for searchability
+- Authors
+
+**Core Sections**:
+- **Summary**: Brief overview of findings
+- **Context & Motivation**: Why this research was needed
+- **Research Questions**: What we aimed to answer
+- **Methodology**: How research was conducted
+- **Findings**: Detailed results and observations
+- **Recommendations**: What to do based on findings
+- **Limitations**: What wasn't covered or needs further investigation
+
+### Research Types
+
+- `hardware-assessment` - Hardware capabilities, compatibility
+- `performance-analysis` - Benchmarks, measurements
+- `feasibility-study` - Technical viability assessment
+- `technology-evaluation` - Comparing options
+- `security-audit` - Security reviews
+- `troubleshooting-investigation` - Root cause analysis
+- `architecture-planning` - Infrastructure design research
+
+### Design Principles
+
+**Why this structure?**
+
+1. **Searchable**: Rich frontmatter enables Obsidian Dataview queries
+2. **Traceable**: Clear links to tasks and ADRs
+3. **Categorized**: Research types enable filtered searches
+4. **Temporal**: Status tracking (draft/complete/superseded)
+5. **Flat structure**: All research in one directory, organized by tags not folders
+
+### Related Documentation
+
+- [[docs/research/README|Research Artifacts Guide]] - Full research system documentation
+- [[docs/adr/README|ADR Documentation]] - How research feeds into decisions
+
+---
+
 ## Future Templates
 
 This directory will grow to include:
@@ -96,5 +158,3 @@ This directory will grow to include:
 - **Runbook template**: For operational procedures
 - **Agent template**: For new agent specifications
 - **Stack template**: For new Docker stack documentation
-
-For now, only the task template is standardized. Other documents follow less rigid structures.
