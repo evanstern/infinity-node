@@ -11,6 +11,9 @@ services:
       - ${CONFIG_PATH}:/config
       - ${MEDIA_PATH}:/mnt/movies
 
+    tmpfs:
+      - /transcode:size=4G,mode=1777
+
     environment:
       - TZ=${TZ:-America/Toronto}
 

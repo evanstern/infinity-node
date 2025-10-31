@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-032
-status: pending
+status: backlog
 priority: 2
 category: media
 agent: infrastructure

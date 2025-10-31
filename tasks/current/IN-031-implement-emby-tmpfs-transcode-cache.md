@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-031
-status: pending
+status: in-progress
 priority: 4
 category: media
 agent: docker
