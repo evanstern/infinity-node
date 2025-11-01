@@ -17,13 +17,13 @@ services:
     environment:
       - TZ=${TZ:-America/Toronto}
 
-    # Uncomment to enable GPU hardware transcoding
+    # GPU hardware transcoding enabled (IN-032)
     # Requires NVIDIA GPU and nvidia-docker runtime
-    # deploy:
-    #   resources:
-    #     reservations:
-    #       devices:
-    #         - driver: nvidia
-    #           count: all
-    #           capabilities:
-    #             - gpu
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
