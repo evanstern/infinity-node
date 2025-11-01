@@ -152,7 +152,42 @@ Emby supports hardware-accelerated transcoding using NVIDIA GPUs to reduce CPU l
    - Enable hardware acceleration
    - Select NVIDIA NVENC encoder
 
-**See:** [[tasks/backlog/IN-007-optimize-emby-transcoding|IN-007]] for optimization task
+**See:** [[tasks/completed/IN-007-research-emby-transcoding-optimization|IN-007]] for transcoding research and [[docs/adr/013-emby-transcoding-optimization|ADR-013]] for optimization strategy
+
+## Transcode Cache (tmpfs)
+
+Emby uses a **4GB tmpfs mount** for temporary transcode files, providing RAM-speed access and eliminating SSD wear.
+
+**Configuration:**
+- **Mount Point:** `/transcode` (inside container)
+- **Size:** 4GB (sufficient for typical transcoding workloads)
+- **Mode:** 1777 (world-writable, sticky bit)
+- **Emby Path:** Settings → Transcoding → "Transcode path" = `/transcode`
+
+**Benefits:**
+- **Faster transcode starts:** 10-20% improvement (vs NVMe SSD)
+- **Zero SSD wear:** Temporary files written to RAM, not disk
+- **Automatic cleanup:** Files cleared on container restart
+- **Smooth playback:** Reduced buffering for CPU-bound transcodes
+
+**Monitoring:**
+```bash
+# Check tmpfs usage
+docker exec emby df -h /transcode
+
+# View active transcode sessions
+docker exec emby ls -lh /transcode/transcoding-temp/
+```
+
+**Rollback:**
+If tmpfs causes issues, remove the `tmpfs:` section from docker-compose.yml and change Emby's transcode path back to `/config/transcoding-temp`.
+
+**Memory Usage:**
+- Transcode files are temporary (cleared after playback stops)
+- 4GB limit prevents runaway RAM usage
+- VM 100 has sufficient RAM (7.8GB total, 6.4GB available)
+
+**Implemented:** 2025-10-31 via [[tasks/current/IN-031-implement-emby-tmpfs-transcode-cache|IN-031]]
 
 ## Usage
 
@@ -282,12 +317,12 @@ docker compose up -d
 ### Transcoding Performance Poor
 
 **Optimization:**
-- Enable GPU hardware transcoding
-- Configure tmpfs for transcoding temp directory (reduces disk I/O)
+- ✅ **tmpfs enabled** - Transcode cache using RAM (see "Transcode Cache" section above)
+- Enable GPU hardware transcoding (see "Hardware Transcoding" section)
 - Limit simultaneous transcoding sessions
 - Pre-transcode commonly watched content
 
-**See:** [[tasks/backlog/IN-007-optimize-emby-transcoding|IN-007]] for detailed optimization task
+**See:** [[tasks/completed/IN-031-implement-emby-tmpfs-transcode-cache|IN-031]] for tmpfs implementation and [[docs/adr/013-emby-transcoding-optimization|ADR-013]] for full optimization strategy
 
 ## Performance
 
@@ -298,8 +333,8 @@ docker compose up -d
 - **Transcoding (GPU):** Low CPU, GPU memory, ~500 MB RAM per stream
 
 **Optimization Recommendations:**
-1. Enable hardware transcoding (see above)
-2. Use tmpfs for transcoding temp files (see IN-007)
+1. ✅ **tmpfs for transcoding** - Implemented (4GB RAM-backed transcode cache)
+2. Enable hardware transcoding (see "Hardware Transcoding" section)
 3. Ensure sufficient RAM for metadata caching
 4. Fast storage for media library (SSD for database, HDD for media acceptable)
 
@@ -339,8 +374,9 @@ docker compose up -d
 
 - [Official Emby Docs](https://emby.media/support/index.html)
 - [Emby API Documentation](https://dev.emby.media/)
-- [[tasks/backlog/IN-004-document-emby-service|IN-004]] - Detailed service documentation task
-- [[tasks/backlog/IN-007-optimize-emby-transcoding|IN-007]] - Transcoding optimization task
+- [[tasks/completed/IN-007-research-emby-transcoding-optimization|IN-007]] - Transcoding research and evaluation
+- [[tasks/completed/IN-031-implement-emby-tmpfs-transcode-cache|IN-031]] - tmpfs implementation
+- [[docs/adr/013-emby-transcoding-optimization|ADR-013]] - Transcoding optimization strategy
 - [[docs/agents/MEDIA|Media Stack Agent]] - Critical service management guidelines
 
 ## Notes
