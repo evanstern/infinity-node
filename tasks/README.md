@@ -107,6 +107,9 @@ Periodically, old completed tasks are archived:
 - Moved to dated subdirectories
 - Searchable for future reference
 
+**Special case - Superseded tasks:**
+Tasks that are replaced by new tasks (e.g., significant redesign, different approach) should be archived to `tasks/archived/` with status `superseded`. See [[ARCHIVAL-PROCESS|Task Archival Process]] for details.
+
 ## Task Metadata
 
 ### Status
@@ -114,6 +117,7 @@ Periodically, old completed tasks are archived:
 - `in-progress`: Currently being worked on
 - `blocked`: Waiting on dependency or decision
 - `completed`: All criteria met
+- `superseded`: Task replaced by newer task (archived, not completed)
 
 ### Priority
 - `critical`: Must be done immediately (outage, security issue)

@@ -1,21 +1,38 @@
 ---
 type: task
 task-id: IN-012
-status: pending
+status: superseded
 priority: 2
 category: infrastructure
 agent: infrastructure
 created: 2025-10-26
-updated: 2025-10-27
+updated: 2025-11-01
+superseded-by: IN-034
+superseded-date: 2025-11-01
 tags:
   - task
   - infrastructure
   - networking
   - dns
   - service-discovery
+  - superseded
 ---
 
 # Task: IN-012 - Set Up Local DNS for Service Discovery
+
+> [!warning]- ⚠️ Task Superseded
+>
+> **Status**: This task has been superseded and will not be completed as originally planned.
+>
+> **Superseded by**: 
+> - [[tasks/backlog/IN-034-configure-pihole-local-dns|IN-034 - Configure Pi-hole for Local DNS Service Discovery]]
+> - [[tasks/backlog/IN-035-migrate-services-to-dns-names|IN-035 - Migrate Services to DNS Names]]
+>
+> **Reason**: Original task explored multiple DNS solutions (dnsmasq, Pi-hole, CoreDNS, BIND, etc.) as a generic approach. User has existing Pi-hole Raspberry Pi hardware that just needs to be powered on and configured. Created specific implementation tasks (IN-034 for setup, IN-035 for migration) based on existing infrastructure rather than exploring all options.
+>
+> **Date**: 2025-11-01
+>
+> **Preserved because**: Contains valuable research on DNS solution options, naming conventions, and implementation patterns. Useful reference for understanding why Pi-hole was chosen and what alternatives existed.
 
 ## Description
 
