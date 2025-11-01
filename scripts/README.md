@@ -56,6 +56,9 @@ scripts/
 ├── utils/                             # Utility scripts
 │   └── bw-setup-session.sh           # Setup Bitwarden CLI session
 ├── tasks/                             # Task lifecycle management
+│   ├── get-next-task-id.sh           # Get next available task ID
+│   ├── update-task-counter.sh        # Increment task ID counter
+│   ├── validate-task.sh              # Validate task file correctness
 │   └── move-task.sh                  # Move task between lifecycle stages
 ├── secrets/                           # Secret management
 │   ├── audit-secrets.sh              # Scan for hardcoded secrets
@@ -82,6 +85,58 @@ scripts/
 
 ### Task Lifecycle Management (`tasks/`)
 
+Task management scripts that support the MDTD workflow and `/create-task` slash command.
+
+#### `get-next-task-id.sh`
+**Purpose:** Get the next available task ID for task creation
+**Usage:** `./scripts/tasks/get-next-task-id.sh`
+**Output:** Next task ID in format `IN-NNN` (e.g., `IN-037`)
+
+**What it does:**
+1. Reads `tasks/.task-id-counter` if it exists
+2. Otherwise scans all task files and finds highest ID
+3. Creates/updates counter file
+4. Returns next available ID in zero-padded format
+
+**Use case:** Called by `/create-task` command to get sequential task IDs
+
+**Recovery:** If counter gets out of sync, delete `tasks/.task-id-counter` to force rescan
+
+#### `update-task-counter.sh`
+**Purpose:** Increment the task ID counter after creating a task
+**Usage:** `./scripts/tasks/update-task-counter.sh`
+
+**What it does:**
+1. Reads current value from `tasks/.task-id-counter`
+2. Validates it's a number
+3. Increments by 1
+4. Writes new value back to counter file
+5. Displays confirmation message
+
+**Use case:** Called by `/create-task` command AFTER successfully creating task file
+
+**Note:** Must be called after each task creation to keep counter in sync
+
+#### `validate-task.sh`
+**Purpose:** Validate a task file for correctness and consistency
+**Usage:** `./scripts/tasks/validate-task.sh <TASK_ID>`
+**Example:** `./scripts/tasks/validate-task.sh IN-024`
+
+**What it does:**
+1. Checks task file exists
+2. Verifies task ID is unique (no duplicates)
+3. Validates frontmatter is valid YAML
+4. Checks required frontmatter fields present
+5. Verifies filename follows naming convention (IN-NNN-kebab-case.md)
+6. Checks task location matches status (backlog/current/completed)
+7. Provides actionable error messages if validation fails
+
+**Use case:** Quality assurance after task creation or when debugging task issues
+
+**Exit codes:**
+- `0` - All validations passed
+- `1` - One or more validations failed
+
 #### `move-task.sh`
 **Purpose:** Atomically move task between lifecycle stages (backlog → current → completed)
 **Usage:** `./scripts/tasks/move-task.sh <TASK_ID> <FROM> <TO>`
@@ -99,7 +154,7 @@ scripts/
 6. Stages both deletion and addition in git
 7. Shows final git status for review
 
-**Exit Codes:** 
+**Exit Codes:**
 - 0 (success)
 - 1 (error: file not found, duplicates detected, invalid arguments)
 
