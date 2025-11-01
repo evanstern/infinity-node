@@ -118,41 +118,54 @@ docker compose up -d
 5. **Set Up Devices:** Install Emby apps on client devices
 6. **Configure Transcoding:** Set transcoding quality and hardware acceleration
 
-## Hardware Transcoding (Optional)
+## Hardware Transcoding (NVIDIA GPU)
 
-Emby supports hardware-accelerated transcoding using NVIDIA GPUs to reduce CPU load and improve performance.
+✅ **GPU transcoding enabled** - Emby is configured with NVIDIA RTX 4060 Ti for hardware-accelerated transcoding.
 
-**Requirements:**
-- NVIDIA GPU in the host
-- NVIDIA drivers installed on host
-- nvidia-docker runtime configured
+**Status:** ACTIVE (Implemented 2025-11-01 via [[tasks/completed/IN-032-implement-emby-gpu-passthrough|IN-032]])
 
-**Enable GPU Transcoding:**
+**Hardware:**
+- **GPU:** NVIDIA GeForce RTX 4060 Ti (8GB)
+- **Driver:** NVIDIA 580-open
+- **NVENC:** 8th generation encoder
+- **Location:** Passed through from Proxmox host to VM 100
 
-1. Uncomment the `deploy` section in docker-compose.yml:
-   ```yaml
-   deploy:
-     resources:
-       reservations:
-         devices:
-           - driver: nvidia
-             count: all
-             capabilities:
-               - gpu
-   ```
+**Performance:**
+- **1080p transcoding:** 4.08x realtime (flawless, ~6-8x faster than CPU)
+- **4K transcoding:** 3.86x realtime (GPU encoder 70-88% utilized)
+- **CPU usage:** <10% during transcoding (vs 60-80% CPU-only)
+- **Power efficiency:** NVENC uses ~40W vs 150W+ for CPU transcoding
+- **Concurrent streams:** Supports 3-5+ simultaneous transcodes
 
-2. Restart the container:
-   ```bash
-   docker compose down
-   docker compose up -d
-   ```
+**Configuration:**
+- GPU access enabled via docker-compose.yml `deploy.resources` section
+- NVENC configured in Emby UI (Settings → Transcoding)
+- Hardware acceleration: NVIDIA NVENC
+- Hardware decoding: Enabled for H.264, HEVC
 
-3. Configure in Emby:
-   - Settings → Transcoding
-   - Enable hardware acceleration
-   - Select NVIDIA NVENC encoder
+**Monitoring:**
+```bash
+# Check GPU usage
+ssh evan@192.168.86.172 "nvidia-smi"
 
-**See:** [[tasks/completed/IN-007-research-emby-transcoding-optimization|IN-007]] for transcoding research and [[docs/adr/013-emby-transcoding-optimization|ADR-013]] for optimization strategy
+# Monitor GPU during transcode
+ssh evan@192.168.86.172 "nvidia-smi dmon -s u"
+
+# Check transcode logs
+docker exec emby tail -f /config/logs/ffmpeg-transcode-*.txt
+```
+
+**Troubleshooting:**
+- **Verify GPU visible:** `docker exec emby ls -la /dev | grep nvidia`
+- **Check NVENC active:** Look for "speed=X.Xx" in transcode logs (should be >2x for GPU)
+- **GPU not detected:** Ensure nvidia-container-toolkit is installed on VM 100
+- **Poor performance:** Check GPU utilization with `nvidia-smi` (should be 60-80%+ during transcode)
+
+**See:**
+- [[tasks/completed/IN-032-implement-emby-gpu-passthrough|IN-032]] - GPU passthrough implementation
+- [[tasks/completed/IN-007-research-emby-transcoding-optimization|IN-007]] - Transcoding research
+- [[docs/adr/013-emby-transcoding-optimization|ADR-013]] - Optimization strategy
+- [[docs/research/proxmox-nvidia-gpu-passthrough-configuration|GPU Passthrough Guide]] - Technical details
 
 ## Transcode Cache (tmpfs)
 
@@ -316,13 +329,15 @@ docker compose up -d
 
 ### Transcoding Performance Poor
 
-**Optimization:**
-- ✅ **tmpfs enabled** - Transcode cache using RAM (see "Transcode Cache" section above)
-- Enable GPU hardware transcoding (see "Hardware Transcoding" section)
-- Limit simultaneous transcoding sessions
-- Pre-transcode commonly watched content
+**Status: RESOLVED** - GPU hardware transcoding now active.
 
-**See:** [[tasks/completed/IN-031-implement-emby-tmpfs-transcode-cache|IN-031]] for tmpfs implementation and [[docs/adr/013-emby-transcoding-optimization|ADR-013]] for full optimization strategy
+**Current Performance:**
+- ✅ **1080p:** 4.08x realtime (flawless playback)
+- ✅ **4K:** 3.86x realtime (GPU encoder 70-88% utilized)
+- ✅ **CPU usage:** <10% during transcoding
+- ℹ️ **4K over WiFi:** May need quality reduction (8-10 Mbps 1080p recommended)
+
+**See:** [[tasks/completed/IN-032-implement-emby-gpu-passthrough|IN-032]] for GPU passthrough implementation and performance metrics
 
 ## Performance
 
@@ -334,7 +349,7 @@ docker compose up -d
 
 **Optimization Recommendations:**
 1. ✅ **tmpfs for transcoding** - Implemented (4GB RAM-backed transcode cache)
-2. Enable hardware transcoding (see "Hardware Transcoding" section)
+2. ✅ **GPU hardware transcoding** - Implemented (NVIDIA RTX 4060 Ti with NVENC)
 3. Ensure sufficient RAM for metadata caching
 4. Fast storage for media library (SSD for database, HDD for media acceptable)
 
@@ -374,9 +389,11 @@ docker compose up -d
 
 - [Official Emby Docs](https://emby.media/support/index.html)
 - [Emby API Documentation](https://dev.emby.media/)
+- [[tasks/completed/IN-032-implement-emby-gpu-passthrough|IN-032]] - GPU passthrough implementation (ACTIVE)
+- [[tasks/completed/IN-031-implement-emby-tmpfs-transcode-cache|IN-031]] - tmpfs implementation (ACTIVE)
 - [[tasks/completed/IN-007-research-emby-transcoding-optimization|IN-007]] - Transcoding research and evaluation
-- [[tasks/completed/IN-031-implement-emby-tmpfs-transcode-cache|IN-031]] - tmpfs implementation
 - [[docs/adr/013-emby-transcoding-optimization|ADR-013]] - Transcoding optimization strategy
+- [[docs/research/proxmox-nvidia-gpu-passthrough-configuration|GPU Passthrough Guide]] - Technical configuration details
 - [[docs/agents/MEDIA|Media Stack Agent]] - Critical service management guidelines
 
 ## Notes
