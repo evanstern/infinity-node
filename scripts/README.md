@@ -543,6 +543,77 @@ done
 
 ### Infrastructure (`infrastructure/`)
 
+#### `update-stack-env.sh`
+**Purpose:** Update environment variables on Portainer Git-based stacks
+**Usage:** `./update-stack-env.sh <portainer-secret-name> <collection-name> <stack-id> <endpoint-id> --env "KEY=VALUE" [OPTIONS]`
+**Dependencies:** `get-vw-secret.sh`, `curl`, `jq`, `BW_SESSION`
+**Exit Codes:** 0 (success), 1 (invalid args), 2 (credentials failed), 3 (API failed), 4 (var not found)
+
+**Arguments:**
+- `portainer-secret-name`: Name of Portainer API token secret in Vaultwarden
+- `collection-name`: Vaultwarden collection containing the secret
+- `stack-id`: Portainer stack ID (number)
+- `endpoint-id`: Portainer endpoint ID (usually 3 for local)
+- `--env "KEY=VALUE"`: Environment variable to update (repeatable)
+
+**Options:**
+- `--dry-run`: Show what would be changed without applying
+
+**Example:**
+```bash
+# Update single environment variable
+./scripts/infrastructure/update-stack-env.sh \
+  "portainer-api-token-vm-102" "shared" 14 3 \
+  --env "TV_PATH=/mnt/video/Video/TV"
+
+# Update multiple variables at once
+./scripts/infrastructure/update-stack-env.sh \
+  "portainer-api-token-vm-102" "shared" 14 3 \
+  --env "TV_PATH=/mnt/video/Video/TV" \
+  --env "MEMORY_LIMIT=4G"
+
+# Dry-run to preview changes
+./scripts/infrastructure/update-stack-env.sh \
+  "portainer-api-token-vm-102" "shared" 14 3 \
+  --env "TV_PATH=/mnt/video/Video/TV" \
+  --dry-run
+```
+
+**Use Cases:**
+- Fix misconfigured environment variables in Portainer
+- Update paths or settings without editing docker-compose.yml
+- Bulk update multiple variables at once
+- Preview changes before applying with dry-run mode
+- Troubleshoot stack configuration issues
+
+**Features:**
+- **Edits existing variables only:** Validates that variable exists in stack
+- **Preserves all variables:** Fetches current state, updates specific vars, sends complete array
+- **Multi-variable support:** Update multiple vars in one command with multiple `--env` flags
+- **Dry-run mode:** Preview changes without applying them
+- **Change detection:** Shows before/after values and warns if no change needed
+- **Bash 3.2 compatible:** Works on macOS with system bash (no associative arrays)
+- **Clear output:** Color-coded progress and status messages
+
+**How It Works:**
+1. Fetches current stack configuration from Portainer API
+2. Validates all specified variables exist in stack (edit-only, no creation)
+3. Updates specified variables while preserving all others
+4. Sends complete updated environment array back to Portainer
+5. User must manually restart stack via Portainer UI to apply changes
+
+**Important Notes:**
+- Portainer requires sending ALL environment variables when updating (no partial updates)
+- Changes update Portainer's configuration but don't take effect until stack is restarted
+- Stack must be manually restarted via Portainer UI after updating environment variables
+- Only works with Git-based stacks (not standalone compose stacks)
+- Use absolute paths for volume mounts (relative paths can cause deployment issues)
+
+**Related:**
+- Created to fix Sonarr TV_PATH misconfiguration issue
+- Complements `query-portainer-stacks.sh` for viewing stack configuration
+- Uses `get-vw-secret.sh` for Vaultwarden credential retrieval
+
 #### `query-portainer-stacks.sh`
 **Purpose:** Query Portainer stacks from a VM (dual-mode: direct or Vaultwarden)
 **Usage:**
