@@ -159,6 +159,8 @@ SORT priority ASC, updated DESC
 
 ## 📈 Statistics
 
+**📊 [[CHARTS|View Visual Charts & Analytics]] →**
+
 ### Task Count by Status
 
 ```dataview
@@ -210,7 +212,70 @@ SORT "Month" DESC
 LIMIT 12
 ```
 
+### 📈 Visual Completion Trend
+
+<!-- Chart generated using Obsidian Charts plugin -->
+<!-- Data must be manually synced with the table above -->
+<!-- Reference: https://charts.phib.ro/Meta/Charts/Charts+Documentation -->
+
+```chart
+type: line
+labels: [2024-10, 2024-11]
+series:
+  - title: Tasks Completed
+    data: [20, 2]
+tension: 0.2
+width: 80%
+labelColors: false
+fill: true
+beginAtZero: true
+```
+
+_Note: Chart data should be manually updated to match the completion trend table above. For auto-updating visualization, see the DataviewJS alternative below._
+
+**DataviewJS Alternative (Auto-updating):**
+
+```dataviewjs
+// Query all completed tasks
+const tasks = dv.pages('"tasks/completed"')
+    .where(p => p.type === "task" && p.updated);
+
+// Group tasks by month
+const monthCounts = {};
+for (let task of tasks) {
+    const month = task.updated.toFormat("yyyy-MM");
+    monthCounts[month] = (monthCounts[month] || 0) + 1;
+}
+
+// Sort months and get last 12
+const sortedMonths = Object.keys(monthCounts).sort();
+const last12Months = sortedMonths.slice(-12);
+
+// Prepare data
+const data = last12Months.map(month => monthCounts[month] || 0);
+const totalTasks = data.reduce((a, b) => a + b, 0);
+
+// ASCII bar chart visualization
+dv.header(4, "📊 Task Completion Trend (Auto-updating)");
+dv.paragraph(`**Total:** ${totalTasks} tasks completed across ${last12Months.length} months`);
+
+if (data.length === 0) {
+    dv.paragraph("_No completed tasks yet_");
+} else {
+    const maxCount = Math.max(...data, 1);
+    const rows = last12Months.map((month, i) => {
+        const count = data[i];
+        const barLength = Math.round((count / maxCount) * 30);
+        const bar = "█".repeat(barLength);
+        const percentage = maxCount > 0 ? Math.round((count / maxCount) * 100) : 0;
+        return [month, count, bar + ` ${percentage}%`];
+    });
+
+    dv.table(["Month", "Count", "Visual Trend"], rows);
+}
+```
+
 ---
 
 **Last Updated:** Auto-refreshes when you open this note in Obsidian
-**Note:** These queries require the Dataview plugin to be installed and enabled.
+**Note:** These queries and charts require the Dataview plugin to be installed and enabled.
