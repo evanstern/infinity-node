@@ -2,6 +2,28 @@
 
 Execute a MDTD task from start to finish with comprehensive planning, review, and documentation.
 
+## Quick Reference
+
+**Usage:** `/task IN-XXX [optional context]`
+
+**What it does:**
+- Guides through complete task lifecycle
+- Ensures critical review before starting
+- Maintains scope discipline during work
+- Validates thoroughly before completion
+- Manages git workflow properly
+
+**Need detailed guidance?** Load docs as needed:
+- [[docs/mdtd/execution/README]] - Navigation hub for all execution guidance
+- [[docs/mdtd/execution/pre-task-review]] - Critical analysis before starting
+- [[docs/mdtd/execution/strategy-development]] - Planning and risk identification
+- [[docs/mdtd/execution/work-execution]] - Best practices during implementation
+- [[docs/mdtd/execution/testing-validation]] - Verification approaches
+- [[docs/mdtd/execution/completion]] - Finalization and handoff
+- [[docs/mdtd/execution/agent-coordination]] - Multi-agent coordination
+
+---
+
 ## Usage
 
 ```
@@ -9,8 +31,8 @@ Execute a MDTD task from start to finish with comprehensive planning, review, an
 ```
 
 **Arguments:**
-- `IN-XXX` (required): The task ID (e.g., IN-001, IN-015)
-- `[optional context]` (optional): Any additional context, clarification, or extra information relevant to the task
+- `IN-XXX` (required): Task ID (e.g., IN-001, IN-015)
+- `[optional context]` (optional): Additional context, clarification, or emphasis
 
 **Examples:**
 ```
@@ -20,284 +42,198 @@ Execute a MDTD task from start to finish with comprehensive planning, review, an
 /task IN-015 user reported issues with the arr stack specifically
 ```
 
-**Using the optional context:**
-- Use this to provide clarification or emphasis on specific aspects
-- Highlight priority areas within the task scope
-- Provide additional information discovered after task creation
-- Pass along user feedback or specific concerns
-- This context should inform your approach but doesn't override the task itself
+---
 
-## Process Overview
+## 🚨 CRITICAL - Do These First
 
-This command guides you through the complete lifecycle of executing a MDTD task, from initial review through completion and documentation.
+1. **Read task completely** (`find tasks/ -name "IN-XXX-*.md"`)
+2. **Pre-task review** (load [[docs/mdtd/execution/pre-task-review]]) - Check gaps/risks
+3. **Develop strategy** (load [[docs/mdtd/execution/strategy-development]]) - Get approval
+4. **Update & move task:**
+   ```bash
+   status: in-progress | started: YYYY-MM-DD
+   git mv tasks/backlog/IN-XXX-*.md tasks/current/IN-XXX-*.md
+   ```
+5. **🚨 DO NOT COMMIT** - Only at end after approval
 
-## Phase 1: Pre-Task Review
+---
 
-**IMPORTANT:** Conduct a thorough critical review of the task before beginning work.
+## Process Flow
 
-1. **Locate and Read Task**
-   - Find task file by ID: `tasks/*/IN-XXX-*.md`
-   - Read the entire task: description, context, acceptance criteria, dependencies
-   - Understand the goal, scope, and expected outcomes
+### Phase 1: Pre-Task Review
 
-2. **Critical Analysis**
+**IMPORTANT:** Conduct thorough review before beginning (except for trivial tasks).
 
-   Look for potential issues and gaps:
+**Load:** [[docs/mdtd/execution/pre-task-review]]
 
-   - **Missing inventory/scope**: Do we know exactly what needs to be done?
-   - **Phased approach**: Should this be broken into phases to reduce risk?
-   - **Rollback procedures**: Can we recover if something goes wrong?
-   - **Testing criteria**: Are tests specific enough to validate success?
-   - **Dependencies**: Are all prerequisites truly ready?
-   - **Impact on critical services**: Could this affect Emby, downloads, or arr services?
-   - **Timing considerations**: Should this be done during low-usage windows (3-6 AM)?
-   - **Secret/security concerns**: Are we exposing or mishandling sensitive data?
-   - **Cross-service impacts**: Could this affect other services?
-   - **Documentation gaps**: Is the plan clear enough to execute?
+**Quick checklist:**
+- [ ] Task still relevant? (check if outdated)
+- [ ] Scope clear with inventory?
+- [ ] Should this be phased?
+- [ ] Rollback plan needed?
+- [ ] Testing criteria specific?
+- [ ] Dependencies ready?
+- [ ] Critical services affected?
+- [ ] Timing consideration needed?
+- [ ] Security handled properly?
 
-3. **Check for Common Weak Points**
-   - No inventory of what will be changed
-   - "Audit all" without knowing the scope
-   - Single big-bang approach instead of phased
-   - No rollback plan
-   - Vague testing ("verify it works")
-   - Missing backup steps
-   - Unclear deployment method
-   - No consideration of shared resources/secrets
+**If issues found:**
+1. Present findings to user
+2. Get approval to update task
+3. Update task file
+4. Proceed to strategy
 
-4. **Document Findings**
-   - List specific gaps or concerns found
-   - Assess risk level of each issue
-   - Propose concrete improvements (checklists, phases, specific tests)
-   - Suggest risk mitigation strategies
+---
 
-5. **Present Review to User**
-   - Share findings clearly and concisely
-   - Recommend specific changes to the task
-   - Get user approval before proceeding
-   - Be prepared for scope to evolve based on findings
+### Phase 2: Strategy Development
 
-**Skip pre-task review only if:**
-- Task is trivial (typo fixes, etc.)
-- Task has very clear, limited scope
-- Emergency fix where speed is critical
+**Take time for thoughtful planning.**
 
-## Phase 2: Task Refinement
+**Load:** [[docs/mdtd/execution/strategy-development]]
 
-**If pre-task review identified issues:**
+**Quick checklist:**
+- [ ] Analyzed 2-3 implementation options
+- [ ] Identified edge cases
+- [ ] Evaluated pitfalls (critical vs future work)
+- [ ] Planned agent coordination
+- [ ] Documented strategy clearly
+- [ ] Got user approval
 
-1. **Collaborate with User**
-   - Discuss proposed improvements
-   - Clarify ambiguities
-   - Adjust scope if needed
-   - Get agreement on approach
+**Present strategy to user before proceeding.**
 
-2. **Update Task File**
-   - Add missing sections (inventory, rollback plan, etc.)
-   - Enhance testing criteria to be specific
-   - Break into phases if appropriate
-   - Clarify deployment procedures
-   - Update acceptance criteria
-   - Add risk mitigation steps
+---
 
-3. **Get Final Approval**
-   - Confirm task is now robust enough to execute
-   - Ensure user agrees with refined plan
-   - Document that scope may evolve during work (this is OK!)
+### Phase 3: Begin Execution
 
-## Phase 3: Strategy Development
+**Once strategy approved:**
 
-**Take extra time for thoughtful planning:**
+1. **Update task & move to current:**
+   ```bash
+   # Update frontmatter
+   status: in-progress
+   started: YYYY-MM-DD
 
-1. **Analyze Implementation Options**
-   - Consider multiple approaches
-   - Document pros and cons of each
-   - Keep solutions simple
-   - Stay within task scope
+   # Move to current folder
+   git mv tasks/backlog/IN-XXX-*.md tasks/current/IN-XXX-*.md
+   ```
 
-2. **Identify Edge Cases**
-   - What could go wrong?
-   - What unusual conditions might exist?
-   - What dependencies might fail?
-   - What timing issues could occur?
+2. **🚨 DO NOT COMMIT** - Only commit at end
 
-3. **Evaluate Pitfalls**
-   - Technical challenges
-   - Risk to existing services
-   - Performance implications
-   - Security concerns
-   - Maintainability issues
+3. **Use TodoWrite:**
+   - Break work into session tasks
+   - Track progress
+   - Mark complete as you go
 
-4. **Plan Solutions**
-   - For critical pitfalls: propose solutions (keep simple)
-   - For non-critical issues: suggest follow-up tasks
-   - Document trade-offs
-   - Prioritize what must be addressed now vs. later
+---
 
-5. **Consult with Agents and Plan Agent Usage**
-   - Identify which specialized agents are relevant to this task
-   - Consult agent documentation to understand their capabilities and constraints
-   - Decide which agents should be engaged during execution:
-     - Security Agent for secrets, tunnels, access control
-     - Docker Agent for container configurations
-     - Infrastructure Agent for VM/Proxmox changes
-     - Testing Agent for validation and verification
-     - Media Stack Agent for critical services (Emby, downloads, arr)
-     - Documentation Agent for docs and runbooks
-   - Document agent assignments in strategy
-   - Note any agent coordination requirements
-   - Consider agent-specific constraints (e.g., Testing Agent read-only access)
+### Phase 4: Execute Work
 
-6. **Present Strategy**
-   - Share analysis with user
-   - Explain recommended approach
-   - Discuss alternative options if relevant
-   - Get user approval on strategy
+**Load:** [[docs/mdtd/execution/work-execution]]
 
-6. **New Requirements During Planning**
-   - If new requirements emerge: discuss with user
-   - Update task file to reflect new requirements
-   - Consider if new task should be created instead
-   - Keep scope manageable
+**Core principles:**
+- Task is source of truth (don't deviate)
+- Follow approved strategy
+- Test incrementally after each phase
+- Document continuously, not at end
 
-## Phase 4: Begin Execution
+**Quick checklist:**
+- [ ] Working through phases in order
+- [ ] Testing after each phase
+- [ ] Engaging appropriate agents
+- [ ] Updating task continuously (check off items, add work log)
+- [ ] Noting lessons learned as discovered
+- [ ] Watching for script opportunities
 
-**Once strategy is approved:**
+**If new work emerges:**
+- Stop and discuss with user
+- Update task OR create new task
+- Never diverge silently
 
-1. **Mark Task as In Progress**
-   - Update task frontmatter: `status: in-progress`
-   - Update `started` timestamp
+---
 
-2. **Move Task to Current Folder**
-   - Move from `tasks/backlog/` to `tasks/current/`
-   - Maintain filename (includes task ID)
+### Phase 5: Testing & Validation
 
-3. **Update Task References**
-   - Search for references to old task path
-   - Update wiki-links in other documents
-   - Check DASHBOARD.md and related tasks
+**Load:** [[docs/mdtd/execution/testing-validation]]
 
-4. **Use TodoWrite Tool**
-   - Break down work into session tasks
-   - Track progress during implementation
-   - Mark items as completed as you go
+**Before marking complete:**
 
-## Phase 5: Execute Work
+- [ ] Verify ALL acceptance criteria explicitly
+- [ ] Test edge cases (not just happy path)
+- [ ] Verify error handling
+- [ ] Check dependent services (no negative impact)
+- [ ] Run automated tests if applicable
+- [ ] Manual validation of functionality
+- [ ] Testing Agent validation if needed
 
-**While working:**
+---
 
-1. **Follow the Strategy**
-   - Implement according to approved plan
-   - Work through phases in order
-   - Test incrementally
+### Phase 6: Completion
 
-2. **Task is Source of Truth**
-   - Do NOT make changes outside task scope
-   - If new work is needed: stop and discuss
-   - Either update task requirements or create new task
-   - Never diverge silently from documented plan
+**Load:** [[docs/mdtd/execution/completion]]
 
-3. **Engage Agents**
-   - Use appropriate specialized agents as needed:
-     - Docker Agent for container work
-     - Security Agent for secrets/tunnels
-     - Infrastructure Agent for VM changes
-     - Testing Agent for validation
-     - Documentation Agent for docs
-   - Use Task tool with appropriate subagent_type
-   - Coordinate multiple agents for complex work
+**When work finished and tested:**
 
-4. **Update Task Continuously**
-   - Check off acceptance criteria as completed
-   - Update progress notes in real-time
-   - Document decisions made and rationale
-   - Note lessons learned (what worked, what didn't)
-   - Update information if task details change
-   - Record any issues encountered
+1. **Final task update:**
+   - [ ] All acceptance criteria checked off
+   - [ ] All progress notes complete
+   - [ ] Final outcomes documented
+   - [ ] Comprehensive lessons learned section added
+   - [ ] Follow-up tasks noted
 
-5. **Watch for Script Opportunities**
-   - Notice repeated command patterns
-   - Identify operations that could be scripted
-   - Propose script extraction to user
-   - Create scripts if approved
-   - Use new scripts immediately to validate
+2. **Update status:**
+   ```yaml
+   status: completed
+   completed: YYYY-MM-DD
+   ```
 
-## Phase 6: Testing & Validation
+3. **Move to completed:**
+   ```bash
+   git mv tasks/current/IN-XXX-*.md tasks/completed/IN-XXX-*.md
+   git add tasks/completed/IN-XXX-*.md
+   git add [other changed files]
+   ```
 
-**Before considering task complete:**
+4. **🚨 VERIFY clean state:**
+   ```bash
+   git status
+   ```
+   - Check for duplicate task files
+   - Check for unstaged deletions
+   - Clean up if found
 
-1. **Verify All Acceptance Criteria**
-   - Check each criterion explicitly
-   - Test functionality thoroughly
-   - Validate with appropriate agent if needed
+5. **Update references** (if needed - usually not)
 
-2. **Test Edge Cases**
-   - Test failure scenarios
-   - Verify error handling
-   - Check dependent services
+6. **Present work to user:**
+   - Summary of what was accomplished
+   - Files changed
+   - Testing results
+   - Follow-up tasks created
 
-3. **Run Automated Tests**
-   - If applicable, run test suite
-   - Verify no regressions
-
-4. **Manual Validation**
-   - Test user-facing functionality
-   - Verify expected behavior
-   - Check logs for errors
-
-## Phase 7: Completion
-
-**When work is finished and tested:**
-
-1. **Final Task Update**
-   - Ensure all acceptance criteria checked off
-   - Complete all progress notes
-   - Document final outcomes
-   - Add comprehensive lessons learned section
-   - Update `completed` timestamp
-
-2. **Update Status**
-   - Set frontmatter: `status: completed`
-
-3. **Move to Completed**
-   - Use `git mv` to move task from `tasks/current/` to `tasks/completed/`
-   - Stage all changes with `git add`
-
-4. **Verify Clean State**
-   - Run `git status` to check for:
-     - Lingering task files in wrong locations (duplicate IN-XXX files in backlog/ or current/)
-     - Unstaged deletions (old task file not removed from git)
-   - If found, clean up before committing (delete duplicates, stage deletions)
-
-5. **Update References**
-   - Update wiki-links in other documents if needed
-   - Update DASHBOARD.md if needed
-
-6. **Ask About Commit**
-   - Present summary of changes made
-   - **ASK USER**: "Would you like me to commit these changes?"
+7. **🚨 ASK USER:** "Would you like me to commit these changes?"
    - **NEVER commit without explicit approval**
-   - If approved, use `/commit` command
+   - If approved: use `/commit` command
+
+---
 
 ## Important Rules
 
 ### Scope Management
-- **Task is the source of truth** - do not deviate
-- If new work is needed, update task or create new task
-- Discuss scope changes with user before making them
+- **Task is source of truth** - do not deviate
+- If new work needed: update task OR create new task
+- Discuss scope changes with user
 - Document all changes in task file
 
 ### Safety
 - Always backup before destructive operations
 - Test incrementally, not all at once
-- For critical services: extra caution, consider timing
+- For critical services: extra caution, timing consideration (3-6 AM)
 - Have rollback plan ready
 
 ### Documentation
-- Update task file continuously, not at the end
-- Document "why" decisions were made
-- Capture lessons learned as you discover them
-- Keep notes detailed enough for future reference
+- Update task file continuously, not at end
+- Document "why" behind decisions
+- Capture lessons learned as discovered
+- Keep notes detailed for future reference
 
 ### Commits
 - **ALWAYS ask before committing**
@@ -305,73 +241,36 @@ This command guides you through the complete lifecycle of executing a MDTD task,
 - Use `/commit` command when approved
 - Include task reference in commit message
 
+### Agent Coordination
+- Engage appropriate agents for their domains
+- Follow agent assignments from strategy
+- Provide clear deliverables for handoffs
+- See [[docs/mdtd/execution/agent-coordination]] for details
+
 ### Flexibility
 - Scope may evolve during work - this is OK
-- Discovery may change the nature of the task
+- Discovery may change task nature
 - Communicate findings and adjust accordingly
 - Update task to reflect actual work performed
 
-## Examples
+---
 
-### Good Pre-Task Review Finding
-```
-After reviewing IN-012 (Setup Local DNS), I found these issues:
+## Reference Documentation
 
-1. No inventory of services that need DNS entries
-2. No rollback plan if DNS resolution breaks
-3. Testing criteria is vague ("verify DNS works")
-4. Missing consideration of docker container name resolution
+**Load modular docs as needed** (don't load everything!):
 
-Recommendations:
-- Add Phase 0: Inventory all services needing DNS
-- Add rollback: keep /etc/hosts backup and restore procedure
-- Specify test: "nslookup service.local must resolve to correct IP"
-- Document docker DNS integration requirements
+**Core execution guidance:**
+- [[docs/mdtd/execution/README]] - Navigation hub for all execution docs
+- [[docs/mdtd/execution/pre-task-review]] - Critical analysis checklist
+- [[docs/mdtd/execution/strategy-development]] - Planning and risk identification
+- [[docs/mdtd/execution/work-execution]] - Best practices during work
+- [[docs/mdtd/execution/testing-validation]] - Verification approaches
+- [[docs/mdtd/execution/completion]] - Finalization procedures
+- [[docs/mdtd/execution/agent-coordination]] - Multi-agent coordination
 
-Should I update the task with these improvements?
-```
-
-### Good Strategy Discussion
-```
-For IN-004 (Document Emby), I see two approaches:
-
-Option A: Single comprehensive document
-Pros: Everything in one place, easier to find
-Cons: Large file, harder to maintain, might duplicate arch docs
-
-Option B: Focused service doc + arch references
-Pros: Follows existing pattern, avoids duplication, easier to update
-Cons: Information split across files
-
-I recommend Option B because it matches our existing docs pattern
-and makes maintenance easier. We'll create docs/services/emby.md
-with service-specific info and link to ARCHITECTURE.md for
-infrastructure details.
-
-Does this approach work for you?
-```
-
-### Good Progress Update in Task
-```markdown
-## Progress Notes
-
-### 2024-01-15 14:30 - Initial Audit
-Completed inventory of all services. Found 15 services requiring DNS entries.
-Documented in checklist below.
-
-### 2024-01-15 15:45 - DNS Server Setup
-Installed and configured dnsmasq on VM-100. Chose dnsmasq over bind for
-simplicity - we only need basic A records, not full DNS features.
-
-### 2024-01-15 16:20 - Docker Integration Issue
-Discovered docker containers can't resolve .local domains. Need to configure
-docker daemon.json to use our DNS server. Adding this to requirements.
-
-**Lesson learned**: Should have checked docker DNS integration in pre-task review.
-```
-
-## Reference
-
-- Pre-Task Review details: [[docs/CLAUDE#Pre-Task Review]]
-- Task Management: [[tasks/README|MDTD System]]
-- Agent System: [[docs/agents/README]]
+**Related systems:**
+- [[docs/mdtd/README]] - MDTD documentation index
+- [[docs/mdtd/overview]] - MDTD philosophy
+- [[docs/agents/README]] - Agent system overview
+- [[tasks/README]] - Task management
+- [[docs/AI-COLLABORATION#MDTD]] - MDTD in AI collaboration context
