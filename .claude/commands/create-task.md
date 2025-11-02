@@ -351,6 +351,7 @@ rm tasks/wrong-location/IN-NNN-*.md
 - [[docs/mdtd/reference/agent-selection|Agent Selection]] - Which agent for what work
 - [[docs/mdtd/reference/acceptance-criteria|Acceptance Criteria]] - Writing testable criteria
 - [[docs/mdtd/reference/critical-services|Critical Services]] - Requirements for Emby/arr/downloads
+- [[docs/mdtd/reference/deployment-checklist|Deployment Checklist]] - Quick deployment decisions
 
 **Patterns** - Load when doing similar work:
 - [[docs/mdtd/patterns/new-service-deployment|New Service Deployment]] - Deploy containerized service

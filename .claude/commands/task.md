@@ -21,6 +21,7 @@ Execute a MDTD task from start to finish with comprehensive planning, review, an
 - [[docs/mdtd/execution/testing-validation]] - Verification approaches
 - [[docs/mdtd/execution/completion]] - Finalization and handoff
 - [[docs/mdtd/execution/agent-coordination]] - Multi-agent coordination
+- [[docs/mdtd/execution/service-deployment]] - Service deployment workflow
 
 ---
 
@@ -267,6 +268,7 @@ Execute a MDTD task from start to finish with comprehensive planning, review, an
 - [[docs/mdtd/execution/testing-validation]] - Verification approaches
 - [[docs/mdtd/execution/completion]] - Finalization procedures
 - [[docs/mdtd/execution/agent-coordination]] - Multi-agent coordination
+- [[docs/mdtd/execution/service-deployment]] - Service deployment workflow
 
 **Related systems:**
 - [[docs/mdtd/README]] - MDTD documentation index

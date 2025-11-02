@@ -34,6 +34,18 @@ Load these when working on specific phases:
 - **[[phases/04-scope-definition]]** - Defining boundaries, MVP, scope evolution (~80 lines)
 - **[[phases/05-execution-planning]]** - Phasing, agent assignments, acceptance criteria (~100 lines)
 
+### Execution Guides
+
+Load these during task execution:
+
+- **[[execution/pre-task-review]]** - Critical analysis before starting (~100 lines)
+- **[[execution/strategy-development]]** - Planning and risk identification (~100 lines)
+- **[[execution/work-execution]]** - Best practices during implementation (~100 lines)
+- **[[execution/testing-validation]]** - Verification approaches (~80 lines)
+- **[[execution/completion]]** - Finalization and handoff (~100 lines)
+- **[[execution/agent-coordination]]** - Multi-agent coordination (~100 lines)
+- **[[execution/service-deployment]]** - Service deployment workflow (~310 lines)
+
 ### Reference Guides
 
 Load these for specific questions:
@@ -43,6 +55,7 @@ Load these for specific questions:
 - **[[reference/agent-selection]]** - Which agent for what work (~80 lines)
 - **[[reference/acceptance-criteria]]** - Writing testable criteria (~70 lines)
 - **[[reference/critical-services]]** - Requirements for Emby/arr/downloads (~80 lines)
+- **[[reference/deployment-checklist]]** - Quick deployment decisions (VM, ports, patterns) (~320 lines)
 
 ### Common Patterns
 
