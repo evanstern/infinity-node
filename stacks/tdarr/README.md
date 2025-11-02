@@ -6,9 +6,9 @@ Automated media optimization service using GPU-accelerated transcoding to reduce
 
 Tdarr automatically transcodes media files from H.264 to H.265 (HEVC) using GPU acceleration, achieving 30-50% file size reduction with minimal quality loss. Operates on a schedule (2-6 AM ET) to avoid contention with Emby streaming.
 
-**Deployment**: VM 100 (emby) - co-located with Emby for GPU sharing  
-**Port**: 8265 (Web UI)  
-**Stack**: Docker Compose via Portainer GitOps  
+**Deployment**: VM 100 (emby) - co-located with Emby for GPU sharing
+**Port**: 8265 (Web UI)
+**Stack**: Docker Compose via Portainer GitOps
 **Critical Service**: No (but affects critical service VM)
 
 ## Architecture
@@ -104,7 +104,7 @@ Configured in Tdarr Web UI (Nodes → MainNode):
    ```bash
    # Generate MongoDB password
    openssl rand -base64 32
-   
+
    # Store in Vaultwarden (manual via web UI or CLI)
    # Collection: vm-100-emby
    # Item: tdarr-mongodb-root
@@ -392,4 +392,3 @@ sudo rm -rf /mnt/nas/configs/tdarr
 - 44TB library at 30-50% reduction = 13-22TB saved
 - Extends runway before NAS expansion needed
 - Better ROI on existing storage investment
-
