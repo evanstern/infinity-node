@@ -1,14 +1,14 @@
 ---
 type: task
 task-id: IN-040
-status: in-progress
+status: completed
 priority: 3
 category: documentation
 agent: documentation
 created: 2025-11-02
 updated: 2025-11-02
 started: 2025-11-02
-completed:
+completed: 2025-11-02
 
 # Task classification
 complexity: moderate

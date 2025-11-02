@@ -207,7 +207,9 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 - Use absolute paths when possible
 
 **Bitwarden CLI:**
-- Requires session token from user (ask user to run `./scripts/utils/get-bw-session.sh`)
+- **BEFORE asking user**: Check if session exists with `cat ~/.bw-session 2>/dev/null`
+- If session exists (non-empty output), use it directly
+- If no session: Ask user to run `./scripts/utils/get-bw-session.sh`
 - Prefix EVERY `bw` command with `BW_SESSION="<token>"` (shells don't persist)
 - Never attempt `bw` commands without valid session
 

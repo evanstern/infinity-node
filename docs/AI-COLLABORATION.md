@@ -348,7 +348,14 @@ The AI assistant can access secrets from Bitwarden, but requires a session token
 
 **Process:**
 
-1. **When I need Bitwarden access**, I will say:
+1. **When I need Bitwarden access**, I will FIRST check if a session already exists:
+   ```bash
+   cat ~/.bw-session 2>/dev/null || echo "No session found"
+   ```
+
+   **If a session exists** (non-empty output), use it directly. Skip to step 4.
+
+   **If no session exists** (empty or file not found), I will say:
    > "I need to access Bitwarden. Please run: `./scripts/utils/get-bw-session.sh` and provide me with the session token."
 
 2. **You run the script**:
