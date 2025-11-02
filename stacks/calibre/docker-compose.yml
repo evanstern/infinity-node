@@ -18,8 +18,8 @@ services:
       - CLI_ARGS=${CALIBRE_CLI_ARGS:-}
 
     volumes:
-      - ${CONFIG_PATH}:/config
-      - ${LIBRARY_PATH}:/library
+      - ${CALIBRE_CONFIG_PATH}:/config
+      - ${CALIBRE_LIBRARY_PATH}:/library
       - ${BOOKS_PATH}:/books:ro
       - ${KINDLE_PATH}:/kindle:ro
 
@@ -46,7 +46,7 @@ services:
 
     volumes:
       - ${CALIBRE_WEB_CONFIG_PATH}:/config
-      - ${LIBRARY_PATH}:/library
+      - ${CALIBRE_LIBRARY_PATH}:/library
 
     deploy:
       resources:
