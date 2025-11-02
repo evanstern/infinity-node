@@ -34,6 +34,7 @@ services:
     container_name: tdarr_node
     image: ghcr.io/haveagitgat/tdarr:latest
     restart: unless-stopped
+    runtime: nvidia
 
     environment:
       - nodeID=MainNode
@@ -57,19 +58,6 @@ services:
 
     networks:
       - tdarr
-
-    # GPU hardware transcoding enabled
-    # Requires NVIDIA GPU and nvidia-docker runtime
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities:
-                - gpu
-                - compute
-                - video
 
   # MongoDB - Database for Tdarr
   tdarr_mongodb:
