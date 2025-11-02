@@ -1,0 +1,94 @@
+name: tdarr
+
+services:
+  # Tdarr Server - Web UI and orchestration
+  tdarr_server:
+    container_name: tdarr_server
+    image: ghcr.io/haveagitgat/tdarr:latest
+    restart: unless-stopped
+    ports:
+      - 8265:8265  # Web UI
+      - 8266:8266  # Server port
+    
+    environment:
+      - serverIP=0.0.0.0
+      - serverPort=8266
+      - webUIPort=8265
+      - TZ=${TZ:-America/New_York}
+      - PUID=1000
+      - PGID=1000
+    
+    volumes:
+      - ${CONFIG_PATH}/server:/app/server
+      - ${CONFIG_PATH}/configs:/app/configs
+      - ${CONFIG_PATH}/logs:/app/logs
+      - ${MEDIA_PATH_MOVIES}:/media/movies
+      - ${MEDIA_PATH_TV}:/media/tv
+      - ${TRANSCODE_CACHE}:/temp
+    
+    networks:
+      - tdarr
+
+  # Tdarr Node - Worker with GPU access
+  tdarr_node:
+    container_name: tdarr_node
+    image: ghcr.io/haveagitgat/tdarr:latest
+    restart: unless-stopped
+    
+    environment:
+      - nodeID=MainNode
+      - nodeIP=0.0.0.0
+      - nodePort=8267
+      - serverIP=tdarr_server
+      - serverPort=8266
+      - TZ=${TZ:-America/New_York}
+      - PUID=1000
+      - PGID=1000
+      # NVIDIA environment variables for GPU access
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+    
+    volumes:
+      - ${CONFIG_PATH}/configs:/app/configs
+      - ${CONFIG_PATH}/logs:/app/logs
+      - ${MEDIA_PATH_MOVIES}:/media/movies
+      - ${MEDIA_PATH_TV}:/media/tv
+      - ${TRANSCODE_CACHE}:/temp
+    
+    networks:
+      - tdarr
+    
+    # GPU hardware transcoding enabled
+    # Requires NVIDIA GPU and nvidia-docker runtime
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+                - compute
+                - video
+
+  # MongoDB - Database for Tdarr
+  tdarr_mongodb:
+    container_name: tdarr_mongodb
+    image: mongo:4.4
+    restart: unless-stopped
+    
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+      - TZ=${TZ:-America/New_York}
+    
+    volumes:
+      - ${CONFIG_PATH}/mongodb:/data/db
+    
+    networks:
+      - tdarr
+
+networks:
+  tdarr:
+    name: tdarr_network
+
