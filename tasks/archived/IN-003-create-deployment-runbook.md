@@ -1,12 +1,14 @@
 ---
 type: task
 task-id: IN-003
-status: pending
+status: superseded
 priority: 3
 category: documentation
 agent: documentation
 created: 2025-10-24
-updated: 2025-10-26
+updated: 2025-11-02
+superseded-by: IN-040
+superseded-date: 2025-11-02
 tags:
   - task
   - documentation
@@ -15,6 +17,18 @@ tags:
 ---
 
 # Task: IN-003 - Create Service Deployment Runbook
+
+> [!warning]- ⚠️ Task Superseded
+>
+> **Status**: This task has been superseded and will not be completed as originally planned.
+>
+> **Superseded by**: [[tasks/backlog/IN-040-create-service-deployment-documentation|IN-040 - Create Service Deployment Documentation Modules]]
+>
+> **Reason**: During task creation for IN-003, we realized that a traditional human-oriented runbook isn't the right solution for our use case. Since deployments are primarily AI-assisted and warrant full MDTD task planning, we decided to create modular documentation that integrates with the existing `/create-task` and `/task` commands instead. This approach leverages the proven MDTD system and provides AI-optimized guidance while still being human-readable.
+>
+> **Date**: 2025-11-02
+>
+> **Preserved because**: The original task contains valuable thinking about deployment workflow phases and requirements that informed the design of IN-040. It serves as historical context for understanding why we chose the modular documentation approach over a traditional runbook.
 
 ## Description
 
