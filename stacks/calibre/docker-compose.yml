@@ -20,7 +20,7 @@ services:
     volumes:
       - ${CALIBRE_CONFIG_PATH}:/config
       - ${CALIBRE_LIBRARY_PATH}:/library
-      - ${BOOKS_PATH}:/books:ro
+      - ${BOOKS_PATH}:/books
       - ${KINDLE_PATH}:/kindle:ro
 
     deploy:
