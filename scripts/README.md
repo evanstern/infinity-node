@@ -543,6 +543,96 @@ done
 
 ### Infrastructure (`infrastructure/`)
 
+#### `check-proxmox-resources.sh`
+**Purpose:** Display comprehensive Proxmox host resource information and VM allocations
+**Usage:** `./check-proxmox-resources.sh [--json]`
+**Options:** `--json` for machine-readable JSON output
+**Dependencies:** SSH access to Proxmox host
+**Exit Codes:** 0 (success)
+
+**Example:**
+```bash
+# Human-readable report
+./scripts/infrastructure/check-proxmox-resources.sh
+
+# JSON output for scripting/automation
+./scripts/infrastructure/check-proxmox-resources.sh --json
+
+# Use in monitoring/dashboard
+./scripts/infrastructure/check-proxmox-resources.sh --json | jq '.allocation.running'
+```
+
+**Use Cases:**
+- Quick overview of available Proxmox resources (CPU, RAM)
+- Capacity planning before creating new VMs
+- Resource allocation audits across all VMs
+- Identify resource constraints or oversubscription
+- Monitoring integration via JSON output
+
+**Features:**
+- **Hardware info:** CPU model, physical/logical cores, total memory
+- **Current usage:** Real-time memory usage and availability
+- **VM inventory:** All VMs with core/memory allocations and status
+- **Allocation summary:** Total and running VM resource usage
+- **Status indicators:** Color-coded warnings for oversubscription/high usage
+- **JSON output:** Machine-readable format for automation
+- **Bash 3.2 compatible:** Works on macOS without Homebrew bash
+
+**Output Information:**
+- CPU: Model, physical cores (8), logical cores (16), threads per core
+- Memory: Total (124 GB), used, available
+- Per-VM: VMID, name, status, cores allocated, memory allocated
+- Running totals: Cores allocated (% of logical cores), Memory allocated (% of total)
+- Resource status: CPU oversubscription level, memory usage level
+
+**Example Output:**
+```
+═══════════════════════════════════════════════════════════════
+        PROXMOX RESOURCE REPORT - 192.168.86.106
+═══════════════════════════════════════════════════════════════
+
+HARDWARE RESOURCES
+CPU:
+  Model:          AMD Ryzen 7 7700 8-Core Processor
+  Physical cores: 8 (across 1 socket(s))
+  Logical cores:  16 (2 threads per core)
+
+Memory:
+  Total:          124.9 GB
+  Used:           51.3 GB
+  Available:      73.6 GB
+
+VIRTUAL MACHINE ALLOCATIONS
+
+VMID     NAME                      STATUS        CORES       MEMORY
+────────────────────────────────────────────────────────────────
+100      emby                      running          2       8.0 GB
+101      downloads                 running          8      16.0 GB
+102      infinity-node-arr         running          8      32.0 GB
+103      misc                      running          6      16.0 GB
+
+ALLOCATION SUMMARY
+
+All VMs (including stopped):
+  Cores:  26 allocated
+  Memory: 76.0 GB allocated
+
+Running VMs only:
+  Cores:  24 allocated (150.0% of 16 logical cores)
+  Memory: 72.0 GB allocated (57.6% of 124.9 GB)
+
+RESOURCE STATUS
+  CPU:    ✓ Oversubscribed (150.0%) - normal for VMs
+  Memory: ✓ Healthy (57.6% allocated)
+
+═══════════════════════════════════════════════════════════════
+```
+
+**Related:**
+- Useful for capacity planning before `create-test-vm.sh`
+- Complements `expand-vm-disk.sh` for resource management
+- JSON output enables monitoring dashboard integration
+
 #### `update-stack-env.sh`
 **Purpose:** Update environment variables on Portainer Git-based stacks
 **Usage:** `./update-stack-env.sh <portainer-secret-name> <collection-name> <stack-id> <endpoint-id> --env "KEY=VALUE" [OPTIONS]`
