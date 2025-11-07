@@ -54,6 +54,7 @@ Watch for script opportunities **while working on tasks**:
 scripts/
 ├── README.md                          # This file
 ├── utils/                             # Utility scripts
+│   ├── organize-music.py             # Organize Apple Music folder structure
 │   └── bw-setup-session.sh           # Setup Bitwarden CLI session
 ├── tasks/                             # Task lifecycle management
 │   ├── get-next-task-id.sh           # Get next available task ID
@@ -177,6 +178,64 @@ Task management scripts that support the MDTD workflow and `/create-task` slash 
 Manual task file moves with `git mv` are error-prone and often leave duplicate files in multiple directories. This script handles the entire operation atomically with verification.
 
 ### Utilities (`utils/`)
+
+#### `organize-music.py`
+**Purpose:** Organize Apple Music folder structure by consolidating albums split across multiple artist folders
+**Usage:** `python3 scripts/utils/organize-music.py [--dry-run] [--json] [--music-dir PATH]`
+**Dependencies:** Python 3, standard library only
+**Exit Codes:** 0 (success), 1 (error - directory not found or other issues)
+**Default music directory:** `/Volumes/media/TuneFab/Apple Music`
+
+**Example:**
+```bash
+# Preview changes (always recommended first)
+python3 scripts/utils/organize-music.py --dry-run
+
+# Execute consolidation
+python3 scripts/utils/organize-music.py
+
+# JSON output for integration with other tools
+python3 scripts/utils/organize-music.py --dry-run --json | jq '.summary'
+
+# Custom music directory
+python3 scripts/utils/organize-music.py --dry-run --music-dir "/path/to/music"
+```
+
+**Use Cases:**
+- After importing music from Apple Music or other services
+- When albums are split across multiple artist folders (e.g., "Tweaker" vs "Tweaker & David Sylvian")
+- Organizing compilation albums properly (creates "Various Artists" folder)
+- Before setting up music library software (Emby, Plex, etc.)
+- Integration with automation workflows via JSON output
+
+**Features:**
+- **Multi-artist consolidation:** Detects folders like "Tweaker & David Sylvian" and consolidates under main artist "Tweaker"
+- **Compilation handling:** Identifies same album under multiple unrelated artists and consolidates to "Various Artists"
+- **Track validation:** Extracts track numbers from filenames and checks for gaps/completeness
+- **Dry-run mode:** Preview all changes before executing
+- **JSON output:** Machine-readable output for piping to other tools or automation
+- **Safety:** Only moves files, never deletes; skips duplicates; cleans up empty directories
+- **Completeness reporting:** Shows missing tracks and whether albums will be complete after consolidation
+
+**What It Does:**
+1. Scans music directory structure (Artist/Album/Tracks)
+2. Identifies albums split across artist folders
+3. Plans consolidations (main artist merges and compilation consolidations)
+4. Validates track completeness (checks for gaps in track numbering)
+5. Moves tracks to target locations (if not dry-run)
+6. Removes empty directories after consolidation
+
+**Safety Features:**
+- Always run with `--dry-run` first to preview changes
+- Only moves audio files (`.flac`, `.mp3`, `.m4a`, `.aac`, `.wav`)
+- Skips tracks that already exist in target location
+- Removes empty directories only after all tracks moved
+- Non-destructive: never deletes files, only moves them
+
+**Related:**
+- See `.claude/commands/organize-music.md` for slash command usage
+- Music library managed via Emby on VM 100
+- Storage: Synology NAS at 192.168.86.43
 
 #### `bw-setup-session.sh`
 **Purpose:** Setup Bitwarden CLI session for Claude Code access

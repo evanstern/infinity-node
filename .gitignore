@@ -54,3 +54,5 @@ tasks/.task-id-counter
 
 # Temporary secret migration file (delete after migrating to Vaultwarden)
 stacks/SECRETS-TO-MIGRATE.md
+.gitignore
+__pycache__/

@@ -206,6 +206,7 @@ Cursor supports custom slash commands that streamline common workflows. The infi
 - **`/task IN-NNN`** - Start or resume work on an MDTD task
 - **`/create-task [description]`** - Create a new MDTD task with guided workflow
 - **`/commit`** - Generate conventional commit message for staged changes
+- **`/organize-music [--dry-run]`** - Organize Apple Music folder structure by consolidating split albums
 - **`/edit`** - Switch to edit mode
 - **`/help`** - Show all available commands
 
@@ -384,6 +385,43 @@ Analyzes staged changes and creates a conventional commit message following the 
 **When to use:**
 - After completing a logical unit of work
 - Required for all commits (never commit without using this)
+
+### /organize-music - Organize Apple Music Folder Structure
+
+```
+/organize-music [--dry-run] [--json] [--music-dir PATH]
+```
+
+Organizes Apple Music folder structure by consolidating albums that have been split across multiple artist folders.
+
+**What it does:**
+- Scans Apple Music directory (`/Volumes/media/TuneFab/Apple Music` by default)
+- Identifies albums split across artist folders (e.g., "Tweaker" vs "Tweaker & David Sylvian")
+- Consolidates albums under main artist folders
+- Handles compilation albums by creating "Various Artists" folder
+- Validates track completeness (checks for gaps in track numbering)
+- Supports dry-run mode to preview changes
+- Supports JSON output for integration with other tools
+
+**Usage:**
+- **Always start with dry-run:** `/organize-music --dry-run`
+- **Execute after review:** `/organize-music`
+- **JSON output:** `/organize-music --dry-run --json`
+- **Custom path:** `/organize-music --music-dir "/path/to/music"`
+
+**When to use:**
+- After importing music from Apple Music or other services
+- When albums are split across multiple artist folders
+- To organize compilation albums properly
+- Before setting up music library software (Emby, Plex, etc.)
+
+**Safety:**
+- Script only moves files, never deletes
+- Always run with `--dry-run` first to preview changes
+- Skips tracks that already exist in target location
+- Cleans up empty directories automatically
+
+**Script location:** `scripts/utils/organize-music.py`
 
 ### Other Common Commands
 
