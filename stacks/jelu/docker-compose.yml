@@ -1,0 +1,16 @@
+name: jelu
+services:
+  jelu:
+    image: wabayang/jelu:latest
+    container_name: jelu
+    restart: unless-stopped
+    ports:
+      - ${PORT}:11111
+    volumes:
+      - ${CONFIG_PATH}:/config
+      - ${DATABASE_PATH}:/database
+      - ${IMAGES_PATH}:/files/images
+      - ${IMPORTS_PATH}:/files/imports
+      - /etc/timezone:/etc/timezone:ro
+    environment:
+      - TZ=${TZ}
