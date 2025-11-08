@@ -13,3 +13,12 @@ services:
       - TEST_URL_TIMEOUT=${TEST_URL_TIMEOUT:-30000}
       - SESSION_TTL=${SESSION_TTL:-60}
       - USER_AGENT=${USER_AGENT:-Mozilla/5.0}
+
+    networks:
+      - default
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network

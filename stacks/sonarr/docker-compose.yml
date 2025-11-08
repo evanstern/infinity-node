@@ -20,7 +20,16 @@ services:
       - ${DOWNLOADS_PATH}:/downloads
       - ${COMPLETE_PATH:-/mnt/complete}:/complete
 
+    networks:
+      - default
+      - traefik-network
+
     deploy:
       resources:
         limits:
           memory: ${MEMORY_LIMIT:-1G}
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network

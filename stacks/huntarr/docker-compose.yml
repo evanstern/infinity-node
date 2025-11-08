@@ -11,3 +11,12 @@ services:
       - TZ=${TZ:-America/Toronto}
     volumes:
       - ${CONFIG_PATH}:/config
+
+    networks:
+      - default
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network

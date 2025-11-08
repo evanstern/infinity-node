@@ -13,3 +13,12 @@ services:
       - JELLYFIN_TYPE=${MEDIA_SERVER_TYPE:-emby}
     volumes:
       - ${CONFIG_PATH}:/app/config
+
+    networks:
+      - default
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network

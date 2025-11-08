@@ -19,7 +19,16 @@ services:
       - ${MOVIES_PATH}:/movies
       - ${DOWNLOADS_PATH}:/downloads
 
+    networks:
+      - default
+      - traefik-network
+
     deploy:
       resources:
         limits:
           memory: ${MEMORY_LIMIT:-1G}
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network

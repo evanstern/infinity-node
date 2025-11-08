@@ -15,7 +15,17 @@ services:
       - ${CONFIG_PATH}:/config
       - ${MUSIC_PATH}:/music
       - ${DOWNLOADS_PATH}:/downloads
+
+    networks:
+      - default
+      - traefik-network
+
     deploy:
       resources:
         limits:
           memory: ${MEMORY_LIMIT:-1G}
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network
