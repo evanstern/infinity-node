@@ -1,0 +1,53 @@
+# Traefik Dynamic Configuration for VM 101 (downloads)
+# This file contains routing rules for all services on VM 101
+# Update this file to add/remove/modify service routes
+
+http:
+  # Routers define how requests are matched and routed
+  routers:
+    # Deluge - Torrent client (CRITICAL)
+    # Note: Deluge uses network_mode: service:vpn, so we route to VPN container's exposed port
+    deluge:
+      rule: "Host(`deluge.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: deluge
+
+    # NZBGet - Usenet downloader (CRITICAL)
+    # Note: NZBGet uses network_mode: service:vpn, so we route to VPN container's exposed port
+    nzbget:
+      rule: "Host(`nzbget.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: nzbget
+
+    # Portainer - Container management
+    portainer-101:
+      rule: "Host(`portainer-101.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: portainer-101
+
+  # Services define the backend servers to route to
+  services:
+    # Deluge - Internal port 8112 (via VPN container)
+    # VPN container exposes port 8112 on host, route via Docker bridge gateway
+    deluge:
+      loadBalancer:
+        servers:
+          - url: "http://172.17.0.1:8112"
+
+    # NZBGet - Internal port 6789 (via VPN container)
+    # VPN container exposes port 6789 on host, route via Docker bridge gateway
+    nzbget:
+      loadBalancer:
+        servers:
+          - url: "http://172.17.0.1:6789"
+
+    # Portainer - Internal port 9000 (HTTP UI port)
+    # Note: Portainer serves web UI on port 9000, not 8000
+    portainer-101:
+      loadBalancer:
+        servers:
+          - url: "http://portainer:9000"
+
