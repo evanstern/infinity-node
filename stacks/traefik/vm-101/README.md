@@ -18,7 +18,7 @@ Download clients (Deluge and NZBGet) use `network_mode: service:vpn` for securit
 - Deluge and NZBGet share the VPN container's network namespace
 - VPN container exposes ports 8112 (Deluge) and 6789 (NZBGet) on the host
 - **Solution**: Route to `172.17.0.1:8112` and `172.17.0.1:6789` (Docker bridge gateway) to reach VPN container's exposed ports
-- Direct port access (`http://192.168.86.173:8112`, `http://192.168.86.173:6789`) remains available as fallback
+- Direct port access (`http://deluge.local.infinity-node.com:8112`, `http://nzbget.local.infinity-node.com:6789`) remains available as fallback
 
 ### Port Availability
 

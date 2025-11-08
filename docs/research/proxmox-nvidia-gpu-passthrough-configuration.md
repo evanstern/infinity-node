@@ -333,7 +333,7 @@ Should show GPU accessible from within container.
 ### Enable Hardware Acceleration
 
 **Steps**:
-1. Access Emby web UI: http://192.168.86.172:8096
+1. Access Emby web UI: http://emby.local.infinity-node.com (port-free) or http://emby.local.infinity-node.com:8096 (direct)
 2. Navigate to: **Settings → Transcoding**
 3. Enable: **"Enable hardware acceleration when available"**
 4. Select: **"NVIDIA NVENC"** from dropdown

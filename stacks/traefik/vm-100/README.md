@@ -16,7 +16,7 @@ Emby runs with `network_mode: host` for performance reasons. This means:
 - Emby is directly accessible on the host's network interface
 - Traefik (running in bridge mode) cannot reach Emby via Docker network
 - **Solution**: Route to `host.docker.internal:8096` which allows bridge containers to reach host services
-- Direct port access (`http://192.168.86.172:8096`) remains available as fallback
+- Direct port access (`http://emby.local.infinity-node.com:8096`) remains available as fallback
 
 ### Port Availability
 

@@ -32,7 +32,7 @@ aliases:
 **Service:** Audiobookshelf (Audiobook and Podcast Server)
 **VM:** 103 (misc)
 **Priority:** Medium - Media library management
-**Access:** http://audiobookshelf.local.infinity-node.com:13378
+**Access:** http://audiobookshelf.local.infinity-node.com (port-free via Traefik) or http://audiobookshelf.local.infinity-node.com:13378 (direct)
 **Image:** `ghcr.io/advplyr/audiobookshelf:latest`
 
 ## Overview

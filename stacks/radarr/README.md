@@ -32,7 +32,7 @@ aliases:
 **Service:** Radarr (Movie Management & Automation)
 **VM:** 102 (arr)
 **Priority:** CRITICAL - Automates movie acquisition for household
-**Access:** http://radarr.local.infinity-node.com:7878
+**Access:** http://radarr.local.infinity-node.com (port-free via Traefik) or http://radarr.local.infinity-node.com:7878 (direct)
 **Image:** `lscr.io/linuxserver/radarr:latest`
 
 ## Overview
@@ -64,7 +64,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. Access: http://radarr.local.infinity-node.com:7878
+1. Access: http://radarr.local.infinity-node.com (port-free) or http://radarr.local.infinity-node.com:7878 (direct)
 2. Settings → Media Management:
    - Root folder: `/movies`
    - File naming conventions

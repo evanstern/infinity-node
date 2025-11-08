@@ -35,7 +35,7 @@ aliases:
 **Service:** Emby (Media Server)
 **VM:** 100 (emby)
 **Priority:** CRITICAL - Primary media streaming for household users
-**Access:** http://emby.local.infinity-node.com:8096
+**Access:** http://emby.local.infinity-node.com (port-free via Traefik) or http://emby.local.infinity-node.com:8096 (direct)
 **Image:** `emby/embyserver:latest`
 
 ## Overview

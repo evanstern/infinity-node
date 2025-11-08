@@ -33,7 +33,7 @@ aliases:
 **Service:** Navidrome (Music Streaming Server)
 **VM:** 103 (misc)
 **Priority:** Medium - Personal music streaming
-**Access:** http://navidrome.local.infinity-node.com:4533
+**Access:** http://navidrome.local.infinity-node.com (port-free via Traefik) or http://navidrome.local.infinity-node.com:4533 (direct)
 **Image:** `deluan/navidrome:latest`
 
 ## Overview

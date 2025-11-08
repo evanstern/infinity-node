@@ -55,7 +55,7 @@ This Traefik instance routes the following services:
    # Check Traefik logs
    docker logs traefik
 
-   # Test dashboard
+   # Test dashboard (direct access - dashboard not routed via Traefik)
    curl http://192.168.86.249:8080/api/rawdata
    ```
 

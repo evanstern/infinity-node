@@ -9,14 +9,14 @@
 #
 # Usage:
 #   # Direct mode (provide token and URL)
-#   ./query-portainer-stacks.sh --token "ptr_xxx" --url "https://192.168.86.172:9443" [--json]
+#   ./query-portainer-stacks.sh --token "ptr_xxx" --url "http://192.168.86.172:9000" [--json]
 #
 #   # Vaultwarden mode (retrieve from VW)
 #   ./query-portainer-stacks.sh --secret "portainer-api-token-vm-100" --collection "shared" [--json]
 #
 # Examples:
 #   # Direct mode
-#   ./query-portainer-stacks.sh --token "ptr_ABC123" --url "https://192.168.86.172:9443"
+#   ./query-portainer-stacks.sh --token "ptr_ABC123" --url "http://192.168.86.172:9000"
 #
 #   # Vaultwarden mode
 #   ./query-portainer-stacks.sh --secret "portainer-api-token-vm-100" --collection "shared"

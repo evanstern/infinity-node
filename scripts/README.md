@@ -776,7 +776,7 @@ RESOURCE STATUS
 # Direct mode (provide token and URL manually)
 ./scripts/infrastructure/query-portainer-stacks.sh \
   --token "ptr_ABC123..." \
-  --url "https://portainer-100.local.infinity-node.com:9443"
+  --url "http://portainer-100.local.infinity-node.com:9000"
 
 # Vaultwarden mode (auto-retrieve credentials)
 ./scripts/infrastructure/query-portainer-stacks.sh \

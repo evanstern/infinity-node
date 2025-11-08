@@ -38,8 +38,8 @@ aliases:
 **VM:** 101 (downloads)
 **Priority:** CRITICAL - Media acquisition for household users
 **Access:**
-- Deluge: http://deluge.local.infinity-node.com:8112
-- NZBGet: http://nzbget.local.infinity-node.com:6789
+- Deluge: http://deluge.local.infinity-node.com (port-free via Traefik) or http://deluge.local.infinity-node.com:8112 (direct)
+- NZBGet: http://nzbget.local.infinity-node.com (port-free via Traefik) or http://nzbget.local.infinity-node.com:6789 (direct)
 **Images:**
 - `ghcr.io/bubuntux/nordlynx:latest`
 - `ghcr.io/linuxserver/deluge:latest`

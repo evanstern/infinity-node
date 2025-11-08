@@ -144,7 +144,7 @@ Emby stack deployed successfully. Service is running and accessible. Minor confi
 - Resource usage: Normal (2.1GB/8GB RAM, 15% CPU)
 
 #### ✅ PASS: Service Accessibility
-- Emby web UI accessible at http://192.168.86.172:8096
+- Emby web UI accessible at http://emby.local.infinity-node.com (port-free) or http://emby.local.infinity-node.com:8096 (direct)
 - Response time: 245ms
 - No errors in access logs
 

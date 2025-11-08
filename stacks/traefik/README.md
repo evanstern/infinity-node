@@ -269,10 +269,10 @@ Then redeploy Traefik stack via Portainer (GitOps will auto-update).
 
 ### Traefik Dashboard
 
-- **VM 100**: http://192.168.86.172:8080
-- **VM 101**: http://192.168.86.173:8080
-- **VM 102**: http://192.168.86.174:8080
-- **VM 103**: http://192.168.86.249:8080
+- **VM 100**: http://192.168.86.172:8080 (direct access - dashboard not routed via Traefik)
+- **VM 101**: http://192.168.86.173:8080 (direct access - dashboard not routed via Traefik)
+- **VM 102**: http://192.168.86.174:8080 (direct access - dashboard not routed via Traefik)
+- **VM 103**: http://192.168.86.249:8080 (direct access - dashboard not routed via Traefik)
 
 ### Service Access (Port-Free)
 

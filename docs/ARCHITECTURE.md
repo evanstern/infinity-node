@@ -105,6 +105,7 @@ External Access:
 - Network: virtio, bridge vmbr0
 
 **Services:**
+- [[stacks/traefik/README|Traefik]] (traefik:v3.0) - Reverse proxy for port-free access
 - [[stacks/emby/README|Emby Server]] (emby/embyserver:latest)
 - [[stacks/newt/README|Pangolin client (newt)]]
 - [[stacks/portainer/README|Portainer CE]]
@@ -136,6 +137,7 @@ External Access:
 - Network: virtio, bridge vmbr0
 
 **Services:**
+- [[stacks/traefik/README|Traefik]] (traefik:v3.0) - Reverse proxy for port-free access
 - [[stacks/downloads/README|Downloads Stack]] (NordVPN + Deluge + NZBGet)
   - NordVPN (bubuntux/nordlynx) - VPN tunnel
   - Deluge (linuxserver/deluge) - Torrent client
@@ -175,6 +177,7 @@ External Access:
 - Network: virtio, bridge vmbr0
 
 **Services:**
+- [[stacks/traefik/README|Traefik]] (traefik:v3.0) - Reverse proxy for port-free access
 - [[stacks/radarr/README|Radarr]] (linuxserver/radarr) - Movie management
 - [[stacks/sonarr/README|Sonarr]] (linuxserver/sonarr) - TV management
 - [[stacks/lidarr/README|Lidarr]] (linuxserver/lidarr) - Music management
@@ -240,6 +243,7 @@ External Access:
 - [[stacks/mybibliotheca/README|MyBibliotheca]] - Book tracking and library management
 
 **Other:**
+- [[stacks/traefik/README|Traefik]] (traefik:v3.0) - Reverse proxy for port-free access
 - [[stacks/homepage/README|Homepage]] (gethomepage/homepage) - Dashboard
 - [[stacks/newt/README|Pangolin client (newt)]]
 - [[stacks/portainer/README|Portainer CE]]
@@ -263,6 +267,36 @@ External Access:
 
 **Status:** Not currently active
 **Purpose:** General purpose template/testing
+
+## Reverse Proxy Architecture
+
+### Traefik Reverse Proxy
+
+**Purpose:** Port-free service access via DNS names across all VMs
+**Deployment:** One Traefik instance per VM (100, 101, 102, 103)
+**Access:** Services accessible via `http://service-name.local.infinity-node.com` (no port required)
+
+**Architecture:**
+- Each VM runs its own Traefik instance on ports 80 and 443
+- Traefik routes traffic to backend services based on hostname
+- Services remain accessible via direct IP:PORT as fallback
+- Configuration managed via Git with Portainer GitOps (5-minute polling)
+
+**Special Configurations:**
+- **VM 100 (Emby)**: Routes via Docker bridge gateway IP due to host network mode
+- **VM 101 (Downloads)**: Routes to VPN container ports (8112, 6789)
+- **VM 102 (arr)**: Standard bridge network routing
+- **VM 103 (misc)**: Standard bridge network routing
+
+**Benefits:**
+- Cleaner URLs: `http://radarr.local.infinity-node.com` instead of `http://192.168.86.174:7878`
+- Centralized routing per VM
+- Foundation for future TLS/HTTPS configuration
+- Consistent access pattern across entire infrastructure
+
+**Documentation:** See [[stacks/traefik/README|Traefik Stack Documentation]] and [[docs/runbooks/traefik-management|Traefik Management Runbook]] for detailed configuration and management.
+
+---
 
 ## Network Services
 
@@ -543,16 +577,21 @@ infinity-node/
 
 **Portainer CE:**
 - Instance running on each VM
-- **Access URLs (DNS - recommended):**
-  - VM 100: https://portainer-100.local.infinity-node.com:9443
-  - VM 101: https://portainer-101.local.infinity-node.com:32768
-  - VM 102: https://portainer-102.local.infinity-node.com:9443
-  - VM 103: https://portainer-103.local.infinity-node.com:9443
-- **Access URLs (IP - fallback):**
-  - VM 100: https://192.168.86.172:9443
-  - VM 101: https://192.168.86.173:32768 *(non-standard port)*
-  - VM 102: https://192.168.86.174:9443
-  - VM 103: https://192.168.86.249:9443
+- **Access URLs (Port-free via Traefik - recommended):**
+  - VM 100: http://portainer-100.local.infinity-node.com
+  - VM 101: http://portainer-101.local.infinity-node.com
+  - VM 102: http://portainer-102.local.infinity-node.com
+  - VM 103: http://portainer-103.local.infinity-node.com
+- **Access URLs (Direct DNS with port - fallback):**
+  - VM 100: http://portainer-100.local.infinity-node.com:9000
+  - VM 101: http://portainer-101.local.infinity-node.com:9000
+  - VM 102: http://portainer-102.local.infinity-node.com:9000
+  - VM 103: http://portainer-103.local.infinity-node.com:9000
+- **Access URLs (Direct IP - fallback):**
+  - VM 100: http://192.168.86.172:9000
+  - VM 101: http://192.168.86.173:32768 *(non-standard port)*
+  - VM 102: http://192.168.86.174:9000
+  - VM 103: http://192.168.86.249:9000
 - **Features:**
   - Web UI for container management
   - Git-based stack deployment (GitOps)

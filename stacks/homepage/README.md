@@ -32,7 +32,7 @@ aliases:
 **Service:** Homepage (Dashboard)
 **VM:** 103 (misc)
 **Priority:** Medium - Service dashboard
-**Access:** http://homepage.local.infinity-node.com:3001
+**Access:** http://homepage.local.infinity-node.com (port-free via Traefik) or http://homepage.local.infinity-node.com:3001 (direct)
 **Image:** `ghcr.io/gethomepage/homepage:latest`
 
 ## Overview
@@ -85,7 +85,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. **Access Web UI:** Navigate to http://homepage.local.infinity-node.com:3001
+1. **Access Web UI:** Navigate to http://homepage.local.infinity-node.com (port-free) or http://homepage.local.infinity-node.com:3001 (direct)
 2. **Configuration:** Homepage uses YAML files in `./config/homepage/`
 3. **Main Config Files:**
    - `services.yaml` - Service widgets and integrations

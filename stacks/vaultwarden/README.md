@@ -124,8 +124,9 @@ docker compose logs -f
 
 ### Web UI
 
-- **URL:** https://vaultwarden.infinity-node.com (via Pangolin tunnel)
-- **Local:** http://vaultwarden.local.infinity-node.com:8111
+- **Port-free (Traefik):** http://vaultwarden.local.infinity-node.com (recommended)
+- **Direct access:** http://vaultwarden.local.infinity-node.com:8111
+- **External (Pangolin):** https://vaultwarden.infinity-node.com (via Pangolin tunnel)
 - **Admin Panel:** https://vaultwarden.infinity-node.com/admin
   - Requires `ADMIN_TOKEN` from .env
 

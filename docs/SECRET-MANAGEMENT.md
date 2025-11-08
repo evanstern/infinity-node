@@ -36,7 +36,7 @@ This document describes how secrets are managed in the infinity-node infrastruct
 ## Vaultwarden Instance
 
 **Location:** VM 103 (192.168.86.249)
-**Local Access:** http://192.168.86.249:8111
+**Local Access:** http://vaultwarden.local.infinity-node.com (port-free via Traefik) or http://vaultwarden.local.infinity-node.com:8111 (direct)
 **External Access:** https://vaultwarden.infinity-node.com (via Pangolin tunnel)
 **Docker Container:** `vaultwarden`
 
@@ -48,10 +48,10 @@ This document describes how secrets are managed in the infinity-node infrastruct
 - Auth: Username/password + 2FA (if configured)
 
 **CLI/API (Automation):**
-- URL: http://192.168.86.249:8111
+- URL: http://vaultwarden.local.infinity-node.com:8111 (direct port access required for CLI)
 - Use: Automated secret retrieval for deployments
 - Auth: Username/password, then session token
-- **Note:** Must use local IP (not domain) due to Pangolin authentication
+- **Note:** CLI must use direct port access (not Traefik) due to API requirements
 
 ## Folder Structure
 
@@ -177,7 +177,7 @@ npm install -g @bitwarden/cli
 
 ```bash
 # Configure for local Vaultwarden instance
-bw config server http://192.168.86.249:8111
+bw config server http://vaultwarden.local.infinity-node.com:8111
 
 # Verify configuration
 bw status
@@ -511,12 +511,12 @@ ssh evan@192.168.86.172 "cd /path/to/stack && docker compose restart"
 # 1. Verify server configuration
 bw config server
 
-# 2. Should be: http://192.168.86.249:8111
+# 2. Should be: http://vaultwarden.local.infinity-node.com:8111
 # If not, reconfigure:
-bw config server http://192.168.86.249:8111
+bw config server http://vaultwarden.local.infinity-node.com:8111
 
 # 3. Verify Vaultwarden is accessible
-curl -I http://192.168.86.249:8111
+curl -I http://vaultwarden.local.infinity-node.com:8111
 
 # 4. Try login again
 bw login
@@ -568,12 +568,12 @@ bw list items --search "partial-name"
 
 ### Current Limitations
 
-**1. Local IP Required for CLI**
-- **Issue:** CLI must use `http://192.168.86.249:8111` instead of domain
-- **Reason:** Pangolin tunnel adds authentication layer that blocks CLI
-- **Impact:** IP changes will break CLI configuration
-- **Workaround:** Update `bw config server` when IPs change
-- **Long-term solution:** [[tasks/backlog/IN-012-setup-local-dns-service-discovery|IN-012: Local DNS server]]
+**1. Direct Port Access Required for CLI**
+- **Issue:** CLI must use direct port access (`http://vaultwarden.local.infinity-node.com:8111`) instead of Traefik port-free URL
+- **Reason:** Traefik routing may interfere with Bitwarden CLI API calls; direct port access ensures compatibility
+- **Impact:** CLI configuration uses DNS name with port (acceptable, DNS name is stable)
+- **Workaround:** Use DNS name with port (already resolved via IN-034)
+- **Status:** ✅ **RESOLVED** - DNS names provide stable access even if IPs change
 
 **2. Vault Unlock Requires Master Password**
 - **Issue:** While login can be automated with API keys, unlocking the vault still requires interactive master password entry

@@ -730,7 +730,7 @@ crw-rw-rw-    1 root     root      195, 255 Oct 31 22:58 nvidiactl
 ### 5.5 Configure Application to Use GPU
 
 **For Emby:**
-1. Access Emby web UI: `http://192.168.86.172:8096`
+1. Access Emby web UI: `http://emby.local.infinity-node.com` (port-free) or `http://emby.local.infinity-node.com:8096` (direct)
 2. Navigate to **Settings → Transcoding**
 3. Hardware acceleration: Select **NVIDIA NVENC**
 4. Enable hardware decoding for: H.264, HEVC

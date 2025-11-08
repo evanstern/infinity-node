@@ -23,7 +23,7 @@ aliases: [Lidarr, Music Automation]
 
 Automates music downloading via Prowlarr and download clients (VM 101). Manages music library organization and quality.
 
-**Access:** http://lidarr.local.infinity-node.com:8686
+**Access:** http://lidarr.local.infinity-node.com (port-free via Traefik) or http://lidarr.local.infinity-node.com:8686 (direct)
 
 ## Dependencies
 - Prowlarr (indexers) | Downloads (VM 101) | Navidrome (VM 103)

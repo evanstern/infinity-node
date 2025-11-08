@@ -34,7 +34,7 @@ aliases:
 **Service:** Paperless-NGX (Document Management System)
 **VM:** 103 (misc)
 **Priority:** Important - Personal document management
-**Access:** https://paperless.infinity-node.com (via Pangolin)
+**Access:** http://paperless.local.infinity-node.com (port-free via Traefik) or http://paperless.local.infinity-node.com:8000 (direct) or https://paperless.infinity-node.com (external via Pangolin)
 
 ## Overview
 

@@ -142,7 +142,7 @@ docker logs calibre-web
 
 ### Step 1: Access Calibre Server GUI
 
-1. Open browser to: `http://calibre.local.infinity-node.com:8265`
+1. Open browser to: `http://calibre.local.infinity-node.com` (port-free via Traefik) or `http://calibre.local.infinity-node.com:8265` (direct)
 2. VNC interface will load (may take a moment on first start)
 3. Calibre desktop application appears in browser
 
@@ -176,7 +176,7 @@ Import 5-10 books to test:
 
 ### Step 5: Configure Calibre-Web
 
-1. Open browser to: `http://calibre.local.infinity-node.com:8267`
+1. Open browser to: `http://calibre-web.local.infinity-node.com` (port-free via Traefik) or `http://calibre.local.infinity-node.com:8267` (direct)
 2. **First-time setup wizard:**
    - Database location: `/library/metadata.db`
    - Create admin account (username/password)
@@ -207,20 +207,20 @@ Once testing successful:
 ### Adding New Books
 
 **Via Calibre Server:**
-1. Access Calibre GUI at port 8265
+1. Access Calibre GUI at http://calibre.local.infinity-node.com (port-free) or http://calibre.local.infinity-node.com:8265 (direct)
 2. Click **Add books**
 3. Select files to import
 4. Calibre copies books to library and fetches metadata
 
 **Via Calibre-Web:**
-1. Access Calibre-Web at port 8267
+1. Access Calibre-Web at http://calibre-web.local.infinity-node.com (port-free) or http://calibre.local.infinity-node.com:8267 (direct)
 2. Click **Upload** (if enabled)
 3. Select file to upload
 4. Book added to library
 
 ### Reading Books
 
-1. Access Calibre-Web at port 8267
+1. Access Calibre-Web at http://calibre-web.local.infinity-node.com (port-free) or http://calibre.local.infinity-node.com:8267 (direct)
 2. Browse or search for book
 3. Click book cover
 4. Click **Read in browser** (EPUB) or **Download**
@@ -342,7 +342,7 @@ du -sh /mnt/nas/configs/calibre/library
 
 ### Calibre GUI Not Loading
 
-**Symptoms:** VNC interface doesn't appear at port 8265
+**Symptoms:** VNC interface doesn't appear at http://calibre.local.infinity-node.com or port 8265
 
 **Solutions:**
 ```bash
@@ -476,9 +476,9 @@ docker logs calibre | grep -i metadata
 
 | Service | Port | Purpose | URL |
 |---------|------|---------|-----|
-| Calibre GUI | 8265 | VNC desktop interface | http://calibre.local.infinity-node.com:8265 |
-| Calibre Server | 8266 | Internal server (content) | http://calibre.local.infinity-node.com:8266 |
-| Calibre-Web | 8267 | Web reading interface | http://calibre.local.infinity-node.com:8267 |
+| Calibre GUI | 8265 | VNC desktop interface | http://calibre.local.infinity-node.com (port-free) or http://calibre.local.infinity-node.com:8265 (direct) |
+| Calibre Server | 8266 | Internal server (content) | Internal only (not exposed) |
+| Calibre-Web | 8267 | Web reading interface | http://calibre-web.local.infinity-node.com (port-free) or http://calibre.local.infinity-node.com:8267 (direct) |
 
 ### Volume Mounts
 

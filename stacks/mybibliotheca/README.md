@@ -31,7 +31,7 @@ aliases:
 **Service:** MyBibliotheca (Self-hosted Book Tracker)
 **VM:** 103 (misc)
 **Priority:** Medium - Personal book tracking
-**Access:** http://mybibliotheca.local.infinity-node.com:5054
+**Access:** http://mybibliotheca.local.infinity-node.com (port-free via Traefik) or http://mybibliotheca.local.infinity-node.com:5054 (direct)
 **Image:** `pickles4evaaaa/mybibliotheca:1.1.1`
 
 ## Overview

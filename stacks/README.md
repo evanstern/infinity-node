@@ -64,7 +64,7 @@ Portainer can automatically deploy and update stacks from this Git repository. T
 
 **Initial Configuration:**
 
-1. **Access Portainer** on your VM (e.g., http://portainer-103.local.infinity-node.com:9000)
+1. **Access Portainer** on your VM (e.g., http://portainer-103.local.infinity-node.com or http://portainer-103.local.infinity-node.com:9000)
 2. **Navigate to Stacks** → Add stack
 3. **Select "Repository"** as the build method
 4. **Configure Git settings:**

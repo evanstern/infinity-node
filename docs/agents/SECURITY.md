@@ -94,8 +94,8 @@ Acceptable secret storage locations:
 
 **Vaultwarden Instance:**
 - **Location:** VM 103 (192.168.86.249:8111)
-- **Web UI:** https://vaultwarden.infinity-node.com
-- **CLI Access:** http://192.168.86.249:8111 (local IP required)
+- **Web UI:** https://vaultwarden.infinity-node.com (external) or http://vaultwarden.local.infinity-node.com (port-free) or http://vaultwarden.local.infinity-node.com:8111 (direct)
+- **CLI Access:** http://vaultwarden.local.infinity-node.com:8111 (direct port access required for CLI)
 - **Organization:** `infinity-node` organization with collection-based structure
 - **Collection Structure:** Organized by VM and purpose
   - `vm-100-emby`, `vm-101-downloads`, `vm-102-arr`, `vm-103-misc` (VM-specific secrets)

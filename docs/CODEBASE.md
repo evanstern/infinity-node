@@ -245,10 +245,10 @@ BW_SESSION="<token>" bw get password "service-secret"
 - NAS: 192.168.86.43
 
 ### Portainer Access
-- VM 100: https://192.168.86.172:9443
-- VM 101: https://192.168.86.173:32768 (non-standard port!)
-- VM 102: https://192.168.86.174:9443
-- VM 103: https://192.168.86.249:9443
+- VM 100: http://portainer-100.local.infinity-node.com (port-free) or http://192.168.86.172:9000 (direct)
+- VM 101: http://portainer-101.local.infinity-node.com (port-free) or http://192.168.86.173:32768 (direct, non-standard port!)
+- VM 102: http://portainer-102.local.infinity-node.com (port-free) or http://192.168.86.174:9000 (direct)
+- VM 103: http://portainer-103.local.infinity-node.com (port-free) or http://192.168.86.249:9000 (direct)
 
 ### Storage
 - NAS: 57TB Synology at 192.168.86.43
@@ -268,7 +268,7 @@ docker compose restart <service>
 ```
 
 ### Secret Issues
-- Check Vaultwarden: http://192.168.86.249:8111 (local) or https://vaultwarden.infinity-node.com
+- Check Vaultwarden: http://vaultwarden.local.infinity-node.com (port-free) or http://vaultwarden.local.infinity-node.com:8111 (direct) or https://vaultwarden.infinity-node.com (external)
 - Verify `.env` file exists on VM
 - Check `.env` format matches `.env.example`
 

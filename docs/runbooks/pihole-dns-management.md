@@ -217,7 +217,7 @@ Add DNS record in Pi-hole (see "Adding New DNS Records" above).
 ```yaml
 # Before
 environment:
-  - VAULTWARDEN_URL=http://192.168.86.249:8111
+  - VAULTWARDEN_URL=http://vaultwarden.local.infinity-node.com:8111
 
 # After
 environment:

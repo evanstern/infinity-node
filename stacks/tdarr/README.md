@@ -7,6 +7,7 @@ Automated media optimization service using GPU-accelerated transcoding to reduce
 Tdarr automatically transcodes media files from H.264 to H.265 (HEVC) using GPU acceleration, achieving 30-50% file size reduction with minimal quality loss. Operates on a schedule (2-6 AM ET) to avoid contention with Emby streaming.
 
 **Deployment**: VM 100 (emby) - co-located with Emby for GPU sharing
+**Access**: http://tdarr.local.infinity-node.com (port-free via Traefik) or http://tdarr.local.infinity-node.com:8265 (direct)
 **Port**: 8265 (Web UI)
 **Stack**: Docker Compose via Portainer GitOps
 **Critical Service**: No (but affects critical service VM)
@@ -140,7 +141,7 @@ Configured in Tdarr Web UI (Nodes → MainNode):
    ```
 
 5. **Access Web UI**:
-   - Navigate to: `http://tdarr.local.infinity-node.com:8265`
+   - Navigate to: `http://tdarr.local.infinity-node.com` (port-free) or `http://tdarr.local.infinity-node.com:8265` (direct)
    - Complete initial setup wizard
    - Configure libraries, schedule, workers
 
@@ -149,7 +150,10 @@ Configured in Tdarr Web UI (Nodes → MainNode):
 ### Accessing Web UI
 
 ```bash
-# From local network
+# From local network (port-free via Traefik)
+http://tdarr.local.infinity-node.com
+
+# Or direct access
 http://tdarr.local.infinity-node.com:8265
 ```
 
