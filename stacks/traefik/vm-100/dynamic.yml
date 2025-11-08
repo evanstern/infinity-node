@@ -1,0 +1,37 @@
+# Traefik Dynamic Configuration for VM 100 (emby)
+# This file contains routing rules for all services on VM 100
+# Update this file to add/remove/modify service routes
+
+http:
+  # Routers define how requests are matched and routed
+  routers:
+    # Emby - Media streaming server (CRITICAL)
+    # Note: Emby uses host network mode, so we route to host.docker.internal
+    emby:
+      rule: "Host(`emby.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: emby
+
+    # Portainer - Container management
+    portainer-100:
+      rule: "Host(`portainer-100.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: portainer-100
+
+  # Services define the backend servers to route to
+  services:
+    # Emby - Internal port 8096 (host network mode)
+    # Use host.docker.internal to reach services on host network from bridge network
+    emby:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:8096"
+
+    # Portainer - Internal port 8000 (standard HTTP port)
+    portainer-100:
+      loadBalancer:
+        servers:
+          - url: "http://portainer:8000"
+
