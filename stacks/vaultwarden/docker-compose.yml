@@ -11,3 +11,11 @@ services:
       - ${DATA_PATH}:/data/
     ports:
       - ${PORT}:80
+    networks:
+      - default
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network
