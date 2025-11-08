@@ -99,12 +99,11 @@ http:
         servers:
           - url: "http://flaresolverr:8191"
 
-    # Huntarr - Internal port (need to verify)
-    # Using port 8080 as default, will verify and update if needed
+    # Huntarr - Internal port 9705
     huntarr:
       loadBalancer:
         servers:
-          - url: "http://huntarr:8080"
+          - url: "http://huntarr:9705"
 
     # Portainer - Internal port 9000 (HTTP UI port)
     # Note: Portainer serves web UI on port 9000, not 8000
