@@ -23,11 +23,12 @@ http:
   # Services define the backend servers to route to
   services:
     # Emby - Internal port 8096 (host network mode)
-    # Use host.docker.internal to reach services on host network from bridge network
+    # Use Docker bridge gateway IP to reach services on host network from bridge network
+    # On Linux, host.docker.internal may not work, so use 172.17.0.1 (default bridge gateway)
     emby:
       loadBalancer:
         servers:
-          - url: "http://host.docker.internal:8096"
+          - url: "http://172.17.0.1:8096"
 
     # Portainer - Internal port 8000 (standard HTTP port)
     portainer-100:
