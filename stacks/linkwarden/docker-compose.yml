@@ -68,6 +68,9 @@ services:
     depends_on:
       - postgres
       - meilisearch
+    networks:
+      - default
+      - traefik-network
 
   meilisearch:
     image: getmeili/meilisearch:v1.12.8
@@ -76,3 +79,8 @@ services:
     restart: always
     volumes:
       - ./meili_data:/meili_data
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network

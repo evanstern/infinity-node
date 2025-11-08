@@ -15,3 +15,11 @@ services:
       - TIMEZONE=${TIMEZONE}
       - WORKERS=${WORKERS}
       - READING_STREAK_OFFSET=${READING_STREAK_OFFSET:-0}
+    networks:
+      - default
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network

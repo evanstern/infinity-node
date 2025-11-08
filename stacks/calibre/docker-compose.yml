@@ -27,6 +27,9 @@ services:
       resources:
         limits:
           memory: ${CALIBRE_MEMORY_LIMIT:-2G}
+    networks:
+      - default
+      - traefik-network
 
   calibre-web:
     container_name: calibre-web
@@ -52,3 +55,11 @@ services:
       resources:
         limits:
           memory: ${CALIBRE_WEB_MEMORY_LIMIT:-1G}
+    networks:
+      - default
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network

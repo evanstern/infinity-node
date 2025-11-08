@@ -74,6 +74,9 @@ services:
       PAPERLESS_ADMIN_PASSWORD: ${PAPERLESS_ADMIN_PASSWORD}
       PAPERLESS_ADMIN_MAIL: ${PAPERLESS_ADMIN_MAIL}
       PAPERLESS_CONSUMER_POLLING: ${PAPERLESS_CONSUMER_POLLING}
+    networks:
+      - default
+      - traefik-network
 
   gotenberg:
     image: gotenberg/gotenberg:7.9.2
@@ -91,6 +94,11 @@ services:
     image: ghcr.io/paperless-ngx/tika
     container_name: paperless_tika
     restart: always
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network
 
 volumes:
   data:

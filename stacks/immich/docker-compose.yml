@@ -16,6 +16,9 @@ services:
         restart: always
         healthcheck:
             disable: false
+        networks:
+            - default
+            - traefik-network
 
     immich-machine-learning:
         container_name: immich_machine_learning
@@ -64,6 +67,11 @@ services:
             -c shared_buffers=512MB
             -c wal_compression=on
         restart: always
+
+networks:
+    traefik-network:
+        external: true
+        name: traefik-network
 
 volumes:
     model-cache:

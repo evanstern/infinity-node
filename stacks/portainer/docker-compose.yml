@@ -18,3 +18,11 @@ services:
       #      - ${ARCHIVE_PATH}/${DOMAIN}:/certs/archive/${DOMAIN}:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${DATA_PATH}:/data
+    networks:
+      - default
+      - traefik-network
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network

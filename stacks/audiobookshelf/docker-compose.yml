@@ -14,3 +14,11 @@ services:
         environment:
             - TZ=${TZ}
         restart: unless-stopped
+        networks:
+            - default
+            - traefik-network
+
+networks:
+    traefik-network:
+        external: true
+        name: traefik-network
