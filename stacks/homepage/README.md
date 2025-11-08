@@ -65,7 +65,10 @@ These can be stored in configuration YAML files or Vaultwarden if preferred.
 
 ### Volumes
 
-- `./config/homepage` → `/app/config` - Dashboard configuration (YAML files)
+- `${CONFIG_PATH}` → `/app/config` - Dashboard configuration (YAML files)
+  - Default: `./config/homepage` (relative path, resolves correctly with Portainer Git deployment)
+  - Can be configured via environment variable in Portainer
+  - Update via: `./scripts/infrastructure/update-stack-env.sh "portainer-api-token-vm-103" "shared" <stack-id> 3 --env "CONFIG_PATH=/absolute/path"`
 - `/var/run/docker.sock` → `/var/run/docker.sock` (read-only) - Docker container monitoring
 
 ### Environment Variables
@@ -86,12 +89,33 @@ docker compose up -d
 ## Initial Setup
 
 1. **Access Web UI:** Navigate to http://homepage.local.infinity-node.com (port-free) or http://homepage.local.infinity-node.com:3001 (direct)
-2. **Configuration:** Homepage uses YAML files in `./config/homepage/`
+2. **Configuration:** Homepage uses YAML files in `${CONFIG_PATH}` (default: `./config/homepage/`)
+   - Config files are stored in git at: `stacks/homepage/config/homepage/`
+   - Portainer automatically deploys config files from git
+   - Config files are version-controlled (not gitignored)
 3. **Main Config Files:**
    - `services.yaml` - Service widgets and integrations
    - `widgets.yaml` - Dashboard widgets (weather, search, etc.)
    - `bookmarks.yaml` - Quick links and bookmarks
    - `settings.yaml` - General settings and theme
+
+## Updating CONFIG_PATH
+
+If you need to change the config directory path after deployment:
+
+```bash
+# Update CONFIG_PATH environment variable via Portainer API
+./scripts/infrastructure/update-stack-env.sh \
+  "portainer-api-token-vm-103" \
+  "shared" \
+  <stack-id> \
+  3 \
+  --env "CONFIG_PATH=/absolute/path/to/config"
+
+# Then restart the stack in Portainer UI for changes to take effect
+```
+
+**Note:** The default relative path (`./config/homepage`) works correctly with Portainer Git deployment and resolves to `/data/compose/<stack-id>/stacks/homepage/config/homepage` automatically.
 
 ## Configuration Examples
 

@@ -1,0 +1,154 @@
+---
+# Services Configuration
+# Infinity-Node Infrastructure - All 19 services organized by VM and criticality
+# See: https://gethomepage.dev/configs/services/
+#
+# NOTE: API keys for widgets need to be retrieved from service UIs and added manually
+# See README.md for instructions on retrieving API keys for each service
+
+# ==============================================================================
+# VM 100 - Media Streaming (Critical)
+# ==============================================================================
+- "Media Streaming (Critical)":
+    - Emby:
+        icon: emby.png
+        href: http://emby.local.infinity-node.com:8096
+        description: Media streaming server
+        widget:
+          type: emby
+          url: http://192.168.86.172:8096
+          key: YOUR_EMBY_API_KEY_HERE
+          enableNowPlaying: true
+          enableUser: true
+
+# ==============================================================================
+# VM 101 - Downloads (Critical)
+# ==============================================================================
+- "Downloads (Critical)":
+    - Deluge:
+        icon: deluge.png
+        href: http://deluge.local.infinity-node.com:8112
+        description: Torrent download client (via VPN)
+    - NZBGet:
+        icon: nzbget.png
+        href: http://nzbget.local.infinity-node.com:6789
+        description: Usenet download client (via VPN)
+
+# ==============================================================================
+# VM 102 - Media Automation (Critical)
+# ==============================================================================
+- "Media Automation (Critical)":
+    - Radarr:
+        icon: radarr.png
+        href: http://radarr.local.infinity-node.com:7878
+        description: Movie management and automation
+        widget:
+          type: radarr
+          url: http://192.168.86.174:7878
+          key: YOUR_RADARR_API_KEY_HERE
+          fields: ["wanted", "queued"]
+
+    - Sonarr:
+        icon: sonarr.png
+        href: http://sonarr.local.infinity-node.com:8989
+        description: TV show management and automation
+        widget:
+          type: sonarr
+          url: http://192.168.86.174:8989
+          key: YOUR_SONARR_API_KEY_HERE
+          fields: ["wanted", "queued"]
+
+    - Lidarr:
+        icon: lidarr.png
+        href: http://lidarr.local.infinity-node.com:8686
+        description: Music management and automation
+        widget:
+          type: lidarr
+          url: http://192.168.86.174:8686
+          key: YOUR_LIDARR_API_KEY_HERE
+
+    - Prowlarr:
+        icon: prowlarr.png
+        href: http://prowlarr.local.infinity-node.com:9696
+        description: Indexer management for all arr services
+        widget:
+          type: prowlarr
+          url: http://192.168.86.174:9696
+          key: YOUR_PROWLARR_API_KEY_HERE
+
+    - Jellyseerr:
+        icon: jellyseerr.png
+        href: http://jellyseerr.local.infinity-node.com:5055
+        description: Media request management
+        widget:
+          type: jellyseerr
+          url: http://192.168.86.174:5055
+          key: YOUR_JELLYSEERR_API_KEY_HERE
+
+    - FlareSolverr:
+        icon: flaresolverr.png
+        href: http://flaresolverr.local.infinity-node.com:8191
+        description: Cloudflare challenge solver for indexers
+
+    - Huntarr:
+        icon: huntarr.png
+        href: http://huntarr.local.infinity-node.com:9705
+        description: Multi-service search utility
+
+# ==============================================================================
+# VM 103 - Supporting Services
+# ==============================================================================
+- "Supporting Services":
+    - Vaultwarden:
+        icon: vaultwarden.png
+        href: http://vaultwarden.local.infinity-node.com:8111
+        description: Password manager (source of truth for secrets)
+
+    - Paperless-NGX:
+        icon: paperless-ngx.png
+        href: http://paperless.local.infinity-node.com:8000
+        description: Document management system
+
+    - Immich:
+        icon: immich.png
+        href: http://immich.local.infinity-node.com:2283
+        description: Photo and video management
+
+    - Linkwarden:
+        icon: linkwarden.png
+        href: http://linkwarden.local.infinity-node.com:3000
+        description: Bookmark manager with archiving
+
+    - Navidrome:
+        icon: navidrome.png
+        href: http://navidrome.local.infinity-node.com:4533
+        description: Music streaming server
+
+    - Audiobookshelf:
+        icon: audiobookshelf.png
+        href: http://audiobookshelf.local.infinity-node.com:13378
+        description: Audiobook and podcast server
+
+    - Homepage:
+        icon: homepage.png
+        href: http://homepage.local.infinity-node.com:3001
+        description: This dashboard (meta!)
+
+    - Portainer:
+        icon: portainer.png
+        href: https://192.168.86.249:9443
+        description: Docker container management
+
+    - Watchtower:
+        icon: watchtower.png
+        href: http://192.168.86.249:8080
+        description: Automatic container updates (no web UI)
+
+# ==============================================================================
+# Docker Widget (VM 103 local containers)
+# ==============================================================================
+- Docker:
+    - VM 103 Containers:
+        widget:
+          type: docker
+          server: local

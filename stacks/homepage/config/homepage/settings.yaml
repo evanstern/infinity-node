@@ -1,0 +1,34 @@
+---
+# Homepage Settings Configuration
+# Infinity-Node Infrastructure Dashboard
+# See: https://gethomepage.dev/configs/settings/
+
+title: Infinity-Node Infrastructure
+
+# Theme Configuration
+theme: dark
+color: slate
+
+# Layout Configuration
+layout:
+  "Media Streaming (Critical)":
+    style: row
+    columns: 2
+  "Downloads (Critical)":
+    style: row
+    columns: 2
+  "Media Automation (Critical)":
+    style: row
+    columns: 3
+  "Supporting Services":
+    style: row
+    columns: 3
+
+# Background Configuration
+# Using 4K 16x9 dystopika background
+background: /app/config/images/backgrounds/4K 16x9/dystopika 001a - 4k.jpg
+
+# Providers (optional - for weather widgets, etc.)
+providers:
+  openweathermap: openweathermapapikey
+  weatherapi: weatherapiapikey

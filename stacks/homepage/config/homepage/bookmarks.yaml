@@ -1,0 +1,38 @@
+---
+# Infrastructure Bookmarks
+# Quick access to management interfaces and infrastructure services
+# See: https://gethomepage.dev/configs/bookmarks
+
+- Infrastructure:
+    - Proxmox:
+        - abbr: PVE
+          href: https://192.168.86.106:8006
+          description: Hypervisor management
+    - NAS:
+        - abbr: NAS
+          href: http://192.168.86.43:5000
+          description: Synology NAS management
+
+- Portainer (Docker Management):
+    - VM 100 (emby):
+        - abbr: P100
+          href: https://192.168.86.172:9443
+          description: Portainer on VM 100
+    - VM 101 (downloads):
+        - abbr: P101
+          href: https://192.168.86.173:32768
+          description: Portainer on VM 101 (non-standard port)
+    - VM 102 (arr):
+        - abbr: P102
+          href: https://192.168.86.174:9443
+          description: Portainer on VM 102
+    - VM 103 (misc):
+        - abbr: P103
+          href: https://192.168.86.249:9443
+          description: Portainer on VM 103
+
+- Security:
+    - Vaultwarden:
+        - abbr: VW
+          href: http://vaultwarden.local.infinity-node.com:8111
+          description: Password manager (source of truth for secrets)

@@ -1,0 +1,16 @@
+---
+# Dashboard Widgets Configuration
+# See: https://gethomepage.dev/configs/info-widgets/
+
+# System Resources Widget (VM 103)
+- resources:
+    cpu: true
+    memory: true
+    disk: /
+
+# Search Widget
+- search:
+    provider: duckduckgo
+    target: _blank
+
+# Docker Widget (configured in services.yaml)
