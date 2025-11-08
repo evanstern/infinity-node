@@ -111,7 +111,7 @@ A local DNS server (Pi-hole) providing name-based service discovery. Services ac
 - Configure router to use Pi-hole as primary DNS (with public DNS as secondary failover)
 - Set up local domain `local.infinity-node.com` in Pi-hole
 - Create DNS A records for all 4 VMs (100, 101, 102, 103)
-- Create DNS records for key services (audiobookshelf, vaultwarden, emby, portainer, *arr services)
+- Create DNS records for key services (audiobookshelf, vaultwarden, emby, portainer, *arr services) (check stacks for list of all services)
 - Update audiobookshelf docker-compose.yml to use DNS names
 - Redeploy audiobookshelf via Portainer with new configuration
 - Test audiobookshelf accessible via DNS name
@@ -255,19 +255,19 @@ Audiobookshelf successfully accessible via `audiobookshelf.local.infinity-node.c
   - `vm-103.local.infinity-node.com` → 192.168.86.249 (misc)
 
 - [ ] **Create DNS records for services** `[agent:infrastructure]`
-  - `audiobookshelf.local.infinity-node.com` → 192.168.86.249 (VM 103)
-  - `vaultwarden.local.infinity-node.com` → 192.168.86.249:8111 (VM 103)
-  - `emby.local.infinity-node.com` → 192.168.86.172:8096 (VM 100)
-  - `portainer-100.local.infinity-node.com` → 192.168.86.172:9000 (VM 100 portainer)
-  - `portainer-101.local.infinity-node.com` → 192.168.86.173:9000 (VM 101 portainer)
-  - `portainer-102.local.infinity-node.com` → 192.168.86.174:9000 (VM 102 portainer)
-  - `portainer-103.local.infinity-node.com` → 192.168.86.249:9000 (VM 103 portainer)
-  - `radarr.local.infinity-node.com` → 192.168.86.174:7878 (VM 102)
-  - `sonarr.local.infinity-node.com` → 192.168.86.174:8989 (VM 102)
-  - `prowlarr.local.infinity-node.com` → 192.168.86.174:9696 (VM 102)
-  - `lidarr.local.infinity-node.com` → 192.168.86.174:8686 (VM 102)
+  - `audiobookshelf.local.infinity-node.com` → 192.168.86.249 (VM 103, port 13378)
+  - `vaultwarden.local.infinity-node.com` → 192.168.86.249 (VM 103, port 8111)
+  - `emby.local.infinity-node.com` → 192.168.86.172 (VM 100, port 8096)
+  - `portainer-100.local.infinity-node.com` → 192.168.86.172 (VM 100, port 9443)
+  - `portainer-101.local.infinity-node.com` → 192.168.86.173 (VM 101, port 32768)
+  - `portainer-102.local.infinity-node.com` → 192.168.86.174 (VM 102, port 9443)
+  - `portainer-103.local.infinity-node.com` → 192.168.86.249 (VM 103, port 9443)
+  - `radarr.local.infinity-node.com` → 192.168.86.174 (VM 102, port 7878)
+  - `sonarr.local.infinity-node.com` → 192.168.86.174 (VM 102, port 8989)
+  - `prowlarr.local.infinity-node.com` → 192.168.86.174 (VM 102, port 9696)
+  - `lidarr.local.infinity-node.com` → 192.168.86.174 (VM 102, port 8686)
   - Add others as discovered during setup
-  - Note: Pi-hole DNS only resolves hostnames, not ports - document ports in comments
+  - **Important**: DNS A records only contain IP addresses. Ports shown above are for documentation/reference only. Access URLs will be `http://service.local.infinity-node.com:PORT`. For port-free access, deploy reverse proxy (see Implementation Notes).
 
 - [ ] **Test DNS resolution for new records** `[agent:infrastructure]` `[blocking]`
   - `dig vm-100.local.infinity-node.com` - should return 192.168.86.172
@@ -465,7 +465,11 @@ Not complex because not building from scratch, no major unknowns expected.
 
 **Implementation Notes:**
 - **Pi-hole ports**: Pi-hole DNS runs on port 53 (TCP/UDP), web UI on port 80
-- **DNS records**: Pi-hole only resolves hostnames, not ports - ports specified in application configs
+- **DNS port limitation**: DNS protocol fundamentally cannot resolve ports - this is a DNS limitation, not PiHole-specific. DNS only resolves hostnames to IP addresses. Ports must be specified in application configs or handled via reverse proxy.
+- **Port handling options**:
+  - **Option A (Current)**: DNS resolves to IP, ports specified in URLs/configs (e.g., `http://audiobookshelf.local.infinity-node.com:13378`)
+  - **Option B (Future)**: Deploy reverse proxy (nginx/Traefik/Caddy) on standard ports (80/443) that routes by hostname to backend services. This allows `http://audiobookshelf.local.infinity-node.com` (no port) to work. Requires reverse proxy setup as separate task.
+  - **Option C (Not viable)**: SRV records exist but browsers/clients don't use them for HTTP/HTTPS
 - **MAC address**: Critical to document MAC for static IP reservation
 - **Naming convention**: Use pattern `<service>.local.infinity-node.com` for consistency
 - **Router specifics**: Router model/interface may vary - document specific steps during work
@@ -473,6 +477,7 @@ Not complex because not building from scratch, no major unknowns expected.
 
 **Follow-up Tasks:**
 - IN-035: Migrate remaining services to DNS names (Bitwarden CLI, other stacks, scripts)
+- IN-046: Deploy Traefik reverse proxy on VM 103 for port-free service access - allows `service.local.infinity-node.com` without port numbers by routing hostname-based traffic to backend services
 - Future: Consider secondary Pi-hole for high availability (very optional)
 - Future: Explore Pi-hole ad-blocking features (separate from DNS setup)
 
