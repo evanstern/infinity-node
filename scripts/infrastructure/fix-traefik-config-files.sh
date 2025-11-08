@@ -125,7 +125,10 @@ info "Checking config files..."
 TRAEFIK_YML_TYPE=$(ssh evan@$VM_IP "file $CONFIG_DIR/traefik.yml 2>/dev/null | grep -oE '(directory|ASCII text)' || echo 'missing'")
 DYNAMIC_YML_TYPE=$(ssh evan@$VM_IP "file $CONFIG_DIR/dynamic.yml 2>/dev/null | grep -oE '(directory|ASCII text)' || echo 'missing'")
 
-if [[ "$TRAEFIK_YML_TYPE" == "ASCII text" && "$DYNAMIC_YML_TYPE" == "ASCII text" ]]; then
+# Also check if docker-compose.yml exists
+DOCKER_COMPOSE_EXISTS=$(ssh evan@$VM_IP "[ -f \"$STACK_DIR/vm-$VM_NUM/docker-compose.yml\" ] && echo 'yes' || echo 'no'")
+
+if [[ "$TRAEFIK_YML_TYPE" == "ASCII text" && "$DYNAMIC_YML_TYPE" == "ASCII text" && "$DOCKER_COMPOSE_EXISTS" == "yes" ]]; then
     success "Config files are already correct"
     exit 0
 fi
@@ -143,7 +146,8 @@ git clone --depth 1 $MONOREPO_URL infinity-node-fresh 2>&1 | tail -2 && \
 sudo rm -rf $CONFIG_DIR/traefik.yml $CONFIG_DIR/dynamic.yml && \
 sudo cp infinity-node-fresh/stacks/traefik/vm-$VM_NUM/traefik.yml $CONFIG_DIR/traefik.yml && \
 sudo cp infinity-node-fresh/stacks/traefik/vm-$VM_NUM/dynamic.yml $CONFIG_DIR/dynamic.yml && \
-sudo chmod 644 $CONFIG_DIR/*.yml && \
+sudo cp infinity-node-fresh/stacks/traefik/vm-$VM_NUM/docker-compose.yml $STACK_DIR/vm-$VM_NUM/docker-compose.yml && \
+sudo chmod 644 $CONFIG_DIR/*.yml $STACK_DIR/vm-$VM_NUM/docker-compose.yml && \
 rm -rf infinity-node-fresh && \
 echo 'Files fixed'"
 
