@@ -135,22 +135,22 @@ DYNAMIC_YML_TYPE=$(ssh evan@$VM_IP "file $CONFIG_DIR/dynamic.yml 2>/dev/null | g
 
 if [[ "$TRAEFIK_YML_TYPE" == "ASCII text" && "$DYNAMIC_YML_TYPE" == "ASCII text" ]]; then
     success "Config files fixed successfully"
-    
+
     # Try to restart Traefik stack if Portainer credentials are available
     info "Restarting Traefik stack..."
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     GET_SECRET_SCRIPT="$SCRIPT_DIR/../secrets/get-vw-secret.sh"
-    
+
     if [ -f "$GET_SECRET_SCRIPT" ] && [ -f ~/.bw-session ]; then
         export BW_SESSION=$(cat ~/.bw-session)
         SECRET_NAME="portainer-api-token-vm-$VM_NUM"
-        
+
         if TOKEN=$("$GET_SECRET_SCRIPT" "$SECRET_NAME" "shared" 2>/dev/null) && \
            URL=$("$GET_SECRET_SCRIPT" "$SECRET_NAME" "shared" "url" 2>/dev/null); then
             if [ -z "$STACK_ID" ]; then
                 STACK_ID=$(curl -sk -H "X-API-Key: $TOKEN" "$URL/api/stacks" 2>/dev/null | jq -r ".[] | select(.Name == \"traefik\") | .Id" || echo "")
             fi
-            
+
             if [ -n "$STACK_ID" ]; then
                 curl -sk -X POST -H "X-API-Key: $TOKEN" "$URL/api/stacks/$STACK_ID/stop?endpointId=3" >/dev/null 2>&1
                 sleep 2
@@ -166,7 +166,7 @@ if [[ "$TRAEFIK_YML_TYPE" == "ASCII text" && "$DYNAMIC_YML_TYPE" == "ASCII text"
         warn "Portainer credentials not available, please restart Traefik manually:"
         echo "  ssh evan@$VM_IP 'docker restart traefik'"
     fi
-    
+
     exit 0
 else
     error "Failed to fix config files"
@@ -174,4 +174,3 @@ else
     echo "dynamic.yml: $DYNAMIC_YML_TYPE"
     exit 3
 fi
-
