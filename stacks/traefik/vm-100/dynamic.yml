@@ -30,9 +30,10 @@ http:
         servers:
           - url: "http://172.17.0.1:8096"
 
-    # Portainer - Internal port 8000 (standard HTTP port)
+    # Portainer - Internal port 9000 (HTTP UI port)
+    # Note: Portainer serves web UI on port 9000, not 8000
     portainer-100:
       loadBalancer:
         servers:
-          - url: "http://portainer:8000"
+          - url: "http://portainer:9000"
 
