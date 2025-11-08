@@ -43,12 +43,14 @@ temp/
 .env
 **/.env
 .env.*
+!.env.example
 *.env.local
 # Exception: .env.example files ARE indexed (they're templates)
 
 # Secret directories
 secrets/
 **/secrets/
+!scripts/secrets/
 # Exception: scripts/secrets/ IS indexed (contains scripts, not secrets)
 
 # Task ID counter (local state file)
@@ -79,4 +81,3 @@ build/
 *~
 .idea/
 *.iml
-

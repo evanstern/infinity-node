@@ -19,19 +19,20 @@ infinity-node is a Proxmox-based home server environment running containerized s
 ### Local Network
 - **Network**: 192.168.86.0/24
 - **Gateway**: 192.168.86.1 (assumed router)
-- **DNS**: 192.168.86.158 (PiHole)
+- **DNS**: 192.168.86.158 (Pi-hole - primary), 1.1.1.1 (Cloudflare - secondary/failover)
+- **Local Domain**: `local.infinity-node.com` (managed by Pi-hole)
 
 ### Key Hosts
 
-| Host | IP | Purpose | Access |
-|------|-----|---------|--------|
-| Proxmox | 192.168.86.106 | Hypervisor | SSH (root), Web (8006) |
-| NAS | 192.168.86.43 | Synology Storage | Web (5000), NFS |
-| PiHole | 192.168.86.158 | DNS server, ad blocking | Web (80, 443), DNS (53) |
-| VM 100 (emby) | 192.168.86.172 | Media server | SSH (evan), Portainer (9443) |
-| VM 101 (downloads) | 192.168.86.173 | Download clients | SSH (evan), Portainer (32768) |
-| VM 102 (arr) | 192.168.86.174 | Media automation | SSH (evan), Portainer (9443) |
-| VM 103 (misc) | 192.168.86.249 | Supporting services | SSH (evan), Portainer (9443) |
+| Host | IP | DNS Name | Purpose | Access |
+|------|-----|----------|---------|--------|
+| Proxmox | 192.168.86.106 | - | Hypervisor | SSH (root), Web (8006) |
+| NAS | 192.168.86.43 | - | Synology Storage | Web (5000), NFS |
+| Pi-hole | 192.168.86.158 | - | DNS server, ad blocking | Web (80, 443), DNS (53) |
+| VM 100 (emby) | 192.168.86.172 | `vm-100.local.infinity-node.com` | Media server | SSH (evan), Portainer (9443) |
+| VM 101 (downloads) | 192.168.86.173 | `vm-101.local.infinity-node.com` | Download clients | SSH (evan), Portainer (32768) |
+| VM 102 (arr) | 192.168.86.174 | `vm-102.local.infinity-node.com` | Media automation | SSH (evan), Portainer (9443) |
+| VM 103 (misc) | 192.168.86.249 | `vm-103.local.infinity-node.com` | Supporting services | SSH (evan), Portainer (9443) |
 
 **Note:** VM 101 uses non-standard Portainer port 32768 (not 9443 like other VMs).
 
@@ -265,34 +266,59 @@ External Access:
 
 ## Network Services
 
-### PiHole (DNS & Ad Blocking)
+### Pi-hole (DNS & Ad Blocking)
 
-**Purpose:** Network-wide DNS server and ad blocker
+**Purpose:** Network-wide DNS server, ad blocker, and local DNS service discovery
 **Hostname:** raspberrypi.lan
-**IP:** 192.168.86.158
+**IP:** 192.168.86.158 (static DHCP reservation)
 **Hardware:** Raspberry Pi
 **MAC Address:** dc:a6:32:27:bf:eb
+**Version:** Pi-hole v6.1
 
 **Services:**
-- DNS server (port 53)
+- DNS server (port 53) - Primary DNS for network
 - Web admin interface (ports 80, 443)
 - Ad blocking and tracking protection
 - Query logging and statistics
+- Local DNS management (`local.infinity-node.com` domain)
 
 **Access:**
 - **Web Admin:** http://192.168.86.158/admin/ or https://192.168.86.158/admin/
 - **DNS Server:** 192.168.86.158 (port 53)
+- **Credentials:** Stored in Vaultwarden (`shared/pihole-admin`)
 
 **Network Role:**
-- Primary DNS server for the network
+- **Primary DNS server** for the network (configured in router DHCP)
+- **Secondary DNS:** 1.1.1.1 (Cloudflare) - provides failover if Pi-hole unavailable
 - Provides ad blocking for all devices on 192.168.86.0/24
+- Manages local DNS records for service discovery
 - Query logging and network-wide statistics
 
+**Local DNS Configuration:**
+- **Domain:** `local.infinity-node.com`
+- **Expand Hostnames:** Enabled (short names like `vm-100` work automatically)
+- **DNS Records:** 28 total (4 VMs + 24 services)
+- **Naming Pattern:** `<service>.local.infinity-node.com`
+
+**DNS Resolution Flow:**
+```
+Client Request
+    ↓
+Router (DHCP provides Pi-hole as DNS)
+    ↓
+Pi-hole DNS Server (192.168.86.158:53)
+    ├── local.infinity-node.com? → Answer from local records
+    └── Public domain? → Forward to Cloudflare (1.1.1.1)
+```
+
 **Notes:**
-- Configured as network DNS server
-- All devices on the network can use this for DNS resolution
-- Web interface provides statistics and configuration
+- Configured as network DNS server via router DHCP
+- Static IP reservation ensures consistent IP address
+- All devices on the network automatically use Pi-hole for DNS
+- Local domain enables service discovery without hardcoded IPs
+- Web interface provides statistics, query logs, and DNS record management
 - Raspberry Pi Foundation hardware (dc:a6:32 MAC prefix)
+- **Documentation:** See [[runbooks/pihole-dns-management|Pi-hole DNS Management Runbook]]
 
 ## Storage Architecture
 
@@ -509,7 +535,7 @@ infinity-node/
 - `.env` files on VMs reference secrets from Vaultwarden
 - `.env.example` templates in git (no actual secrets)
 - Automated secret retrieval for deployments
-- Local DNS resolves service names (eliminates IP dependency)
+- Local DNS resolves service names (eliminates IP dependency) ✅ **COMPLETE** (IN-034)
 
 ## Monitoring & Management
 
@@ -517,11 +543,16 @@ infinity-node/
 
 **Portainer CE:**
 - Instance running on each VM
-- **Access URLs:**
+- **Access URLs (IP):**
   - VM 100: https://192.168.86.172:9443
   - VM 101: https://192.168.86.173:32768 *(non-standard port)*
   - VM 102: https://192.168.86.174:9443
   - VM 103: https://192.168.86.249:9443
+- **Access URLs (DNS):**
+  - VM 100: https://portainer-100.local.infinity-node.com:9443
+  - VM 101: https://portainer-101.local.infinity-node.com:32768
+  - VM 102: https://portainer-102.local.infinity-node.com:9443
+  - VM 103: https://portainer-103.local.infinity-node.com:9443
 - **Features:**
   - Web UI for container management
   - Git-based stack deployment (GitOps)
@@ -664,7 +695,7 @@ infinity-node/
 
 1. **Emby VM hostname has typo:** "ininity-node-emby"
 2. **Secret migration pending:** All stack docs reference Vaultwarden (completed in [[tasks/completed/IN-001-import-existing-docker-configs|IN-001]]). Actual .env migration pending ([[tasks/current/IN-002-migrate-secrets-to-env|IN-002]]).
-3. **No local DNS:** Services accessed via IP addresses (see [[tasks/backlog/IN-012-setup-local-dns-service-discovery|IN-012]])
+3. ~~**No local DNS:** Services accessed via IP addresses~~ ✅ **RESOLVED** (IN-034) - Pi-hole DNS configured with `local.infinity-node.com` domain
 4. **No centralized monitoring:** Manual health checks (see [[tasks/backlog/IN-005-setup-monitoring-alerting|IN-005]])
 5. **Backup strategy undefined:** Needs documentation and automation (see [[tasks/backlog/IN-011-document-backup-strategy|IN-011]])
 6. **No disaster recovery testing:** Recovery procedures untested (see [[tasks/backlog/IN-008-test-disaster-recovery|IN-008]])
@@ -718,6 +749,7 @@ infinity-node/
 | 2025-10-24 | Initial architecture documentation | Claude Code + Evan |
 | 2025-10-26 | Completed infrastructure import (IN-001): 24 service stacks documented, wiki-links added to all services, Known Issues section updated | Claude Code + Evan |
 | 2025-10-29 | Enhanced Portainer documentation: Added Portainer URLs to Key Hosts table, documented VM 101 non-standard port, expanded Portainer CE section with GitOps features and API access details (IN-013) | Claude Code + Evan |
+| 2025-11-08 | Added Pi-hole DNS configuration: Documented local DNS service discovery with `local.infinity-node.com` domain, updated Key Hosts table with DNS names, expanded Pi-hole section with DNS resolution flow and local DNS details (IN-034) | Claude Code + Evan |
 
 ---
 
