@@ -261,4 +261,3 @@ du -sh /home/evan/data/mybibliotheca/
 
 - **[[stacks/calibre/README|Calibre]]** - Ebook library management (same VM)
 - **[[stacks/audiobookshelf/README|Audiobookshelf]]** - Audiobook server (same VM)
-
