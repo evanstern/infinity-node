@@ -70,10 +70,27 @@ info "Connecting to VM $VM_IP..."
 # Find Traefik stack directory
 if [ -z "$STACK_ID" ]; then
     info "Finding Traefik stack..."
-    STACK_DIR=$(ssh evan@$VM_IP "find /data/compose -type d -name '*traefik*' 2>/dev/null | grep -E '/[0-9]+/stacks/traefik' | head -1")
+    # Try to find stack directory by searching compose directories
+    STACK_DIR=$(ssh evan@$VM_IP "find /data/compose -type d -path '*/stacks/traefik/vm-*' 2>/dev/null | head -1" || echo "")
     if [ -z "$STACK_DIR" ]; then
         # Try finding by container name
-        STACK_DIR=$(ssh evan@$VM_IP "docker inspect traefik 2>/dev/null | jq -r '.[0].Mounts[] | select(.Destination | contains(\"traefik\")) | .Source' | head -1 | xargs dirname 2>/dev/null || true")
+        STACK_DIR=$(ssh evan@$VM_IP "docker inspect traefik 2>/dev/null | jq -r '.[0].Mounts[] | select(.Destination | contains(\"traefik\")) | .Source' | head -1 | xargs dirname 2>/dev/null || echo ''" || echo "")
+    fi
+    if [ -z "$STACK_DIR" ]; then
+        # Try to get stack ID from Portainer API
+        SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+        GET_SECRET_SCRIPT="$SCRIPT_DIR/../secrets/get-vw-secret.sh"
+        if [ -f "$GET_SECRET_SCRIPT" ] && [ -f ~/.bw-session ]; then
+            export BW_SESSION=$(cat ~/.bw-session)
+            SECRET_NAME="portainer-api-token-vm-$VM_NUM"
+            if TOKEN=$("$GET_SECRET_SCRIPT" "$SECRET_NAME" "shared" 2>/dev/null) && \
+               URL=$("$GET_SECRET_SCRIPT" "$SECRET_NAME" "shared" "url" 2>/dev/null); then
+                STACK_ID=$(curl -sk -H "X-API-Key: $TOKEN" "$URL/api/stacks" 2>/dev/null | jq -r ".[] | select(.Name == \"traefik\") | .Id" 2>/dev/null | head -1 || echo "")
+                if [ -n "$STACK_ID" ] && [ "$STACK_ID" != "null" ]; then
+                    STACK_DIR="/data/compose/$STACK_ID/stacks/traefik"
+                fi
+            fi
+        fi
     fi
 else
     STACK_DIR="/data/compose/$STACK_ID/stacks/traefik"
@@ -81,6 +98,7 @@ fi
 
 if [ -z "$STACK_DIR" ]; then
     error "Could not find Traefik stack directory"
+    error "Stack may not exist yet. Create the stack first, then run this script."
     exit 2
 fi
 
