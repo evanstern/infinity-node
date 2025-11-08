@@ -103,10 +103,11 @@ http:
           - url: "http://immich_server:2283"
 
     # Linkwarden - Internal port 3000
+    # Note: Container name is prefixed with stack name by Portainer
     linkwarden:
       loadBalancer:
         servers:
-          - url: "http://linkwarden:3000"
+          - url: "http://linkwarden-linkwarden-1:3000"
 
     # Navidrome - Internal port 4533
     navidrome:
