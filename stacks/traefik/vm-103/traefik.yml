@@ -1,0 +1,52 @@
+# Traefik Static Configuration
+# This file contains static configuration that rarely changes:
+# - Entrypoints (ports to listen on)
+# - Providers (where to get routing rules from)
+# - Global settings
+
+# Entrypoints define the ports Traefik listens on
+entryPoints:
+  web:
+    address: ":80"
+  # websecure entrypoint defined for future HTTPS support
+  # Currently not used (TLS configuration out of scope for initial deployment)
+  # websecure:
+  #   address: ":443"
+
+# Providers define where Traefik gets its routing configuration
+providers:
+  # File provider reads routing rules from YAML files
+  file:
+    # Dynamic configuration file (routing rules)
+    filename: /etc/traefik/dynamic.yml
+    # Watch for changes and reload automatically
+    watch: true
+    # Optional: directory mode (can use multiple files)
+    # directory: /etc/traefik/dynamic/
+  
+  # Docker provider (optional, for future Docker label-based routing)
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    watch: true
+    exposedByDefault: false  # Only expose containers with traefik.enable=true label
+
+# API and Dashboard configuration
+api:
+  dashboard: true
+  insecure: true  # For now, accessible without auth (can add auth later)
+  debug: false
+
+# Logging configuration
+log:
+  level: INFO
+  format: json
+
+accessLog:
+  format: json
+  bufferingSize: 100
+
+# Global settings
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+

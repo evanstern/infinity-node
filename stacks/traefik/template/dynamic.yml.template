@@ -1,0 +1,42 @@
+# Traefik Dynamic Configuration
+# This file contains routing rules that change frequently (services, hosts, etc.)
+# Update this file to add/remove/modify service routes
+
+http:
+  # Routers define how requests are matched and routed
+  routers:
+    # Example router - replace with actual service routers
+    # service-name:
+    #   rule: "Host(`service-name.local.infinity-node.com`)"
+    #   entryPoints:
+    #     - websecure
+    #   service: service-name
+    #   tls:
+    #     certResolver: letsencrypt  # Optional: enable TLS later
+
+  # Services define backend servers to route to
+  services:
+    # Example service - replace with actual service definitions
+    # service-name:
+    #   loadBalancer:
+    #     servers:
+    #       - url: "http://service-container-name:port"
+    #     # Optional: health check
+    #     healthCheck:
+    #       path: "/health"
+    #       interval: "30s"
+    #       timeout: "10s"
+
+  # Middlewares define request/response transformations
+  middlewares:
+    # Example middleware - can add auth, headers, etc. later
+    # default-headers:
+    #   headers:
+    #     frameDeny: true
+    #     sslRedirect: true
+    #     browserXssFilter: true
+    #     contentTypeNosniff: true
+    #     forceSTSHeader: true
+    #     stsIncludeSubdomains: true
+    #     stsPreload: true
+    #     stsSeconds: 15552000

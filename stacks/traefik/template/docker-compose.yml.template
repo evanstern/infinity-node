@@ -1,0 +1,45 @@
+name: traefik
+
+services:
+  traefik:
+    image: traefik:v3.0
+    container_name: traefik
+    restart: unless-stopped
+
+    # Expose standard HTTP/HTTPS ports
+    ports:
+      - "80:80"
+      - "443:443"
+
+    # Mount configuration files
+    volumes:
+      # Static configuration (entrypoints, providers, etc.)
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      # Dynamic configuration (routing rules)
+      - ./dynamic.yml:/etc/traefik/dynamic.yml:ro
+      # Docker socket for service discovery (optional, for future Docker provider)
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    # Command line arguments (can override config file settings)
+    command:
+      - "--log.level=INFO"
+      - "--accesslog=true"
+      - "--api.insecure=true"  # Enable dashboard (insecure for now, can add auth later)
+      - "--api.dashboard=true"
+
+    # Network configuration
+    networks:
+      - traefik-network
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  traefik-network:
+    name: traefik-network
+    driver: bridge

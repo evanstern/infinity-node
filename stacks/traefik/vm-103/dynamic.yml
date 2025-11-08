@@ -1,0 +1,151 @@
+# Traefik Dynamic Configuration for VM 103 (misc)
+# This file contains routing rules for all services on VM 103
+# Update this file to add/remove/modify service routes
+
+http:
+  # Routers define how requests are matched and routed
+  routers:
+    # Vaultwarden - Password manager
+    vaultwarden:
+      rule: "Host(`vaultwarden.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: vaultwarden
+
+    # Paperless-NGX - Document management
+    paperless:
+      rule: "Host(`paperless.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: paperless
+
+    # Immich - Photo management
+    immich:
+      rule: "Host(`immich.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: immich
+
+    # Linkwarden - Bookmark management
+    linkwarden:
+      rule: "Host(`linkwarden.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: linkwarden
+
+    # Navidrome - Music streaming
+    navidrome:
+      rule: "Host(`navidrome.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: navidrome
+
+    # Audiobookshelf - Audiobook management
+    audiobookshelf:
+      rule: "Host(`audiobookshelf.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: audiobookshelf
+
+    # MyBibliotheca - Book tracking
+    mybibliotheca:
+      rule: "Host(`mybibliotheca.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: mybibliotheca
+
+    # Calibre - E-book management (GUI)
+    calibre:
+      rule: "Host(`calibre.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: calibre
+
+    # Calibre-Web - Web interface for Calibre
+    calibre-web:
+      rule: "Host(`calibre-web.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: calibre-web
+
+    # Homepage - Dashboard
+    homepage:
+      rule: "Host(`homepage.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: homepage
+
+    # Portainer - Container management
+    portainer-103:
+      rule: "Host(`portainer-103.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: portainer-103
+
+  # Services define backend servers to route to
+  services:
+    # Vaultwarden - Internal port 80
+    vaultwarden:
+      loadBalancer:
+        servers:
+          - url: "http://vaultwarden:80"
+
+    # Paperless-NGX - Internal port 8000
+    paperless:
+      loadBalancer:
+        servers:
+          - url: "http://paperless_webserver:8000"
+
+    # Immich - Internal port 2283
+    immich:
+      loadBalancer:
+        servers:
+          - url: "http://immich_server:2283"
+
+    # Linkwarden - Internal port 3000
+    linkwarden:
+      loadBalancer:
+        servers:
+          - url: "http://linkwarden:3000"
+
+    # Navidrome - Internal port 4533
+    navidrome:
+      loadBalancer:
+        servers:
+          - url: "http://navidrome:4533"
+
+    # Audiobookshelf - Internal port 80
+    audiobookshelf:
+      loadBalancer:
+        servers:
+          - url: "http://audiobookshelf:80"
+
+    # MyBibliotheca - Internal port 5054
+    mybibliotheca:
+      loadBalancer:
+        servers:
+          - url: "http://mybibliotheca:5054"
+
+    # Calibre - Internal port 8080 (GUI)
+    calibre:
+      loadBalancer:
+        servers:
+          - url: "http://calibre:8080"
+
+    # Calibre-Web - Internal port 8083
+    calibre-web:
+      loadBalancer:
+        servers:
+          - url: "http://calibre-web:8083"
+
+    # Homepage - Internal port 3000
+    homepage:
+      loadBalancer:
+        servers:
+          - url: "http://homepage:3000"
+
+    # Portainer - Internal port 9000 (HTTP)
+    portainer-103:
+      loadBalancer:
+        servers:
+          - url: "http://portainer:9000"
