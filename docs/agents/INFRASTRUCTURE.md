@@ -97,7 +97,7 @@ The Infrastructure Agent manages the underlying infrastructure including Proxmox
 ### Network
 - **Network**: 192.168.86.0/24
 - **Gateway**: 192.168.86.1 (assumed)
-- **DNS**: TBD
+- **DNS**: 192.168.86.158 (PiHole on Raspberry Pi)
 - **Bridge**: vmbr0 (all VMs connected)
 
 ## Responsibilities

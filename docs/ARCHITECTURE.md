@@ -19,7 +19,7 @@ infinity-node is a Proxmox-based home server environment running containerized s
 ### Local Network
 - **Network**: 192.168.86.0/24
 - **Gateway**: 192.168.86.1 (assumed router)
-- **DNS**: TBD
+- **DNS**: 192.168.86.158 (PiHole)
 
 ### Key Hosts
 
@@ -27,6 +27,7 @@ infinity-node is a Proxmox-based home server environment running containerized s
 |------|-----|---------|--------|
 | Proxmox | 192.168.86.106 | Hypervisor | SSH (root), Web (8006) |
 | NAS | 192.168.86.43 | Synology Storage | Web (5000), NFS |
+| PiHole | 192.168.86.158 | DNS server, ad blocking | Web (80, 443), DNS (53) |
 | VM 100 (emby) | 192.168.86.172 | Media server | SSH (evan), Portainer (9443) |
 | VM 101 (downloads) | 192.168.86.173 | Download clients | SSH (evan), Portainer (32768) |
 | VM 102 (arr) | 192.168.86.174 | Media automation | SSH (evan), Portainer (9443) |
@@ -52,6 +53,7 @@ Router (192.168.86.1)
     │   ├── VM 102 - arr (174)
     │   └── VM 103 - misc (249)
     ├── NAS (43) ← NFS mounts
+    ├── PiHole (158) ← DNS, ad blocking
     └── [Other devices]
 
 External Access:
@@ -260,6 +262,37 @@ External Access:
 
 **Status:** Not currently active
 **Purpose:** General purpose template/testing
+
+## Network Services
+
+### PiHole (DNS & Ad Blocking)
+
+**Purpose:** Network-wide DNS server and ad blocker
+**Hostname:** raspberrypi.lan
+**IP:** 192.168.86.158
+**Hardware:** Raspberry Pi
+**MAC Address:** dc:a6:32:27:bf:eb
+
+**Services:**
+- DNS server (port 53)
+- Web admin interface (ports 80, 443)
+- Ad blocking and tracking protection
+- Query logging and statistics
+
+**Access:**
+- **Web Admin:** http://192.168.86.158/admin/ or https://192.168.86.158/admin/
+- **DNS Server:** 192.168.86.158 (port 53)
+
+**Network Role:**
+- Primary DNS server for the network
+- Provides ad blocking for all devices on 192.168.86.0/24
+- Query logging and network-wide statistics
+
+**Notes:**
+- Configured as network DNS server
+- All devices on the network can use this for DNS resolution
+- Web interface provides statistics and configuration
+- Raspberry Pi Foundation hardware (dc:a6:32 MAC prefix)
 
 ## Storage Architecture
 

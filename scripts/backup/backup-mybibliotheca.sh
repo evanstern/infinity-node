@@ -7,12 +7,12 @@
 # Requirements:
 #   - sqlite3
 #   - scp (for file transfer over SSH)
-#   - expect (for password-based SSH authentication)
-#   - NAS backup password in ~/.nas-backup-password (chmod 600)
+#   - SSH key-based authentication to NAS (no password needed)
 #
 # Setup:
-#   echo 'your-nas-backup-password' > ~/.nas-backup-password
-#   chmod 600 ~/.nas-backup-password
+#   1. Generate SSH key if needed: ssh-keygen -t rsa -b 4096
+#   2. Copy public key to NAS: ssh-copy-id backup@192.168.86.43
+#   3. Test connection: ssh backup@192.168.86.43 'echo test'
 #
 # Usage:
 #   ./backup-mybibliotheca.sh
@@ -55,29 +55,22 @@ info() { echo -e "${YELLOW}→ $1${NC}"; }
 info "Starting MyBibliotheca backup at $(date)"
 
 # Verify required tools are installed
-for cmd in sqlite3 expect scp; do
+for cmd in sqlite3 scp ssh; do
     if ! command -v $cmd &> /dev/null; then
         error "Required command not found: $cmd"
         exit 5
     fi
 done
 
-# Read NAS backup password from secure file
-PASSWORD_FILE="$HOME/.nas-backup-password"
-if [ ! -f "$PASSWORD_FILE" ]; then
-    error "Password file not found: $PASSWORD_FILE"
-    error "Create it with: echo 'your-password' > $PASSWORD_FILE && chmod 600 $PASSWORD_FILE"
+# Verify SSH key authentication works
+info "Testing SSH key authentication to NAS..."
+if ! ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} 'echo "SSH key auth OK"' >/dev/null 2>&1; then
+    error "SSH key authentication failed"
+    error "Setup SSH keys with: ssh-copy-id ${NAS_USER}@${NAS_HOST}"
+    error "Or manually add ~/.ssh/id_rsa.pub to ${NAS_USER}@${NAS_HOST}:~/.ssh/authorized_keys"
     exit 5
 fi
-
-# Verify password file permissions
-if [ "$(stat -c '%a' "$PASSWORD_FILE" 2>/dev/null || stat -f '%A' "$PASSWORD_FILE")" != "600" ]; then
-    error "Password file has incorrect permissions (should be 600)"
-    error "Fix with: chmod 600 $PASSWORD_FILE"
-    exit 5
-fi
-
-NAS_PASSWORD=$(cat "$PASSWORD_FILE")
+success "SSH key authentication verified"
 
 # Find database file (MyBibliotheca uses books.db)
 SOURCE_DB=""
@@ -146,25 +139,9 @@ fi
 
 success "Local backup created successfully: $LOCAL_BACKUP_FILE"
 
-# Copy backup to NAS via scp over SSH
+# Copy backup to NAS via scp over SSH (using key authentication)
 info "Uploading backup to NAS ($NAS_HOST)..."
-expect <<EOFEXP
-set password [exec cat "$PASSWORD_FILE"]
-set timeout 60
-spawn scp -o StrictHostKeyChecking=no "$LOCAL_BACKUP_FILE" ${NAS_USER}@${NAS_HOST}:${NAS_BACKUP_DIR}/${REMOTE_BACKUP_FILE}
-expect {
-    "password:" {
-        send "\$password\r"
-        expect eof
-    }
-    timeout {
-        puts "Connection timeout"
-        exit 1
-    }
-}
-EOFEXP
-
-if [ $? -ne 0 ]; then
+if ! scp -o BatchMode=yes -o StrictHostKeyChecking=no "$LOCAL_BACKUP_FILE" ${NAS_USER}@${NAS_HOST}:${NAS_BACKUP_DIR}/${REMOTE_BACKUP_FILE}; then
     error "Failed to upload backup to NAS"
     rm -f "$LOCAL_BACKUP_FILE"
     exit 4
@@ -178,23 +155,7 @@ info "Cleaned up local temporary backup file"
 
 # Cleanup old backups on NAS
 info "Cleaning up backups older than $RETENTION_DAYS days on NAS..."
-expect <<EOFEXP
-set password [exec cat "$PASSWORD_FILE"]
-set timeout 30
-spawn ssh -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} "find ${NAS_BACKUP_DIR_FULL} -name 'mybibliotheca-backup-*.db' -mtime +${RETENTION_DAYS} -delete && find ${NAS_BACKUP_DIR_FULL} -name 'mybibliotheca-backup-*' | wc -l"
-expect {
-    "password:" {
-        send "\$password\r"
-        expect eof
-    }
-    timeout {
-        puts "SSH timeout during cleanup"
-        exit 1
-    }
-}
-EOFEXP
-
-if [ $? -eq 0 ]; then
+if ssh -o BatchMode=yes -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} "find ${NAS_BACKUP_DIR_FULL} -name 'mybibliotheca-backup-*.db' -mtime +${RETENTION_DAYS} -delete && find ${NAS_BACKUP_DIR_FULL} -name 'mybibliotheca-backup-*' | wc -l" >/dev/null 2>&1; then
     success "Old backups cleaned up successfully"
 else
     error "Warning: Cleanup may have failed (non-critical)"
@@ -202,24 +163,7 @@ fi
 
 # Get backup statistics from NAS
 info "Retrieving backup statistics from NAS..."
-STATS=$(expect <<EOFEXP
-set password [exec cat "$PASSWORD_FILE"]
-set timeout 30
-log_user 0
-spawn ssh -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} "cd ${NAS_BACKUP_DIR_FULL} && find . -name 'mybibliotheca-backup-*' | wc -l && du -sh ."
-expect {
-    "password:" {
-        send "\$password\r"
-        expect eof
-        puts \$expect_out(buffer)
-    }
-    timeout {
-        puts "ERROR"
-        exit 1
-    }
-}
-EOFEXP
-)
+STATS=$(ssh -o BatchMode=yes -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} "cd ${NAS_BACKUP_DIR_FULL} && find . -name 'mybibliotheca-backup-*' | wc -l && du -sh ." 2>/dev/null || echo "ERROR")
 
 success "Backup complete!"
 echo ""

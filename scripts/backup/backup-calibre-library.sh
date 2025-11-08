@@ -22,7 +22,7 @@
 #   5. Logs all operations
 #
 # Requirements:
-#   - /mnt/video/Backups/calibre directory on NAS
+#   - SSH key-based authentication to NAS (no password needed)
 #   - Sufficient space on NAS for backups
 #   - Docker access (user in docker group)
 #
@@ -35,9 +35,15 @@ set -euo pipefail
 
 # Configuration
 SOURCE_DIR="/home/evan/calibre-library"
-BACKUP_BASE="/mnt/video/Backups/calibre"
-BACKUP_NAME="calibre-library-$(date +%Y%m%d-%H%M%S).tar.gz"
-BACKUP_PATH="${BACKUP_BASE}/${BACKUP_NAME}"
+NAS_HOST="192.168.86.43"
+NAS_USER="backup"
+NAS_BACKUP_DIR="backups/calibre"  # Relative to Synology SFTP chroot (/volume1/)
+NAS_BACKUP_DIR_FULL="/volume1/backups/calibre"  # Full path for SSH commands
+LOCAL_TMP_DIR="/tmp"
+DATE=$(date +%Y%m%d-%H%M%S)
+BACKUP_NAME="calibre-library-${DATE}.tar.gz"
+LOCAL_BACKUP_FILE="${LOCAL_TMP_DIR}/${BACKUP_NAME}"
+REMOTE_BACKUP_FILE="${BACKUP_NAME}"
 RETENTION_DAYS=7
 LOG_PREFIX="[$(date '+%Y-%m-%d %H:%M:%S')]"
 
@@ -54,20 +60,35 @@ success() { echo -e "${LOG_PREFIX} ${GREEN}✓ $1${NC}"; }
 info() { echo -e "${LOG_PREFIX} ${BLUE}→ $1${NC}"; }
 warn() { echo -e "${LOG_PREFIX} ${YELLOW}⚠ $1${NC}"; }
 
+# Verify required tools are installed
+for cmd in scp ssh; do
+    if ! command -v $cmd &> /dev/null; then
+        error "Required command not found: $cmd"
+        exit 5
+    fi
+done
+
+# Verify SSH key authentication works
+info "Testing SSH key authentication to NAS..."
+if ! ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} 'echo "SSH key auth OK"' >/dev/null 2>&1; then
+    error "SSH key authentication failed"
+    error "Setup SSH keys with: ssh-copy-id ${NAS_USER}@${NAS_HOST}"
+    exit 5
+fi
+success "SSH key authentication verified"
+
 # Check if source exists
 if [ ! -d "$SOURCE_DIR" ]; then
     error "Source directory does not exist: $SOURCE_DIR"
     exit 1
 fi
 
-# Create backup directory if it doesn't exist
-if [ ! -d "$BACKUP_BASE" ]; then
-    info "Creating backup directory: $BACKUP_BASE"
-    mkdir -p "$BACKUP_BASE" || {
-        error "Failed to create backup directory"
-        exit 1
-    }
-fi
+# Ensure NAS backup directory exists
+info "Ensuring NAS backup directory exists..."
+ssh -o BatchMode=yes -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} "mkdir -p ${NAS_BACKUP_DIR_FULL}" || {
+    error "Failed to create NAS backup directory"
+    exit 1
+}
 
 # Check if Calibre containers are running
 CALIBRE_RUNNING=$(docker ps --filter "name=calibre" --filter "status=running" --format "{{.Names}}" | wc -l)
@@ -87,11 +108,11 @@ fi
 LIBRARY_SIZE=$(du -sh "$SOURCE_DIR" | cut -f1)
 info "Library size: $LIBRARY_SIZE"
 
-# Create backup
+# Create backup locally first
 info "Creating backup: $BACKUP_NAME"
 START_TIME=$(date +%s)
 
-tar czf "$BACKUP_PATH" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")" 2>&1 || {
+tar czf "$LOCAL_BACKUP_FILE" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")" 2>&1 || {
     error "Backup creation failed"
 
     # Restart containers if we stopped them
@@ -105,11 +126,32 @@ tar czf "$BACKUP_PATH" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")"
 
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
-BACKUP_SIZE=$(du -sh "$BACKUP_PATH" | cut -f1)
+BACKUP_SIZE=$(du -sh "$LOCAL_BACKUP_FILE" | cut -f1)
 
-success "Backup created: $BACKUP_PATH"
+success "Local backup created: $LOCAL_BACKUP_FILE"
 info "Backup size: $BACKUP_SIZE"
 info "Duration: ${DURATION} seconds"
+
+# Upload backup to NAS via scp over SSH (using key authentication)
+info "Uploading backup to NAS ($NAS_HOST)..."
+if ! scp -o BatchMode=yes -o StrictHostKeyChecking=no "$LOCAL_BACKUP_FILE" ${NAS_USER}@${NAS_HOST}:${NAS_BACKUP_DIR}/${REMOTE_BACKUP_FILE}; then
+    error "Failed to upload backup to NAS"
+    rm -f "$LOCAL_BACKUP_FILE"
+
+    # Restart containers if we stopped them
+    if [ "$CONTAINERS_STOPPED" = true ]; then
+        warn "Restarting Calibre containers after failed upload..."
+        docker start calibre calibre-web 2>/dev/null || error "Failed to restart containers"
+    fi
+
+    exit 1
+fi
+
+success "Backup uploaded to NAS: $NAS_BACKUP_DIR_FULL/$REMOTE_BACKUP_FILE"
+
+# Clean up local temporary file
+rm -f "$LOCAL_BACKUP_FILE"
+info "Cleaned up local temporary backup file"
 
 # Restart containers if we stopped them
 if [ "$CONTAINERS_STOPPED" = true ]; then
@@ -129,21 +171,26 @@ if [ "$CONTAINERS_STOPPED" = true ]; then
     fi
 fi
 
-# Clean up old backups
-info "Cleaning up backups older than $RETENTION_DAYS days..."
-find "$BACKUP_BASE" -name "calibre-library-*.tar.gz" -type f -mtime +$RETENTION_DAYS -delete 2>/dev/null || true
+# Clean up old backups on NAS
+info "Cleaning up backups older than $RETENTION_DAYS days on NAS..."
+if ssh -o BatchMode=yes -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} "find ${NAS_BACKUP_DIR_FULL} -name 'calibre-library-*.tar.gz' -mtime +${RETENTION_DAYS} -delete && find ${NAS_BACKUP_DIR_FULL} -name 'calibre-library-*.tar.gz' | wc -l" >/dev/null 2>&1; then
+    success "Old backups cleaned up successfully"
+else
+    warn "Warning: Cleanup may have failed (non-critical)"
+fi
 
-REMAINING_BACKUPS=$(find "$BACKUP_BASE" -name "calibre-library-*.tar.gz" -type f | wc -l)
-info "Backups retained: $REMAINING_BACKUPS"
+# Get backup count from NAS
+REMAINING_BACKUPS=$(ssh -o BatchMode=yes -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} "find ${NAS_BACKUP_DIR_FULL} -name 'calibre-library-*.tar.gz' -type f | wc -l" 2>/dev/null || echo "0")
+info "Backups retained on NAS: $REMAINING_BACKUPS"
 
-# List recent backups
-info "Recent backups:"
-find "$BACKUP_BASE" -name "calibre-library-*.tar.gz" -type f -printf "%T+ %p\n" | sort -r | head -5 | while read -r line; do
+# List recent backups from NAS
+info "Recent backups on NAS:"
+ssh -o BatchMode=yes -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} "cd ${NAS_BACKUP_DIR_FULL} && find . -name 'calibre-library-*.tar.gz' -type f -printf '%T+ %p\n' | sort -r | head -5" 2>/dev/null | while read -r line; do
     TIMESTAMP=$(echo "$line" | cut -d' ' -f1)
-    FILE=$(echo "$line" | cut -d' ' -f2-)
-    SIZE=$(du -sh "$FILE" | cut -f1)
-    log "  - $(basename "$FILE") ($SIZE) - $TIMESTAMP"
-done
+    FILE=$(echo "$line" | cut -d' ' -f2- | sed 's|^\./||')
+    SIZE=$(ssh -o BatchMode=yes -o StrictHostKeyChecking=no ${NAS_USER}@${NAS_HOST} "du -sh ${NAS_BACKUP_DIR_FULL}/${FILE} 2>/dev/null | cut -f1" || echo "unknown")
+    log "  - $FILE ($SIZE) - $TIMESTAMP"
+done || warn "Could not retrieve backup list from NAS"
 
 success "Backup completed successfully"
 exit 0
