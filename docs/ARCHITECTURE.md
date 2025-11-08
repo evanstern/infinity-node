@@ -233,6 +233,9 @@ External Access:
 - [[stacks/navidrome/README|Navidrome]] - Music streaming
 - [[stacks/audiobookshelf/README|Audiobookshelf]] - Audiobook management
 
+**Productivity:**
+- [[stacks/mybibliotheca/README|MyBibliotheca]] - Book tracking and library management
+
 **Other:**
 - [[stacks/homepage/README|Homepage]] (gethomepage/homepage) - Dashboard
 - [[stacks/newt/README|Pangolin client (newt)]]

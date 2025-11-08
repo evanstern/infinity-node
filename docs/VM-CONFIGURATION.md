@@ -42,10 +42,11 @@ tags:
 4. **Cron Jobs Added:**
    ```bash
    0 2 * * * /home/evan/scripts/backup-vaultwarden.sh >> /var/log/vaultwarden-backup.log 2>&1
+   0 2 * * * /home/evan/scripts/backup-mybibliotheca.sh >> /var/log/mybibliotheca-backup.log 2>&1
    ```
    - **User:** evan
    - **Schedule:** Daily at 2 AM
-   - **Purpose:** Automated Vaultwarden backups
+   - **Purpose:** Automated Vaultwarden and MyBibliotheca backups
 
 ### Existing Configuration (Not Changed)
 
@@ -54,7 +55,7 @@ tags:
   - `/mnt/video` → `//192.168.86.43/media`
   - `/mnt/music` → `//192.168.86.43/music`
 - **Docker:** Installed and running
-- **Services:** vaultwarden, paperless-ngx, linkwarden, immich, audiobookshelf, navidrome, portainer, watchtower, homepage, newt
+- **Services:** vaultwarden, paperless-ngx, linkwarden, immich, audiobookshelf, navidrome, mybibliotheca, portainer, watchtower, homepage, newt
 
 ### Known Issues
 
