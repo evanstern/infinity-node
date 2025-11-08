@@ -5,32 +5,36 @@ services:
     image: traefik:v3.0
     container_name: traefik
     restart: unless-stopped
-    
+
     # Expose standard HTTP/HTTPS ports
     ports:
       - "80:80"
       - "443:443"
-    
+
     # Mount configuration files
+    # Note: Portainer clones repo to /data/compose/<stack-id>/ and preserves directory structure
+    # Using paths relative to compose file location (./) causes Portainer bug where files become directories
+    # Solution: Use absolute path from repo root where Portainer clones
     volumes:
       # Static configuration (entrypoints, providers, etc.)
+      # Portainer resolves this relative to where it clones the repo
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
       # Dynamic configuration (routing rules)
       - ./dynamic.yml:/etc/traefik/dynamic.yml:ro
       # Docker socket for service discovery (optional, for future Docker provider)
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    
+
     # Command line arguments (can override config file settings)
     command:
       - "--log.level=INFO"
       - "--accesslog=true"
       - "--api.insecure=true"  # Enable dashboard (insecure for now, can add auth later)
       - "--api.dashboard=true"
-    
+
     # Network configuration
     networks:
       - traefik-network
-    
+
     # Health check - check API endpoint instead of /ping (which doesn't exist in Traefik v3)
     healthcheck:
       test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/api/overview"]
@@ -43,4 +47,3 @@ networks:
   traefik-network:
     name: traefik-network
     driver: bridge
-

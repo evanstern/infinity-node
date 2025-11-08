@@ -43,4 +43,3 @@ networks:
   traefik-network:
     name: traefik-network
     driver: bridge
-

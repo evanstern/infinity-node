@@ -49,4 +49,3 @@ accessLog:
 global:
   checkNewVersion: false
   sendAnonymousUsage: false
-

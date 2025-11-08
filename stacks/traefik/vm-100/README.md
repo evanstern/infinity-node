@@ -55,4 +55,3 @@ curl -H "Host: portainer-100.local.infinity-node.com" http://192.168.86.172/
 - **Emby not accessible via Traefik**: Verify `host.docker.internal` resolves correctly. On Linux, this may require Docker 20.10+ and may need to be enabled in Docker daemon config.
 - **Port conflicts**: Ensure ports 80/443 are not in use by other services
 - **Host network routing**: If `host.docker.internal` doesn't work, can fall back to routing to `172.17.0.1:8096` (default Docker bridge gateway)
-

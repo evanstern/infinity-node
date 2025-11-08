@@ -36,4 +36,3 @@ http:
       loadBalancer:
         servers:
           - url: "http://portainer:9000"
-

@@ -62,4 +62,3 @@ curl -H "Host: portainer-102.local.infinity-node.com" http://192.168.86.174/
 - **Services not accessible via Traefik**: Verify services are on `traefik-network`. Check with `docker network inspect traefik-network`.
 - **Port conflicts**: Ensure ports 80/443 are not in use by other services
 - **Container names**: Verify container names match (Portainer may prefix with stack name)
-
