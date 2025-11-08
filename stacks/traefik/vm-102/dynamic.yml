@@ -1,0 +1,115 @@
+# Traefik Dynamic Configuration for VM 102 (arr services)
+# This file contains routing rules for all services on VM 102
+# Update this file to add/remove/modify service routes
+
+http:
+  # Routers define how requests are matched and routed
+  routers:
+    # Radarr - Movie management (CRITICAL)
+    radarr:
+      rule: "Host(`radarr.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: radarr
+
+    # Sonarr - TV show management (CRITICAL)
+    sonarr:
+      rule: "Host(`sonarr.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: sonarr
+
+    # Lidarr - Music management (CRITICAL)
+    lidarr:
+      rule: "Host(`lidarr.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: lidarr
+
+    # Prowlarr - Indexer management (CRITICAL)
+    prowlarr:
+      rule: "Host(`prowlarr.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: prowlarr
+
+    # Jellyseerr - Request management
+    jellyseerr:
+      rule: "Host(`jellyseerr.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: jellyseerr
+
+    # Flaresolverr - Cloudflare bypass
+    flaresolverr:
+      rule: "Host(`flaresolverr.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: flaresolverr
+
+    # Huntarr - Unified search interface
+    huntarr:
+      rule: "Host(`huntarr.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: huntarr
+
+    # Portainer - Container management
+    portainer-102:
+      rule: "Host(`portainer-102.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: portainer-102
+
+  # Services define the backend servers to route to
+  services:
+    # Radarr - Internal port 7878
+    radarr:
+      loadBalancer:
+        servers:
+          - url: "http://radarr:7878"
+
+    # Sonarr - Internal port 8989
+    sonarr:
+      loadBalancer:
+        servers:
+          - url: "http://sonarr:8989"
+
+    # Lidarr - Internal port 8686
+    lidarr:
+      loadBalancer:
+        servers:
+          - url: "http://lidarr:8686"
+
+    # Prowlarr - Internal port 9696
+    prowlarr:
+      loadBalancer:
+        servers:
+          - url: "http://prowlarr:9696"
+
+    # Jellyseerr - Internal port 5055
+    jellyseerr:
+      loadBalancer:
+        servers:
+          - url: "http://jellyseerr:5055"
+
+    # Flaresolverr - Internal port 8191
+    flaresolverr:
+      loadBalancer:
+        servers:
+          - url: "http://flaresolverr:8191"
+
+    # Huntarr - Internal port (need to verify)
+    # Using port 8080 as default, will verify and update if needed
+    huntarr:
+      loadBalancer:
+        servers:
+          - url: "http://huntarr:8080"
+
+    # Portainer - Internal port 9000 (HTTP UI port)
+    # Note: Portainer serves web UI on port 9000, not 8000
+    portainer-102:
+      loadBalancer:
+        servers:
+          - url: "http://portainer:9000"
+
