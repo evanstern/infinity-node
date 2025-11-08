@@ -38,8 +38,8 @@ aliases:
 **VM:** 101 (downloads)
 **Priority:** CRITICAL - Media acquisition for household users
 **Access:**
-- Deluge: http://192.168.86.173:8112
-- NZBGet: http://192.168.86.173:6789
+- Deluge: http://deluge.local.infinity-node.com:8112
+- NZBGet: http://nzbget.local.infinity-node.com:6789
 **Images:**
 - `ghcr.io/bubuntux/nordlynx:latest`
 - `ghcr.io/linuxserver/deluge:latest`
@@ -196,7 +196,7 @@ docker compose up -d
 
 ### 2. Configure NZBGet
 
-1. Access web UI: http://192.168.86.173:6789
+1. Access web UI: http://nzbget.local.infinity-node.com:6789
 2. Log in with NZBGET_USER/NZBGET_PASS
 3. Settings → Paths:
    - MainDir: `/downloads`
@@ -207,7 +207,7 @@ docker compose up -d
 
 ### 3. Configure Deluge
 
-1. Access web UI: http://192.168.86.173:8112
+1. Access web UI: http://deluge.local.infinity-node.com:8112
 2. Default password: `deluge` (change immediately!)
 3. Preferences → Downloads:
    - Download to: `/incomplete`
@@ -227,7 +227,7 @@ docker exec deluge curl -s ifconfig.me
 # Should show NordVPN server IP, NOT your home IP
 
 # Verify local network access works
-curl http://192.168.86.173:8112
+curl http://deluge.local.infinity-node.com:8112
 # Should return Deluge web UI
 ```
 
@@ -355,8 +355,8 @@ docker compose up -d
 ### Can't Access Web UIs
 
 **Symptoms:**
-- http://192.168.86.173:8112 times out
-- http://192.168.86.173:6789 times out
+- http://deluge.local.infinity-node.com:8112 times out
+- http://nzbget.local.infinity-node.com:6789 times out
 
 **Check:**
 1. NET_LOCAL is set correctly

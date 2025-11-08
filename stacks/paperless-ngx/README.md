@@ -89,7 +89,7 @@ docker compose run --rm webserver createsuperuser
 ## Access
 
 - **Web UI:** https://paperless.infinity-node.com
-- **Local:** http://192.168.86.249:8001
+- **Local:** http://paperless.local.infinity-node.com:8000
 
 ## Network
 

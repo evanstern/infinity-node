@@ -23,7 +23,7 @@ aliases: [Jellyseerr, Media Requests]
 
 User-friendly interface for household members to request movies and TV shows. Integrates with Radarr/Sonarr to automatically search and download requested content.
 
-**Access:** http://192.168.86.174:5055
+**Access:** http://jellyseerr.local.infinity-node.com:5055
 
 ## Key Features
 - Users browse and request content

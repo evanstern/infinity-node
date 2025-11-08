@@ -37,7 +37,7 @@ aliases:
 **Service:** Linkwarden (Bookmark Manager)
 **VM:** 103 (misc)
 **Priority:** Medium - Bookmark organization
-**Access:** http://192.168.86.249:3000
+**Access:** http://linkwarden.local.infinity-node.com:3000
 **Image:** `ghcr.io/linkwarden/linkwarden:latest`
 
 ## Overview
@@ -142,7 +142,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. **Access Web UI:** Navigate to http://192.168.86.249:3000
+1. **Access Web UI:** Navigate to http://linkwarden.local.infinity-node.com:3000
 2. **Create Admin Account:** First user becomes admin
 3. **Configure Settings:**
    - Set default collection

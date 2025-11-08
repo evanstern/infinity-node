@@ -23,4 +23,4 @@ aliases: [Huntarr, Media Search]
 
 Unified search interface across all arr services. Search for movies, TV shows, and music from a single interface.
 
-**Access:** http://192.168.86.174:9705
+**Access:** http://huntarr.local.infinity-node.com:9705

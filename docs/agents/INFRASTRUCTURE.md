@@ -60,30 +60,34 @@ The Infrastructure Agent manages the underlying infrastructure including Proxmox
 ### Storage
 - **local**: 100GB (ISO, templates, backups)
 - **local-lvm**: 1.8TB (VM disks)
-- **NAS**: 57TB NFS (192.168.86.43, Synology)
+- **NAS**: 57TB NFS (nas.local.infinity-node.com / 192.168.86.43, Synology)
 
 ### Virtual Machines
 
 #### VM 100: emby (CRITICAL)
 - **IP**: 192.168.86.172
+- **DNS**: vm-100.local.infinity-node.com
 - **Resources**: 2 CPU, 8GB RAM, 82GB disk + 32GB NAS
 - **Purpose**: Media server
 - **Uptime**: Critical (primary service)
 
 #### VM 101: downloads (CRITICAL)
 - **IP**: 192.168.86.173
+- **DNS**: vm-101.local.infinity-node.com
 - **Resources**: 8 CPU, 16GB RAM, 100GB NAS + 4TB physical disk
 - **Purpose**: Torrent/Usenet downloads with VPN
 - **Uptime**: Critical (active downloads must not corrupt)
 
 #### VM 102: infinity-node-arr (CRITICAL)
 - **IP**: 192.168.86.174
+- **DNS**: vm-102.local.infinity-node.com
 - **Resources**: 8 CPU, 32GB RAM, 200GB NAS
 - **Purpose**: Media automation (*arr services)
 - **Uptime**: Critical (media pipeline)
 
 #### VM 103: misc (Important)
 - **IP**: 192.168.86.249
+- **DNS**: vm-103.local.infinity-node.com
 - **Resources**: 6 CPU, 16GB RAM, 100GB NAS
 - **Purpose**: Supporting services
 - **Uptime**: Important but not critical

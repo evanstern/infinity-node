@@ -32,7 +32,7 @@ aliases:
 **Service:** Homepage (Dashboard)
 **VM:** 103 (misc)
 **Priority:** Medium - Service dashboard
-**Access:** http://192.168.86.249:3001
+**Access:** http://homepage.local.infinity-node.com:3001
 **Image:** `ghcr.io/gethomepage/homepage:latest`
 
 ## Overview
@@ -85,7 +85,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. **Access Web UI:** Navigate to http://192.168.86.249:3001
+1. **Access Web UI:** Navigate to http://homepage.local.infinity-node.com:3001
 2. **Configuration:** Homepage uses YAML files in `./config/homepage/`
 3. **Main Config Files:**
    - `services.yaml` - Service widgets and integrations
@@ -101,20 +101,20 @@ docker compose up -d
 - Media:
     - Radarr:
         icon: radarr.png
-        href: http://192.168.86.xxx:7878
+        href: http://radarr.local.infinity-node.com:7878
         description: Movie management
         widget:
           type: radarr
-          url: http://192.168.86.xxx:7878
+          url: http://radarr.local.infinity-node.com:7878
           key: YOUR_API_KEY
 
     - Sonarr:
         icon: sonarr.png
-        href: http://192.168.86.xxx:8989
+        href: http://sonarr.local.infinity-node.com:8989
         description: TV show management
         widget:
           type: sonarr
-          url: http://192.168.86.xxx:8989
+          url: http://sonarr.local.infinity-node.com:8989
           key: YOUR_API_KEY
 ```
 
@@ -123,7 +123,7 @@ docker compose up -d
 ```yaml
 - Services:
     - Portainer:
-        - href: http://192.168.86.249:9000
+        - href: http://portainer-103.local.infinity-node.com:9000
           description: Docker management
 
     - Vaultwarden:
@@ -239,5 +239,5 @@ See [Homepage docs](https://gethomepage.dev/latest/widgets/) for full widget lis
 - Docker widget auto-discovers running containers
 - Can integrate with 100+ services for live monitoring
 - Lightweight and fast - perfect for dashboard/home screen
-- Previously configured with old IP (192.168.86.176) - updated to 192.168.86.249
+- Previously configured with old IP (192.168.86.176) - now uses DNS: homepage.local.infinity-node.com
 - Consider adding authentication via reverse proxy if exposing externally

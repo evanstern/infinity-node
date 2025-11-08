@@ -235,7 +235,7 @@ python3 scripts/utils/organize-music.py --dry-run --music-dir "/path/to/music"
 **Related:**
 - See `.claude/commands/organize-music.md` for slash command usage
 - Music library managed via Emby on VM 100
-- Storage: Synology NAS at 192.168.86.43
+- Storage: Synology NAS at nas.local.infinity-node.com
 
 #### `bw-setup-session.sh`
 **Purpose:** Setup Bitwarden CLI session for Claude Code access
@@ -469,13 +469,13 @@ Total Items in Organization: 13
 
 #### `deploy-with-secrets.sh`
 **Purpose:** Deploy a docker stack with automatic secret injection from Vaultwarden
-**Usage:** `./deploy-with-secrets.sh <stack-name> <vm-ip>`
+**Usage:** `./deploy-with-secrets.sh <stack-name> <vm-host>`
 **Dependencies:** Bitwarden CLI, SSH access to VM
 
 **Example:**
 ```bash
 # Deploy radarr to VM 102
-./scripts/deployment/deploy-with-secrets.sh radarr 192.168.86.174
+./scripts/deployment/deploy-with-secrets.sh radarr vm-102.local.infinity-node.com
 ```
 
 **Use Cases:**
@@ -555,7 +555,7 @@ chmod 600 ~/.nas-backup-password
 
 **Implementation Details:**
 - Backs up `/home/evan/data/vw-data/db.sqlite3` on VM 103
-- Transfers to `backup@192.168.86.43:/volume1/backups/vaultwarden/`
+- Transfers to `backup@nas.local.infinity-node.com:/volume1/backups/vaultwarden/`
 - Note: Synology NAS requires paths relative to `/volume1/` for SCP (chroot)
 - backup user must be in `administrators` group for SSH/SCP access
 - Password stored securely in `~/.nas-backup-password` on VM 103
@@ -574,7 +574,7 @@ chmod 600 ~/.nas-backup-password
 **Example:**
 ```bash
 # Configure on VM 103
-./scripts/setup/setup-evan-nopasswd-sudo.sh 192.168.86.249
+./scripts/setup/setup-evan-nopasswd-sudo.sh vm-103.local.infinity-node.com
 ```
 
 **Use Cases:**
@@ -590,8 +590,8 @@ chmod 600 ~/.nas-backup-password
 **Example:**
 ```bash
 # Create inspector user on all VMs
-for vm in 172 173 174 249; do
-  ./scripts/setup/setup-inspector-user.sh "192.168.86.$vm"
+for vm in vm-100 vm-101 vm-102 vm-103; do
+  ./scripts/setup/setup-inspector-user.sh "${vm}.local.infinity-node.com"
 done
 ```
 
@@ -776,7 +776,7 @@ RESOURCE STATUS
 # Direct mode (provide token and URL manually)
 ./scripts/infrastructure/query-portainer-stacks.sh \
   --token "ptr_ABC123..." \
-  --url "https://192.168.86.172:9443"
+  --url "https://portainer-100.local.infinity-node.com:9443"
 
 # Vaultwarden mode (auto-retrieve credentials)
 ./scripts/infrastructure/query-portainer-stacks.sh \
@@ -880,10 +880,10 @@ RESOURCE STATUS
 **Example:**
 ```bash
 # Clean Docker images on VM 103
-./scripts/infrastructure/docker-cleanup.sh 192.168.86.249
+./scripts/infrastructure/docker-cleanup.sh vm-103.local.infinity-node.com
 
 # With explicit SSH user
-./scripts/infrastructure/docker-cleanup.sh 192.168.86.249 evan
+./scripts/infrastructure/docker-cleanup.sh vm-103.local.infinity-node.com evan
 ```
 
 **Use Cases:**
@@ -901,7 +901,7 @@ RESOURCE STATUS
 
 **Example Output:**
 ```
-VM 102 (infinity-node-arr) - 192.168.86.174
+VM 102 (infinity-node-arr) - vm-102.local.infinity-node.com
 Before: 49G used (27% full), 170 Docker images, 30.46GB reclaimable
 After:  19G used (10% full), 11 Docker images, 0GB reclaimable
 Result: Freed 17% disk space, removed 159 unused images

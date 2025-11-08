@@ -35,7 +35,7 @@ set -euo pipefail
 
 # Configuration
 SOURCE_DIR="/home/evan/calibre-library"
-NAS_HOST="192.168.86.43"
+NAS_HOST="nas.local.infinity-node.com"
 NAS_USER="backup"
 NAS_BACKUP_DIR="backups/calibre"  # Relative to Synology SFTP chroot (/volume1/)
 NAS_BACKUP_DIR_FULL="/volume1/backups/calibre"  # Full path for SSH commands

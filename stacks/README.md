@@ -64,7 +64,7 @@ Portainer can automatically deploy and update stacks from this Git repository. T
 
 **Initial Configuration:**
 
-1. **Access Portainer** on your VM (e.g., http://192.168.86.249:9000)
+1. **Access Portainer** on your VM (e.g., http://portainer-103.local.infinity-node.com:9000)
 2. **Navigate to Stacks** → Add stack
 3. **Select "Repository"** as the build method
 4. **Configure Git settings:**
@@ -113,7 +113,7 @@ See [tasks/current/migrate-portainer-to-monorepo.md](../tasks/current/migrate-po
 ./scripts/deploy-with-secrets.sh <service> <vm-ip> <stack-path>
 
 # Example:
-./scripts/deploy-with-secrets.sh vaultwarden 192.168.86.249 /home/evan/projects/infinity-node/stacks/vaultwarden
+./scripts/deploy-with-secrets.sh vaultwarden vm-103.local.infinity-node.com /home/evan/projects/infinity-node/stacks/vaultwarden
 ```
 
 ### Option C: Manual Deployment

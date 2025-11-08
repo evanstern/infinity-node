@@ -113,7 +113,7 @@ Configured in Tdarr Web UI (Nodes → MainNode):
 
 2. **Create .env on VM 100**:
    ```bash
-   ssh evan@192.168.86.172
+   ssh evan@vm-100.local.infinity-node.com
    sudo mkdir -p /mnt/nas/configs/tdarr
    cd /path/to/tdarr/stack
    cp env.example .env
@@ -133,14 +133,14 @@ Configured in Tdarr Web UI (Nodes → MainNode):
 
 4. **Verify deployment**:
    ```bash
-   ssh evan@192.168.86.172
+   ssh evan@vm-100.local.infinity-node.com
    docker ps | grep tdarr
    docker logs tdarr_server
    docker exec tdarr_node nvidia-smi  # Verify GPU access
    ```
 
 5. **Access Web UI**:
-   - Navigate to: `http://192.168.86.172:8265`
+   - Navigate to: `http://tdarr.local.infinity-node.com:8265`
    - Complete initial setup wizard
    - Configure libraries, schedule, workers
 
@@ -150,26 +150,26 @@ Configured in Tdarr Web UI (Nodes → MainNode):
 
 ```bash
 # From local network
-http://192.168.86.172:8265
+http://tdarr.local.infinity-node.com:8265
 ```
 
 ### Monitoring
 
 **GPU utilization during Tdarr window:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 watch -n 2 nvidia-smi
 ```
 
 **Docker resource usage:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 docker stats tdarr_server tdarr_node tdarr_mongodb
 ```
 
 **Tdarr logs:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 docker logs -f tdarr_server
 docker logs -f tdarr_node
 ```
@@ -183,14 +183,14 @@ docker logs -f tdarr_node
 
 **Stop Tdarr immediately (emergency):**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 cd /path/to/tdarr/stack
 docker compose down
 ```
 
 **Start Tdarr:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 cd /path/to/tdarr/stack
 docker compose up -d
 ```
@@ -199,7 +199,7 @@ docker compose up -d
 ```bash
 # Via Portainer: Stacks → tdarr → Restart
 # OR via SSH:
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 cd /path/to/tdarr/stack
 docker compose restart
 ```
@@ -224,7 +224,7 @@ docker compose restart
 
 **Check NVIDIA driver visible in container:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 docker exec tdarr_node nvidia-smi
 ```
 
@@ -237,7 +237,7 @@ If not visible:
 
 **Check timezone configuration:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 docker exec tdarr_server date
 docker exec tdarr_server cat /etc/timezone
 ```
@@ -252,7 +252,7 @@ If wrong:
 
 **Immediately stop Tdarr:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 cd /path/to/tdarr/stack
 docker compose down
 ```
@@ -278,7 +278,7 @@ docker compose down
 
 **Check MongoDB container:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 docker logs tdarr_mongodb
 docker exec tdarr_mongodb mongo --eval "db.adminCommand('ping')"
 ```
@@ -335,7 +335,7 @@ export BW_SESSION=$(cat ~/.bw-session)
 ```bash
 # Via Portainer: Stacks → tdarr → Delete
 # OR via SSH:
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 cd /path/to/tdarr/stack
 docker compose down
 ```
@@ -361,7 +361,7 @@ git push
 ### Clean up Tdarr data
 
 ```bash
-ssh evan@192.168.86.172
+ssh evan@vm-100.local.infinity-node.com
 sudo rm -rf /mnt/nas/configs/tdarr
 ```
 

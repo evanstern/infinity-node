@@ -39,7 +39,7 @@ aliases:
 **Service:** Immich (Photo and Video Management)
 **VM:** 103 (misc)
 **Priority:** High - Personal photo library
-**Access:** http://192.168.86.249:2283
+**Access:** http://immich.local.infinity-node.com:2283
 **Image:** `ghcr.io/immich-app/immich-server:release`
 
 ## Overview
@@ -137,7 +137,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. **Access Web UI:** Navigate to http://192.168.86.249:2283
+1. **Access Web UI:** Navigate to http://immich.local.infinity-node.com:2283
 2. **Create Admin Account:** First user becomes admin
 3. **Configure Settings:**
    - Enable machine learning features
@@ -147,7 +147,7 @@ docker compose up -d
    - iOS: Download from App Store
    - Android: Download from Play Store
 5. **Connect App to Server:**
-   - Server URL: http://192.168.86.249:2283
+   - Server URL: http://immich.local.infinity-node.com:2283
    - Login with web UI credentials
 6. **Enable Auto-Backup:**
    - Configure backup settings in mobile app

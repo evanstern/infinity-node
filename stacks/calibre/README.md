@@ -1,8 +1,8 @@
 # Calibre E-book Server and Calibre-Web
 
-**Status**: ✅ Active  
-**VM**: 103 (misc) - `192.168.86.249`  
-**Category**: Media - E-book Management  
+**Status**: ✅ Active
+**VM**: 103 (misc) - `vm-103.local.infinity-node.com`
+**Category**: Media - E-book Management
 **Criticality**: Low (supporting service)
 
 ## Overview
@@ -132,7 +132,7 @@ CALIBRE_WEB_MEMORY_LIMIT=1G
 
 **5. Verify Health**
 ```bash
-ssh evan@192.168.86.249
+ssh evan@vm-103.local.infinity-node.com
 docker ps | grep calibre
 docker logs calibre
 docker logs calibre-web
@@ -142,7 +142,7 @@ docker logs calibre-web
 
 ### Step 1: Access Calibre Server GUI
 
-1. Open browser to: `http://192.168.86.249:8265`
+1. Open browser to: `http://calibre.local.infinity-node.com:8265`
 2. VNC interface will load (may take a moment on first start)
 3. Calibre desktop application appears in browser
 
@@ -176,7 +176,7 @@ Import 5-10 books to test:
 
 ### Step 5: Configure Calibre-Web
 
-1. Open browser to: `http://192.168.86.249:8267`
+1. Open browser to: `http://calibre.local.infinity-node.com:8267`
 2. **First-time setup wizard:**
    - Database location: `/library/metadata.db`
    - Create admin account (username/password)
@@ -280,7 +280,7 @@ Calibre detects potential duplicates during import:
 
 **How to backup:**
 ```bash
-ssh evan@192.168.86.249
+ssh evan@vm-103.local.infinity-node.com
 docker stop calibre calibre-web
 
 # Backup Calibre library
@@ -302,7 +302,7 @@ docker start calibre calibre-web
 
 **Manual:**
 ```bash
-ssh evan@192.168.86.249
+ssh evan@vm-103.local.infinity-node.com
 docker compose -f /path/to/docker-compose.yml pull
 docker compose -f /path/to/docker-compose.yml up -d
 ```
@@ -369,7 +369,7 @@ docker restart calibre
 3. Verify both containers share same `LIBRARY_PATH` volume
 4. Check file permissions:
 ```bash
-ssh evan@192.168.86.249
+ssh evan@vm-103.local.infinity-node.com
 ls -la /mnt/nas/configs/calibre/library/metadata.db
 # Should be owned by PUID:PGID (1000:1000)
 ```
@@ -387,7 +387,7 @@ docker restart calibre-web
 ```
 4. Verify no database lock:
 ```bash
-ssh evan@192.168.86.249
+ssh evan@vm-103.local.infinity-node.com
 ls -la /mnt/nas/configs/calibre/library/*.lock
 # Delete any .lock files if present (with containers stopped)
 ```
@@ -400,7 +400,7 @@ ls -la /mnt/nas/configs/calibre/library/*.lock
 1. Verify PUID/PGID set to 1000:1000
 2. Check NFS mount permissions:
 ```bash
-ssh evan@192.168.86.249
+ssh evan@vm-103.local.infinity-node.com
 ls -la /mnt/video/Books
 ls -la /mnt/nas/configs/calibre
 ```
@@ -476,9 +476,9 @@ docker logs calibre | grep -i metadata
 
 | Service | Port | Purpose | URL |
 |---------|------|---------|-----|
-| Calibre GUI | 8265 | VNC desktop interface | http://192.168.86.249:8265 |
-| Calibre Server | 8266 | Internal server (content) | http://192.168.86.249:8266 |
-| Calibre-Web | 8267 | Web reading interface | http://192.168.86.249:8267 |
+| Calibre GUI | 8265 | VNC desktop interface | http://calibre.local.infinity-node.com:8265 |
+| Calibre Server | 8266 | Internal server (content) | http://calibre.local.infinity-node.com:8266 |
+| Calibre-Web | 8267 | Web reading interface | http://calibre.local.infinity-node.com:8267 |
 
 ### Volume Mounts
 
@@ -564,8 +564,7 @@ Potential improvements (create tasks as needed):
 
 ## Notes
 
-**Deployment Date**: 2025-11-02  
-**Deployed By**: Docker Agent (Task IN-041)  
-**Initial Import**: 88 books from `/mnt/video/Books`  
+**Deployment Date**: 2025-11-02
+**Deployed By**: Docker Agent (Task IN-041)
+**Initial Import**: 88 books from `/mnt/video/Books`
 **Kindle Backups**: Available at `/mnt/video/Kindle` (not yet processed)
-

@@ -125,7 +125,7 @@ docker compose logs -f
 ### Web UI
 
 - **URL:** https://vaultwarden.infinity-node.com (via Pangolin tunnel)
-- **Local:** http://192.168.86.249:8111
+- **Local:** http://vaultwarden.local.infinity-node.com:8111
 - **Admin Panel:** https://vaultwarden.infinity-node.com/admin
   - Requires `ADMIN_TOKEN` from .env
 
@@ -134,7 +134,7 @@ docker compose logs -f
 **Configuration:**
 ```bash
 # Configure Bitwarden CLI
-bw config server http://192.168.86.249:8111
+bw config server http://vaultwarden.local.infinity-node.com:8111
 
 # Login with API key
 bw login --apikey
@@ -159,7 +159,7 @@ See [docs/SECRET-MANAGEMENT.md](../../docs/SECRET-MANAGEMENT.md) for complete CL
 - Exposed via **Pangolin tunnel** (newt client on VM 103)
 - Domain: `vaultwarden.infinity-node.com`
 - Pangolin adds authentication layer
-- **Note:** CLI must use local IP (http://192.168.86.249:8111) due to Pangolin auth
+- **Note:** CLI must use local DNS (http://vaultwarden.local.infinity-node.com:8111) due to Pangolin auth
 
 ## Dependencies
 
@@ -302,11 +302,11 @@ curl -I http://localhost:8111
 # Verify server configuration
 bw status
 
-# Should show: http://192.168.86.249:8111
+# Should show: http://vaultwarden.local.infinity-node.com:8111
 # NOT https://vaultwarden.infinity-node.com
 
 # Reconfigure if needed
-bw config server http://192.168.86.249:8111
+bw config server http://vaultwarden.local.infinity-node.com:8111
 ```
 
 ## Related Documentation

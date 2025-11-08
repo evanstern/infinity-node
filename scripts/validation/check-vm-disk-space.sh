@@ -21,12 +21,12 @@ set -euo pipefail
 WARN_THRESHOLD=80
 CRITICAL_THRESHOLD=95
 
-# VM list (IP addresses)
+# VM list (DNS names)
 VMS=(
-    "192.168.86.172:VM-100-emby"
-    "192.168.86.173:VM-101-downloads"
-    "192.168.86.174:VM-102-arr"
-    "192.168.86.249:VM-103-misc"
+    "vm-100.local.infinity-node.com:VM-100-emby"
+    "vm-101.local.infinity-node.com:VM-101-downloads"
+    "vm-102.local.infinity-node.com:VM-102-arr"
+    "vm-103.local.infinity-node.com:VM-103-misc"
 )
 
 # Color codes

@@ -5,8 +5,8 @@
 #   ./docker-cleanup.sh <vm-host> [ssh-user]
 #
 # Examples:
-#   ./docker-cleanup.sh 192.168.86.249
-#   ./docker-cleanup.sh 192.168.86.249 evan
+#   ./docker-cleanup.sh vm-103.local.infinity-node.com
+#   ./docker-cleanup.sh vm-103.local.infinity-node.com evan
 #
 # Description:
 #   Connects to a remote VM via SSH and removes all unused Docker images.
@@ -30,8 +30,8 @@ if [ $# -lt 1 ]; then
     echo "Usage: $0 <vm-host> [ssh-user]"
     echo ""
     echo "Examples:"
-    echo "  $0 192.168.86.249"
-    echo "  $0 vm103.local evan"
+    echo "  $0 vm-103.local.infinity-node.com"
+    echo "  $0 vm-103.local.infinity-node.com evan"
     exit 1
 fi
 

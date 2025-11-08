@@ -327,10 +327,10 @@ Pi-hole DNS Server (192.168.86.158:53)
 **NAS Details:**
 - **Model:** Synology (specific model TBD)
 - **IP:** 192.168.86.43
-- **Web UI:** http://192.168.86.43:5000
+- **Web UI:** http://nas.local.infinity-node.com:5000 (or http://192.168.86.43:5000)
 - **Capacity:** 57TB total
 
-**Mount Point:** 192.168.86.43:/volume1/infinity-node
+**Mount Point:** nas.local.infinity-node.com:/volume1/infinity-node (or 192.168.86.43:/volume1/infinity-node)
 
 **Usage:**
 - VM disk images (qcow2 on NFS)
@@ -500,9 +500,9 @@ User Streams Media
 **Strategy:** See [[docs/SECRET-MANAGEMENT|Secret Management]] for complete documentation
 
 **Vaultwarden Instance:**
-- **Location:** VM 103 (192.168.86.249:8111)
+- **Location:** VM 103 (vaultwarden.local.infinity-node.com:8111)
 - **Web UI:** https://vaultwarden.infinity-node.com (via Pangolin)
-- **CLI Access:** http://192.168.86.249:8111 (local IP required)
+- **CLI Access:** http://vaultwarden.local.infinity-node.com:8111 (local DNS required)
 - **Status:** Active, configured with folder structure
 - **Purpose:** Source of truth for all infrastructure secrets
 
@@ -543,16 +543,16 @@ infinity-node/
 
 **Portainer CE:**
 - Instance running on each VM
-- **Access URLs (IP):**
-  - VM 100: https://192.168.86.172:9443
-  - VM 101: https://192.168.86.173:32768 *(non-standard port)*
-  - VM 102: https://192.168.86.174:9443
-  - VM 103: https://192.168.86.249:9443
-- **Access URLs (DNS):**
+- **Access URLs (DNS - recommended):**
   - VM 100: https://portainer-100.local.infinity-node.com:9443
   - VM 101: https://portainer-101.local.infinity-node.com:32768
   - VM 102: https://portainer-102.local.infinity-node.com:9443
   - VM 103: https://portainer-103.local.infinity-node.com:9443
+- **Access URLs (IP - fallback):**
+  - VM 100: https://192.168.86.172:9443
+  - VM 101: https://192.168.86.173:32768 *(non-standard port)*
+  - VM 102: https://192.168.86.174:9443
+  - VM 103: https://192.168.86.249:9443
 - **Features:**
   - Web UI for container management
   - Git-based stack deployment (GitOps)

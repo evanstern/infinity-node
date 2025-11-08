@@ -11,8 +11,8 @@
 #
 # Setup:
 #   1. Generate SSH key if needed: ssh-keygen -t rsa -b 4096
-#   2. Copy public key to NAS: ssh-copy-id backup@192.168.86.43
-#   3. Test connection: ssh backup@192.168.86.43 'echo test'
+#   2. Copy public key to NAS: ssh-copy-id backup@nas.local.infinity-node.com
+#   3. Test connection: ssh backup@nas.local.infinity-node.com 'echo test'
 #
 # Usage:
 #   ./backup-vaultwarden.sh
@@ -32,7 +32,7 @@ set -euo pipefail
 
 # Configuration
 SOURCE_DB="/home/evan/data/vw-data/db.sqlite3"
-NAS_HOST="192.168.86.43"
+NAS_HOST="nas.local.infinity-node.com"
 NAS_USER="backup"
 NAS_BACKUP_DIR="backups/vaultwarden"  # Relative to Synology SFTP chroot (/volume1/)
 NAS_BACKUP_DIR_FULL="/volume1/backups/vaultwarden"  # Full path for SSH commands

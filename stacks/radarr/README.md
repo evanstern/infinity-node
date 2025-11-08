@@ -32,7 +32,7 @@ aliases:
 **Service:** Radarr (Movie Management & Automation)
 **VM:** 102 (arr)
 **Priority:** CRITICAL - Automates movie acquisition for household
-**Access:** http://192.168.86.174:7878
+**Access:** http://radarr.local.infinity-node.com:7878
 **Image:** `lscr.io/linuxserver/radarr:latest`
 
 ## Overview
@@ -64,7 +64,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. Access: http://192.168.86.174:7878
+1. Access: http://radarr.local.infinity-node.com:7878
 2. Settings → Media Management:
    - Root folder: `/movies`
    - File naming conventions
@@ -72,8 +72,8 @@ docker compose up -d
 3. Settings → Indexers:
    - Add Prowlarr (auto-configures via API)
 4. Settings → Download Clients:
-   - Add Deluge (VM 101): http://192.168.86.173:8112
-   - Add NZBGet (VM 101): http://192.168.86.173:6789
+   - Add Deluge (VM 101): http://deluge.local.infinity-node.com:8112
+   - Add NZBGet (VM 101): http://nzbget.local.infinity-node.com:6789
 
 ## Notes
 

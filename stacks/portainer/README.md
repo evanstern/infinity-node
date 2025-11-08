@@ -33,7 +33,7 @@ aliases:
 **Service:** Portainer CE (Docker Management UI)
 **VM:** 103 (misc) - Also on VM 100, 101, 102
 **Priority:** Important - Primary management interface
-**Access:** http://192.168.86.249:9000
+**Access:** http://portainer-103.local.infinity-node.com:9000 (or https://portainer-103.local.infinity-node.com:9443)
 
 ## Overview
 

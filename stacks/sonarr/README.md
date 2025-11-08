@@ -32,7 +32,7 @@ aliases:
 **Service:** Sonarr (TV Show Management & Automation)
 **VM:** 102 (arr)
 **Priority:** CRITICAL - Automates TV show acquisition for household
-**Access:** http://192.168.86.174:8989
+**Access:** http://sonarr.local.infinity-node.com:8989
 **Image:** `lscr.io/linuxserver/sonarr:latest`
 
 ## Overview
@@ -64,7 +64,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. Access: http://192.168.86.174:8989
+1. Access: http://sonarr.local.infinity-node.com:8989
 2. Add root folder: `/tv`
 3. Connect to Prowlarr for indexers
 4. Add download clients (Deluge/NZBGet on VM 101)
