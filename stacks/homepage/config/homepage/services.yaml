@@ -16,7 +16,7 @@
         description: Media streaming server
         widget:
           type: emby
-          url: http://192.168.86.172:8096
+          url: http://emby.local.infinity-node.com:8096
           key: YOUR_EMBY_API_KEY_HERE
           enableNowPlaying: true
           enableUser: true
@@ -44,7 +44,7 @@
         description: Movie management and automation
         widget:
           type: radarr
-          url: http://192.168.86.174:7878
+          url: http://radarr.local.infinity-node.com:7878
           key: YOUR_RADARR_API_KEY_HERE
           fields: ["wanted", "queued"]
 
@@ -54,7 +54,7 @@
         description: TV show management and automation
         widget:
           type: sonarr
-          url: http://192.168.86.174:8989
+          url: http://sonarr.local.infinity-node.com:8989
           key: YOUR_SONARR_API_KEY_HERE
           fields: ["wanted", "queued"]
 
@@ -64,7 +64,7 @@
         description: Music management and automation
         widget:
           type: lidarr
-          url: http://192.168.86.174:8686
+          url: http://lidarr.local.infinity-node.com:8686
           key: YOUR_LIDARR_API_KEY_HERE
 
     - Prowlarr:
@@ -73,7 +73,7 @@
         description: Indexer management for all arr services
         widget:
           type: prowlarr
-          url: http://192.168.86.174:9696
+          url: http://prowlarr.local.infinity-node.com:9696
           key: YOUR_PROWLARR_API_KEY_HERE
 
     - Jellyseerr:
@@ -82,7 +82,7 @@
         description: Media request management
         widget:
           type: jellyseerr
-          url: http://192.168.86.174:5055
+          url: http://jellyseerr.local.infinity-node.com:5055
           key: YOUR_JELLYSEERR_API_KEY_HERE
 
     - FlareSolverr:
@@ -136,12 +136,12 @@
 
     - Portainer:
         icon: portainer.png
-        href: https://192.168.86.249:9443
+        href: https://portainer-103.local.infinity-node.com:9443
         description: Docker container management
 
     - Watchtower:
         icon: watchtower.png
-        href: http://192.168.86.249:8080
+        href: http://vm-103.local.infinity-node.com:8080
         description: Automatic container updates (no web UI)
 
 # ==============================================================================
