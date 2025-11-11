@@ -39,14 +39,10 @@ http:
 
     # NZBGet - Internal port 6789 (via VPN container)
     # VPN container exposes port 6789 on host, route via Docker bridge gateway
-    # Note: NZBGet sends Connection: close, so we need to respect that
     nzbget:
       loadBalancer:
         servers:
           - url: "http://172.17.0.1:6789"
-        # Pass through response headers including Connection header
-        responseForwarding:
-          flushInterval: 100ms
 
     # Portainer - Internal port 9000 (HTTP UI port)
     # Note: Portainer serves web UI on port 9000, not 8000
