@@ -20,8 +20,6 @@ http:
       entryPoints:
         - web
       service: nzbget
-      middlewares:
-        - pass-auth-headers
 
     # Portainer - Container management
     portainer-101:
@@ -41,10 +39,14 @@ http:
 
     # NZBGet - Internal port 6789 (via VPN container)
     # VPN container exposes port 6789 on host, route via Docker bridge gateway
+    # Note: NZBGet sends Connection: close, so we need to respect that
     nzbget:
       loadBalancer:
         servers:
           - url: "http://172.17.0.1:6789"
+        # Pass through response headers including Connection header
+        responseForwarding:
+          flushInterval: 100ms
 
     # Portainer - Internal port 9000 (HTTP UI port)
     # Note: Portainer serves web UI on port 9000, not 8000
@@ -52,13 +54,3 @@ http:
       loadBalancer:
         servers:
           - url: "http://portainer:9000"
-
-  # Middlewares define request/response transformations
-  middlewares:
-    # Pass through authentication headers (WWW-Authenticate, etc.)
-    # Traefik may strip certain headers by default - this ensures auth headers pass through
-    pass-auth-headers:
-      headers:
-        # Don't modify response headers - pass everything through from backend
-        # This ensures WWW-Authenticate header reaches the browser
-        customResponseHeaders: {}
