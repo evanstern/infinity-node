@@ -20,6 +20,8 @@ http:
       entryPoints:
         - web
       service: nzbget
+      middlewares:
+        - pass-auth-headers
 
     # Portainer - Container management
     portainer-101:
@@ -51,3 +53,12 @@ http:
         servers:
           - url: "http://portainer:9000"
 
+  # Middlewares define request/response transformations
+  middlewares:
+    # Pass through authentication headers (WWW-Authenticate, etc.)
+    # Traefik may strip certain headers by default - this ensures auth headers pass through
+    pass-auth-headers:
+      headers:
+        # Don't modify response headers - pass everything through from backend
+        # This ensures WWW-Authenticate header reaches the browser
+        customResponseHeaders: {}
