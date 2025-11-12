@@ -233,9 +233,14 @@ def plan_consolidations(music_dir: Path, structure: Dict[str, Dict[str, List[str
             # Check if this was handled by Case 1
             handled = False
             for op in operations:
-                if op['source_album'] == album_name or op['target_album'] == album_name:
-                    handled = True
-                    break
+                if op['type'] == 'merge_to_main':
+                    if op['source_album'] == album_name or op['target_album'] == album_name:
+                        handled = True
+                        break
+                elif op['type'] == 'merge_to_various':
+                    if op['target_album'] == album_name:
+                        handled = True
+                        break
             if handled:
                 continue
 
