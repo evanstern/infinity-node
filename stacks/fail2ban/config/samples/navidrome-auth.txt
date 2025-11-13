@@ -1,0 +1,2 @@
+2025-11-13T15:00:00Z WARN auth failed login: ip=198.51.100.42 user=admin error="invalid credentials"
+2025-11-13T15:01:10Z WARN auth failed login: ip=203.0.113.17 user=admin error="invalid credentials"

@@ -18,11 +18,13 @@ services:
     volumes:
       # Static configuration (entrypoints, providers, etc.)
       # Portainer resolves this relative to where it clones the repo
-      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - /home/evan/.config/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
       # Dynamic configuration (routing rules)
-      - ./dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - /home/evan/.config/traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
       # Docker socket for service discovery (optional, for future Docker provider)
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Access logs written to host for fail2ban
+      - /home/evan/logs/traefik:/var/log/traefik
 
     # Command line arguments (can override config file settings)
     command:

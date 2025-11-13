@@ -62,6 +62,7 @@ None - Navidrome manages user authentication internally via web UI.
 
 - `/mnt/video/Music` → `/music` (read-only) - Music library
 - `/home/evan/data/navidrome` → `/data` - Database, cache, and application data
+- `/home/evan/data/navidrome/logs/navidrome.log` - Combined stdout/stderr log (created automatically)
 
 ### Environment Variables
 

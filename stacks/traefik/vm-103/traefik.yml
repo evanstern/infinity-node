@@ -23,7 +23,7 @@ providers:
     watch: true
     # Optional: directory mode (can use multiple files)
     # directory: /etc/traefik/dynamic/
-  
+
   # Docker provider (optional, for future Docker label-based routing)
   docker:
     endpoint: unix:///var/run/docker.sock
@@ -42,6 +42,7 @@ log:
   format: json
 
 accessLog:
+  filePath: /var/log/traefik/access.log
   format: json
   bufferingSize: 100
 
@@ -49,4 +50,3 @@ accessLog:
 global:
   checkNewVersion: false
   sendAnonymousUsage: false
-

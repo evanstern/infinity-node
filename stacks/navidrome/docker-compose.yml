@@ -8,11 +8,15 @@ services:
         volumes:
             - ${DATA_PATH}:/data
             - ${MUSIC_PATH}:/music:ro
+            - /home/evan/scripts/navidrome-start.sh:/start.sh:ro
         environment:
             - ND_MUSICFOLDER=/music
             - ND_DATAFOLDER=/data
             - ND_CONFIGFILE=/data/navidrome.toml
             - ND_PORT=4533
+        entrypoint: []
+        command:
+            - /start.sh
         restart: unless-stopped
         networks:
             - default
