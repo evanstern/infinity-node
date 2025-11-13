@@ -14,6 +14,8 @@ services:
             - ND_DATAFOLDER=/data
             - ND_CONFIGFILE=/data/navidrome.toml
             - ND_PORT=4533
+            - ND_LASTFM_APIKEY=${LASTFM_API_KEY}
+            - ND_LASTFM_SECRET=${LASTFM_SECRET}
         entrypoint: []
         command:
             - /start.sh
