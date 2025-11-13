@@ -4,7 +4,7 @@ service: fail2ban
 category: security
 vms: [103]
 priority: high
-status: planned
+status: running
 stack-type: single-container
 has-secrets: false
 external-access: false
