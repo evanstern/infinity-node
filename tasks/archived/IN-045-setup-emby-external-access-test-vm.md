@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-045
-status: pending
+status: archived
 priority: 2
 category: infrastructure
 agent: infrastructure

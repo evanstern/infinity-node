@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-004
-status: pending
+status: archived
 priority: 2
 category: documentation
 agent: documentation

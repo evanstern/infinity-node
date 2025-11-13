@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-016
-status: pending
+status: archived
 priority: 2
 category: security
 agent: security

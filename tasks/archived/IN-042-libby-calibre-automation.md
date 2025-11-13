@@ -1,7 +1,7 @@
 ---
 id: IN-042
 title: "Research and Build Libby-to-Calibre Automation System"
-status: backlog
+status: archived
 priority: 5
 created: 2025-11-05
 updated: 2025-11-05
