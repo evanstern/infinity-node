@@ -8,7 +8,7 @@
 # pull from a Git repository with GitOps automatic updates enabled.
 #
 # Usage:
-#   ./create-git-stack.sh <portainer-secret-name> <collection-name> <endpoint-id> <stack-name> <compose-path> [env-file]
+#   ./create-git-stack.sh <portainer-secret-name> <collection-name> <endpoint-id> <stack-name> <compose-path> [--env KEY=VALUE ...] [--env-file path]
 #
 # Arguments:
 #   portainer-secret-name: Name of Portainer API token secret in Vaultwarden
@@ -16,7 +16,8 @@
 #   endpoint-id: Portainer endpoint ID (usually 3 for local)
 #   stack-name: Name for the new stack (e.g., "homepage", "watchtower")
 #   compose-path: Path to compose file in repo (e.g., "stacks/homepage/docker-compose.yml")
-#   env-file: (Optional) Path to .env file with environment variables
+#   --env KEY=VALUE: (Optional, repeatable) Environment variable to inject
+#   --env-file path: (Optional) Path to .env file with environment variables (legacy positional arg still supported)
 #
 # Examples:
 #   # Create stack with env vars from file
@@ -56,14 +57,16 @@ error() { echo -e "${RED}ERROR: $1${NC}" >&2; }
 success() { echo -e "${GREEN}✓ $1${NC}"; }
 info() { echo -e "${BLUE}→ $1${NC}"; }
 warn() { echo -e "${YELLOW}⚠ $1${NC}"; }
+escape_json() { printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'; }
 
 # Validate arguments
 if [ $# -lt 5 ]; then
     error "Missing required arguments"
-    echo "Usage: $0 <portainer-secret-name> <collection-name> <endpoint-id> <stack-name> <compose-path> [env-file]" >&2
+    echo "Usage: $0 <portainer-secret-name> <collection-name> <endpoint-id> <stack-name> <compose-path> [--env KEY=VALUE ...] [--env-file path]" >&2
     echo "" >&2
     echo "Examples:" >&2
-    echo "  $0 \"portainer-api-token-vm-103\" \"shared\" 3 \"homepage\" \"stacks/homepage/docker-compose.yml\" \"stacks/homepage/.env.example\"" >&2
+    echo "  $0 \"portainer-api-token-vm-103\" \"shared\" 3 \"homepage\" \"stacks/homepage/docker-compose.yml\" --env-file stacks/homepage/.env.example" >&2
+    echo "  $0 \"portainer-api-token-vm-103\" \"shared\" 3 \"fail2ban-vm100\" \"stacks/fail2ban/docker-compose.yml\" --env TRAEFIK_LOG_PATH=/home/evan/logs/traefik --env EMBY_LOG_PATH=/home/evan/projects/infinity-node/stacks/emby/config/logs" >&2
     exit 1
 fi
 
@@ -72,7 +75,42 @@ COLLECTION_NAME="$2"
 ENDPOINT_ID="$3"
 STACK_NAME="$4"
 COMPOSE_PATH="$5"
-ENV_FILE="${6:-}"
+shift 5
+
+ENV_FILE=""
+LEGACY_ENV_FILE_SET=false
+ENV_INLINE=()
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --env-file)
+            if [ $# -lt 2 ]; then
+                error "Missing path for --env-file"
+                exit 1
+            fi
+            ENV_FILE="$2"
+            shift 2
+            ;;
+        --env)
+            if [ $# -lt 2 ]; then
+                error "Missing KEY=VALUE for --env"
+                exit 1
+            fi
+            ENV_INLINE+=("$2")
+            shift 2
+            ;;
+        *)
+            if ! $LEGACY_ENV_FILE_SET; then
+                ENV_FILE="$1"
+                LEGACY_ENV_FILE_SET=true
+                shift 1
+            else
+                error "Unknown argument: $1"
+                exit 1
+            fi
+            ;;
+    esac
+done
 
 # Monorepo configuration
 MONOREPO_URL="https://github.com/evanstern/infinity-node"
@@ -113,25 +151,55 @@ fi
 
 success "Retrieved credentials"
 
-# Parse environment variables from file if provided
-ENV_JSON="[]"
+# Parse environment variables from file / inline args
+ENV_LINES=()
 if [ -n "$ENV_FILE" ]; then
     if [ ! -f "$ENV_FILE" ]; then
         error "Environment file not found: $ENV_FILE"
         exit 1
     fi
-
     info "Loading environment variables from $ENV_FILE..."
+    while IFS= read -r line || [ -n "$line" ]; do
+        ENV_LINES+=("$line")
+    done < "$ENV_FILE"
+fi
 
-    # Parse .env file and convert to JSON array
-    ENV_JSON=$(grep -v '^#' "$ENV_FILE" | grep -v '^[[:space:]]*$' | awk -F= '{
-        gsub(/^[[:space:]]+|[[:space:]]+$/, "", $1);
-        gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2);
-        printf "{\"name\":\"%s\",\"value\":\"%s\"},", $1, $2
-    }' | sed 's/,$//' | awk 'BEGIN{printf "["} {printf "%s", $0} END{printf "]"}')
+if [ ${#ENV_INLINE[@]} -gt 0 ]; then
+    info "Loading ${#ENV_INLINE[@]} inline environment variable(s)..."
+    for pair in "${ENV_INLINE[@]}"; do
+        ENV_LINES+=("$pair")
+    done
+fi
 
-    ENV_COUNT=$(echo "$ENV_JSON" | jq 'length')
-    success "Loaded $ENV_COUNT environment variables"
+ENV_JSON="[]"
+if [ ${#ENV_LINES[@]} -gt 0 ]; then
+    JSON_ENTRIES=""
+    for line in "${ENV_LINES[@]}"; do
+        trimmed=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        case "$trimmed" in
+            ""|\#*) continue ;;
+        esac
+        if [[ "$trimmed" != *=* ]]; then
+            warn "Skipping invalid env entry (missing =): $trimmed"
+            continue
+        fi
+        KEY=${trimmed%%=*}
+        VALUE=${trimmed#*=}
+        KEY=$(echo "$KEY" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        VALUE=$(echo "$VALUE" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+        if [ -z "$KEY" ]; then
+            warn "Skipping env entry with empty key"
+            continue
+        fi
+        JSON_ENTRIES+="{\"name\":\"$(escape_json "$KEY")\",\"value\":\"$(escape_json "$VALUE")\"},"
+    done
+    if [ -n "$JSON_ENTRIES" ]; then
+        ENV_JSON="[${JSON_ENTRIES%,}]"
+        ENV_COUNT=$(echo "$ENV_JSON" | jq 'length')
+        success "Loaded $ENV_COUNT environment variable(s)"
+    else
+        warn "No valid environment variables were parsed"
+    fi
 fi
 
 info "Creating Git-based stack: $STACK_NAME"

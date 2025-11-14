@@ -602,6 +602,30 @@ done
 
 ### Infrastructure (`infrastructure/`)
 
+#### `create-git-stack.sh`
+**Purpose:** Create a new Portainer stack backed by the infinity-node monorepo with GitOps auto-updates enabled.
+
+**Usage:**
+```bash
+./scripts/infrastructure/create-git-stack.sh \
+  "portainer-api-token-vm-100" "shared" 3 \
+  "traefik" "stacks/traefik/vm-100/docker-compose.yml" \
+  --env TRAEFIK_LOG_PATH=/home/evan/logs/traefik \
+  --env EMBY_LOG_PATH=/home/evan/projects/infinity-node/stacks/emby/config/logs
+```
+
+**Arguments:**
+- `<portainer-secret-name>` / `<collection-name>`: Vaultwarden entry for the Portainer API token
+- `<endpoint-id>`: Portainer endpoint (usually `3` for local Docker)
+- `<stack-name>` / `<compose-path>`: Name and compose file path inside the repo
+- `--env KEY=VALUE`: (Optional, repeatable) Inject environment variables without needing a `.env` file
+- `--env-file path`: (Optional) Load variables from a `.env` file (legacy positional argument still works)
+
+**Notes:**
+- At least one of `--env` or `--env-file` can be used; `--env` values override duplicates from the file
+- GitOps interval defaults to 5 minutes
+- Requires `BW_SESSION` to retrieve the Portainer token automatically
+
 #### `check-proxmox-resources.sh`
 **Purpose:** Display comprehensive Proxmox host resource information and VM allocations
 **Usage:** `./check-proxmox-resources.sh [--json]`

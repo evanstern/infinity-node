@@ -20,13 +20,18 @@ This directory contains the Git-managed jails, filters, and sample logs used by 
 stacks/fail2ban/config/
 ├── README.md
 ├── jail.d/                    # Jail definitions
-│   └── navidrome.conf
+│   ├── navidrome.conf
+│   └── emby.conf
 ├── filter.d/                  # Custom filters referenced by the jails
 │   ├── navidrome-auth.conf
-│   └── navidrome-traefik.conf
+│   ├── navidrome-traefik.conf
+│   ├── emby-auth.conf
+│   └── emby-traefik.conf
 └── samples/                   # Example log lines used for regex tuning
     ├── navidrome-auth.txt
-    └── traefik-access-navidrome.jsonl
+    ├── traefik-access-navidrome.jsonl
+    ├── emby-auth.txt
+    └── traefik-access-emby.jsonl
 ```
 
 ## Log Sources & Mounts
@@ -36,7 +41,7 @@ stacks/fail2ban/config/
 | Traefik   | `/remotelogs/traefik/access.log`      | `/home/evan/logs/traefik/access.log`        | JSON access log; 401 responses indicate failed auth. |
 | Navidrome | `/remotelogs/navidrome/navidrome.log` | `/home/evan/data/navidrome/logs/navidrome.log` | Generated via `stdbuf … | tee -a /data/logs/navidrome.log`. |
 
-Ensure these host directories exist before redeploying stacks (Navidrome creates its log directory automatically; Traefik’s directory may need manual creation).
+Ensure these host directories exist before redeploying stacks (Navidrome creates its log directory automatically; Traefik’s directory may need manual creation). When deploying on VM-100 for Emby, mount `/home/evan/projects/infinity-node/stacks/emby/config/logs` into `/remotelogs/emby` via the `EMBY_LOG_PATH` variable (or keep `/home/evan/.config/fail2ban/unused` elsewhere).
 
 ## Filters
 
@@ -53,6 +58,13 @@ Sample logs in `samples/` match the failregex patterns and can be used with `fai
 |---------------------|--------------------------------------|----------------|-------------------------------------|
 | `navidrome-traefik` | `/remotelogs/traefik/access.log`     | 80, 443, 4533  | `iptables-multiport` → `DOCKER-USER` |
 | `navidrome-auth`    | `/remotelogs/navidrome/navidrome.log`| 4533           | `iptables-multiport` → `DOCKER-USER` |
+
+`jail.d/emby.conf` mirrors the same pattern for VM-100:
+
+| Jail             | Log Path                               | Ports              | Action/Chain                        |
+|------------------|----------------------------------------|--------------------|-------------------------------------|
+| `emby-traefik`   | `/remotelogs/traefik/access.log`       | 80, 443, 8096, 8920| `iptables-multiport` → `DOCKER-USER`|
+| `emby-auth`      | `/remotelogs/emby/embyserver*.txt`     | 8096, 8920         | `iptables-multiport` on `INPUT` + `DOCKER-USER` |
 
 Defaults: `maxretry = 5`, `findtime = 600` seconds, `bantime = 3600` seconds. Adjust within the jail file if different thresholds are required.
 

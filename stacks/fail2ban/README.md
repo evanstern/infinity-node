@@ -36,7 +36,8 @@ This stack deploys the LinuxServer.io `fail2ban` container under Portainer GitOp
 | `./config`                        | `/config`                    | Jail/filter/action configuration (Git-managed) |
 | `/var/log`                        | `/var/log:ro`                | Access to system logs (fail2ban.log, etc.)      |
 | `/home/evan/logs/traefik`         | `/remotelogs/traefik:ro`     | Traefik access logs (JSON)                      |
-| `/home/evan/data/navidrome/logs`  | `/remotelogs/navidrome:ro`   | Navidrome auth logs mirrored via `tee`          |
+| `/home/evan/data/navidrome/logs`  | `/remotelogs/navidrome:ro`   | Navidrome auth logs mirrored via `tee` (VM-103) |
+| `/home/evan/projects/infinity-node/stacks/emby/config/logs` | `/remotelogs/emby:ro` | Emby server logs (VM-100) |
 
 ## Environment Variables
 
@@ -47,6 +48,7 @@ This stack deploys the LinuxServer.io `fail2ban` container under Portainer GitOp
 | `TZ`                | `America/Toronto`  | Local timezone                             |
 | `TRAEFIK_LOG_PATH`  | `/home/evan/logs/traefik`    | Host directory for Traefik access logs |
 | `NAVIDROME_LOG_PATH`| `/home/evan/data/navidrome/logs` | Host directory for Navidrome logs |
+| `EMBY_LOG_PATH`     | `/home/evan/.config/fail2ban/unused` | Host directory for Emby logs (override on VM-100) |
 
 Populate these values in `stacks/fail2ban/.env` before deployment (see `.env.example`).
 
@@ -54,14 +56,16 @@ Populate these values in `stacks/fail2ban/.env` before deployment (see `.env.exa
 
 > **Note:** The Navidrome stack has been updated to mirror stdout into `/data/logs/navidrome.log` using `tee`, so this stack can read login failures directly from that file.
 
-1. Ensure host log directories exist on VM-103:
+1. Ensure host log directories exist on the target VM:
    ```bash
    sudo mkdir -p /home/evan/logs/traefik
-   sudo mkdir -p /home/evan/data/navidrome/logs
-   sudo chown -R evan:evan /home/evan/logs/traefik /home/evan/data/navidrome/logs
+   sudo mkdir -p /home/evan/data/navidrome/logs                          # VM-103
+   sudo mkdir -p /home/evan/projects/infinity-node/stacks/emby/config/logs # VM-100
+   sudo mkdir -p /home/evan/.config/fail2ban/unused
+   sudo chown -R evan:evan /home/evan/logs/traefik /home/evan/data/navidrome/logs /home/evan/projects/infinity-node/stacks/emby/config/logs /home/evan/.config/fail2ban
    ```
-2. Copy `.env.example` to `.env` and adjust if needed.
-3. Commit configuration changes and trigger Portainer "Pull and redeploy" for stack `fail2ban`.
+2. Copy `.env.example` to `.env` and adjust if needed (set `EMBY_LOG_PATH` on VM-100, leave pointing to `/home/evan/.config/fail2ban/unused` elsewhere).
+3. Commit configuration changes and trigger Portainer "Pull and redeploy" for stack `fail2ban` (or create a new stack via `create-git-stack.sh` on VM-100 if running multi-instance).
 
 ## Validation
 

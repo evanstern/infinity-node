@@ -25,6 +25,7 @@ Emby runs with `network_mode: host` for performance reasons. This means:
 - Port 8096 is used by Emby (host network)
 - Port 9443 is used by Portainer (HTTPS)
 - Port 8000 is used by Portainer (HTTP)
+- `/home/evan/.config/traefik/vm-100/traefik.yml` and `dynamic.yml` are stored on the host and bind-mounted into the container so Portainer can’t replace them with directories.
 
 ## Deployment
 
@@ -41,6 +42,7 @@ Emby runs with `network_mode: host` for performance reasons. This means:
    - LAN: `http://emby.local.infinity-node.com`
    - External (still via Pangolin): `curl -H "Host: emby.infinity-node.com" http://<traefik-ip>`
 5. Confirm `/home/evan/logs/traefik/access.log` is being written (required for fail2ban on VM-100).
+6. Ensure `/home/evan/.config/traefik/vm-100/*.yml` reflects the latest git changes before redeploying (copy from repo if needed).
 
 ## Testing
 
