@@ -22,3 +22,4 @@ services:
       - /var/log:/var/log:ro
       - ${TRAEFIK_LOG_PATH}:/remotelogs/traefik:ro
       - ${NAVIDROME_LOG_PATH}:/remotelogs/navidrome:ro
+      - ${EMBY_LOG_PATH:-/home/evan/.config/fail2ban/unused}:/remotelogs/emby:ro

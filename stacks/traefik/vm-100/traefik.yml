@@ -42,6 +42,7 @@ log:
   format: json
 
 accessLog:
+  filePath: /var/log/traefik/access.log
   format: json
   bufferingSize: 100
 

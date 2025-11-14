@@ -13,12 +13,14 @@ services:
 
     # Mount configuration files
     volumes:
-      # Static configuration (entrypoints, providers, etc.)
-      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      # Static configuration (entrypoints, providers, etc.) — stored on host to avoid Portainer directory issue
+      - /home/evan/.config/traefik/vm-100/traefik.yml:/etc/traefik/traefik.yml:ro
       # Dynamic configuration (routing rules)
-      - ./dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - /home/evan/.config/traefik/vm-100/dynamic.yml:/etc/traefik/dynamic.yml:ro
       # Docker socket for service discovery (optional, for future Docker provider)
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Access logs for fail2ban analysis
+      - /home/evan/logs/traefik:/var/log/traefik
 
     # Command line arguments (can override config file settings)
     command:

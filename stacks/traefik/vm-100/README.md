@@ -4,8 +4,9 @@ This directory contains the Traefik reverse proxy configuration for VM 100, whic
 
 ## Services Routed
 
-- **Emby** (`emby.local.infinity-node.com`) - Media streaming server (CRITICAL)
-- **Portainer** (`portainer-100.local.infinity-node.com`) - Container management
+- **Emby (LAN)** `emby.local.infinity-node.com` — Media streaming server (CRITICAL)
+- **Emby (External)** `emby.infinity-node.com` — Routed through Pangolin forward-auth until cutover; Traefik now applies headers + rate limiting and emits access logs for fail2ban.
+- **Portainer** `portainer-100.local.infinity-node.com` — Container management
 
 ## Special Considerations
 
@@ -36,18 +37,24 @@ Emby runs with `network_mode: host` for performance reasons. This means:
      --compose-file "stacks/traefik/vm-100/docker-compose.yml"
    ```
 3. Verify Traefik starts successfully
-4. Test routing: `http://emby.local.infinity-node.com`
+4. Test routing:
+   - LAN: `http://emby.local.infinity-node.com`
+   - External (still via Pangolin): `curl -H "Host: emby.infinity-node.com" http://<traefik-ip>`
+5. Confirm `/home/evan/logs/traefik/access.log` is being written (required for fail2ban on VM-100).
 
 ## Testing
 
 After deployment, test each service:
 
 ```bash
-# Test Emby routing
+# Test Emby routing (LAN)
 curl -H "Host: emby.local.infinity-node.com" http://192.168.86.172/
 
 # Test Portainer routing
 curl -H "Host: portainer-100.local.infinity-node.com" http://192.168.86.172/
+
+# Quick log tail (expect JSON access events for fail2ban)
+docker exec traefik tail -f /var/log/traefik/access.log
 ```
 
 ## Troubleshooting

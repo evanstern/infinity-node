@@ -5,13 +5,24 @@
 http:
   # Routers define how requests are matched and routed
   routers:
-    # Emby - Media streaming server (CRITICAL)
-    # Note: Emby uses host network mode, so we route to host.docker.internal
-    emby:
+    # Emby External - routed through Pangolin until final cutover, but Traefik needs full chain + rate limits
+    emby-external:
+      rule: "Host(`emby.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: emby
+      middlewares:
+        - emby-security-headers
+        - emby-rate-limit
+
+    # Emby Internal - LAN-only hostname
+    emby-internal:
       rule: "Host(`emby.local.infinity-node.com`)"
       entryPoints:
         - web
       service: emby
+      middlewares:
+        - emby-security-headers
 
     # Portainer - Container management
     portainer-100:
@@ -36,3 +47,20 @@ http:
       loadBalancer:
         servers:
           - url: "http://portainer:9000"
+
+  # Middlewares for security and rate limiting
+  middlewares:
+    emby-security-headers:
+      headers:
+        frameDeny: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        referrerPolicy: "no-referrer"
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+        customResponseHeaders:
+          X-Service-Name: "emby"
+    emby-rate-limit:
+      rateLimit:
+        average: 40
+        burst: 60
