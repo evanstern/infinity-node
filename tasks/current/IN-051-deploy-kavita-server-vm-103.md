@@ -284,6 +284,15 @@ Deploy Kavita using the LinuxServer.io image (`lscr.io/linuxserver/kavita:latest
 > - Added Kavita to `docs/ARCHITECTURE.md` (VM-103 media section) and `stacks/README.md` (directory + import plan) to capture the new service footprint.
 > - Ensured README/`.env.example` instructions reference the NAS-based storage layout and created directories.
 >
+> **2025-11-15 - Deployment attempt & rollback**
+> - Pushed stack files, deployed Portainer Git stack (ID 60) with NAS-backed `/config`; Kavita failed migrations with SQLite `database is locked` errors due to CIFS locking.
+> - Investigated logs and confirmed `/mnt/video/Kavita/config/kavita.db` remained empty; decided to relocate `/config` to local disk.
+> - User removed failed stack in Portainer to prep for redeploy.
+>
+> **2025-11-15 - Config path pivot**
+> - Created `/home/evan/data/kavita/config` on VM-103, updated `.env.example` and README to use local path (with rsync-to-NAS backup requirement) while keeping `/library` on NAS.
+> - Ready to redeploy stack with new environment values.
+>
 
 > [!tip]- 💡 Lessons Learned
 >

@@ -41,7 +41,7 @@ Kavita is a self-hosted platform for reading and organizing digital libraries (C
 
 | Component | Path/Value | Notes |
 | --- | --- | --- |
-| Config | `/mnt/video/Kavita/config` | NAS-backed (Synology) – created via `/Volumes/media/Kavita/config` |
+| Config | `/home/evan/data/kavita/config` | Local VM-103 disk (rsynced to NAS for backups) |
 | Library | `/mnt/video/Kavita/library` → `/library` (ro) | Dedicated NAS share to avoid Calibre clutter |
 | UID/GID | `1000:1000` | Match VM-103 service accounts |
 | Port | `5750 -> 5000` | Host port optional (Traefik handles normal access) |
@@ -75,10 +75,11 @@ See `.env.example` for full list. Set the following before deployment:
 - `${CONFIG_PATH}:/config`
 - `${LIBRARY_PATH}:/library:ro`
 
-Create the NAS directories first (example from macOS host):
+Create storage directories:
 
 ```bash
-mkdir -p /Volumes/media/Kavita/config /Volumes/media/Kavita/library
+ssh evan@vm-103 'mkdir -p /home/evan/data/kavita/config && chown -R 1000:1000 /home/evan/data/kavita'
+mkdir -p /Volumes/media/Kavita/library
 ```
 
 Keep `/library` read-only. Kavita manages metadata internally under `/config`.
@@ -101,8 +102,8 @@ Keep `/library` read-only. Kavita manages metadata internally under `/config`.
 
 ## Backup & Recovery
 
-- **Must backup:** `/data/services/kavita/config`
-- Ensure NAS/restic jobs include `/mnt/video/Kavita/config` before upgrades or stack changes.
+- **Must backup:** `/home/evan/data/kavita/config`
+- Schedule rsync/restic job to copy config to `/mnt/video/Kavita/config` nightly before upgrades or stack changes.
 - Rollback procedure: remove/disable stack in Portainer (volumes preserved), revert compose/env changes in git, redeploy previous commit.
 
 ## Monitoring & Health
