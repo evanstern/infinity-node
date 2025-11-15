@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-052
-status: pending
+status: archived
 priority: 4
 category: security
 agent: security
