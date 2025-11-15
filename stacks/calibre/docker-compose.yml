@@ -22,6 +22,7 @@ services:
       - ${CALIBRE_LIBRARY_PATH}:/library
       - ${BOOKS_PATH}:/books
       - ${KINDLE_PATH}:/kindle:ro
+      - /home/evan/calibre-library.bak:/backup:ro
 
     deploy:
       resources:
