@@ -24,6 +24,7 @@ Docker Containers (Runtime)
 stacks/
 ├── vaultwarden/          # VM 103 - Password manager
 ├── paperless-ngx/        # VM 103 - Document management
+├── kavita/               # VM 103 - Comics & ebook reader
 ├── portainer/            # All VMs - Docker management UI
 └── README.md            # This file
 ```
@@ -39,6 +40,7 @@ stacks/
 - [ ] immich
 - [ ] linkwarden
 - [ ] audiobookshelf
+- [ ] kavita
 - [ ] homepage
 - [ ] navidrome
 - [ ] watchtower

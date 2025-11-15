@@ -1,13 +1,13 @@
 ---
 type: task
 task-id: IN-051
-status: pending
+status: in-progress
 priority: 4
 category: media
 agent: media
 created: 2025-11-13
-updated: 2025-11-13
-started:
+updated: 2025-11-15
+started: 2025-11-15
 completed:
 
 # Task classification
@@ -52,7 +52,7 @@ VM-103 currently lacks a self-hosted reader for comics and ebooks. Household col
 
 ### Recommended Approach
 
-Deploy Kavita using the LinuxServer.io image (`lscr.io/linuxserver/kavita:latest`) inside a new Portainer-managed stack on VM-103. Configuration and metadata will persist under the NAS-backed `data/services/kavita` path, while media libraries mount read-only from existing shares. Traefik will provide internal routing (e.g., `https://kavita.local.evanstern.name`) with optional Pangolin exposure later. Secrets (admin credentials, optional SMTP) live in Vaultwarden and hydrate via the stack `.env`. Documentation will cover deployment, backup expectations, and operational procedures.
+Deploy Kavita using the LinuxServer.io image (`lscr.io/linuxserver/kavita:latest`) inside a new Portainer-managed stack on VM-103. Configuration and metadata will persist under the NAS-backed `/mnt/video/Kavita/config` path (Synology share), while media libraries mount read-only from dedicated NAS directories (e.g., `/mnt/video/Kavita/library`). Traefik will provide internal routing (e.g., `https://kavita.local.evanstern.name`) with optional Pangolin exposure later. Secrets (admin credentials, optional SMTP) live in Vaultwarden and hydrate via the stack `.env`. Documentation will cover deployment, backup expectations, and operational procedures.
 
 **Key components:**
 - Component 1: `stacks/kavita/docker-compose.yml` referencing the LSIO image with healthcheck, `PUID/PGID`, timezone, and persistent `/config` + `/library` mounts.
@@ -133,7 +133,7 @@ Deploy Kavita using the LinuxServer.io image (`lscr.io/linuxserver/kavita:latest
 **Recovery time estimate**: 30 minutes (including Portainer cleanup and Traefik refresh).
 
 **Backup requirements:**
-- Include `/data/services/kavita/config` (or equivalent) in NAS/restic jobs prior to upgrades.
+- Include `/mnt/video/Kavita/config` (or equivalent) in NAS/restic jobs prior to upgrades.
 - Snapshot Vaultwarden entries (export secure note) if credentials change during task.
 
 ## Execution Plan
@@ -253,6 +253,36 @@ Deploy Kavita using the LinuxServer.io image (`lscr.io/linuxserver/kavita:latest
 > **2025-11-13 - Task Created**
 > - Captured requirements, risks, and execution plan for Kavita deployment on VM-103.
 > - Logged dependencies (storage/DNS) that must be satisfied pre-deployment.
+>
+> **2025-11-15 - Pre-task review & dependency check**
+> - Followed [[docs/mdtd/execution/pre-task-review]] checklist; confirmed the problem, scope, and acceptance criteria remain valid and aligned with Solution Design.
+> - Cross-referenced [[docs/ARCHITECTURE]] to inventory VM-103 resources (6 vCPU, 16GB RAM, NAS-backed disk) and verified no existing Kavita stack or Traefik router under `stacks/` or `stacks/traefik/vm-103/dynamic.yml`.
+> - Documented dependency approach: plan NAS-backed `/mnt/video/Kavita/config` for persistence, mount NAS libraries read-only, and reserve `kavita.local.infinity-node.com` via Pi-hole before Traefik updates.
+>
+> **2025-11-15 - Dependency audit & planning**
+> - Confirmed again that `stacks/` has no `kavita` directory and `traefik` dynamic config on VM-103 lacks a `kavita` router, so no current port/hostname conflicts.
+> - Aligned storage plan with existing VM-103 patterns (e.g., Audiobookshelf/Navidrome) and earmarked NAS-backed `/mnt/video/Kavita/config` for persistence plus read-only library mounts from NAS shares.
+> - Reviewed [[docs/runbooks/pihole-dns-management]] to outline steps for reserving `kavita.local.infinity-node.com`; pending execution once stack ready so DNS + Traefik updates can be applied together.
+>
+> **2025-11-15 - Stack scaffolding**
+> - Created `stacks/kavita/docker-compose.yml` using LSIO image, `/config` + `/library` mounts, external `traefik-network`, curl-based healthcheck, and host port placeholder (5750) to avoid 5000 conflicts while still allowing direct debug access.
+> - Authored `.env.example` with UID/GID/TZ defaults, NAS config path, library mount guidance, and commented SMTP placeholders referencing Vaultwarden workflow.
+> - Drafted `stacks/kavita/README.md` documenting purpose, deployment, backup requirements, and coordination points (Traefik, Portainer, Pi-hole DNS); set stack metadata to `status: planned`.
+> - Updated `stacks/traefik/vm-103/dynamic.yml` to add `kavita.local.infinity-node.com` router/service pointing to container port 5000, preparing for LAN access once stack deploys.
+>
+> **2025-11-15 - Secrets & backup alignment**
+> - Added README "Secrets" section detailing Vaultwarden entries (`kavita/admin`, `kavita/smtp`, optional `kavita/opds`) under collection `vm-103-misc`, referencing [[docs/SECRET-MANAGEMENT]] workflow.
+> - Noted `.env.example` placeholders for SMTP settings plus instructions to keep actual credentials only in Vaultwarden/.env (gitignored).
+> - Reiterated backup requirement for `/mnt/video/Kavita/config` in README and acceptance criteria; flagged restic/Synology inclusion as pre-deployment checkpoint.
+>
+> **2025-11-15 - NAS prep & deployment attempt**
+> - Created dedicated NAS directories `/Volumes/media/Kavita/config` and `/Volumes/media/Kavita/library` (mounted as `/mnt/video/Kavita/...` on VM-103) to isolate Kavita data from Calibre artifacts while keeping storage on Synology.
+> - Updated `.env.example` + README configuration table to reference the new NAS paths and documented creating the directories up front.
+> - Ran `./scripts/infrastructure/create-git-stack.sh "portainer-api-token-vm-103" "shared" 3 "kavita" ...` but Portainer rejected the stack because `stacks/kavita/` does not yet exist in the upstream Git repo. Need to stage/commit/push before redeploying via GitOps; deferred deployment until code review completes.
+>
+> **2025-11-15 - Documentation updates**
+> - Added Kavita to `docs/ARCHITECTURE.md` (VM-103 media section) and `stacks/README.md` (directory + import plan) to capture the new service footprint.
+> - Ensured README/`.env.example` instructions reference the NAS-based storage layout and created directories.
 >
 
 > [!tip]- 💡 Lessons Learned

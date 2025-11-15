@@ -40,6 +40,13 @@ http:
         - web
       service: navidrome
 
+    # Kavita - Comics & ebooks
+    kavita:
+      rule: "Host(`kavita.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: kavita
+
     # Audiobookshelf - Audiobook management
     audiobookshelf:
       rule: "Host(`audiobookshelf.local.infinity-node.com`)"
@@ -114,6 +121,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://navidrome:4533"
+
+    # Kavita - Internal port 5000
+    kavita:
+      loadBalancer:
+        servers:
+          - url: "http://kavita:5000"
 
     # Audiobookshelf - Internal port 80
     audiobookshelf:

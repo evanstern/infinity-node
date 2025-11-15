@@ -238,6 +238,7 @@ External Access:
 **Media:**
 - [[stacks/navidrome/README|Navidrome]] - Music streaming
 - [[stacks/audiobookshelf/README|Audiobookshelf]] - Audiobook management
+- [[stacks/kavita/README|Kavita]] - Comics & ebook reader (planned)
 
 **Productivity:**
 - [[stacks/mybibliotheca/README|MyBibliotheca]] - Book tracking and library management
