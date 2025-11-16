@@ -27,6 +27,7 @@ stacks/
 ├── kavita/               # VM 103 - Comics & ebook reader
 ├── portainer/            # All VMs - Docker management UI
 ├── komga/                # VM 103 - Comic book manager
+├── mylar3/               # VM 102 - Comic automation (Mylar3)
 └── README.md            # This file
 ```
 
@@ -48,8 +49,9 @@ stacks/
 - [ ] watchtower
 - [ ] Other misc services
 
-**Phase 3: Other VMs** (Pending)
+- **Phase 3: Other VMs** (Pending)
 - [ ] VM 100 (emby) stacks
+- [ ] VM 101 (downloads) stacks
 - [ ] VM 102 (arr) stacks
 - [ ] VM 101 (downloads) stacks
 
