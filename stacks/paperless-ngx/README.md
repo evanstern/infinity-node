@@ -8,10 +8,10 @@ status: running
 stack-type: multi-container
 has-secrets: true
 external-access: true
-ports: [8000]
+ports: [8000, 3010]
 backup-priority: high
 created: 2025-10-26
-updated: 2025-10-26
+updated: 2025-11-18
 tags:
   - stack
   - vm-103
@@ -48,6 +48,7 @@ Multi-container stack:
 - **broker** - Redis message queue
 - **gotenberg** - PDF rendering engine
 - **tika** - Document parsing and OCR
+- **paperless-ai** - Semantic search UI (clusterzx/paperless-ai) connected to Paperless via RAG endpoint
 
 ## Configuration
 
@@ -67,6 +68,16 @@ Multi-container stack:
 - `./consume` - Incoming documents (watch folder)
 - `./pgdata` - PostgreSQL database
 - `./redisdata` - Redis persistence
+- `paperless-ai-data` - AI embeddings + cache
+
+### Paperless AI
+
+- **UI Port:** http://vm103:3010 (LAN) — consider Traefik routing later for HTTPS.
+- **Image:** `clusterzx/paperless-ai`
+- **Env:** `PUID`, `PGID`, and `PAPERLESS_AI_PORT` (default `3010`, configurable in `.env`)
+- **Data:** Stored in the `paperless-ai-data` named volume.
+- **RAG Endpoint:** Talks to `webserver:8000` internally; no extra secrets required.
+- **Vaultwarden:** Add the new env keys to the `paperless-secrets` item (notes section) so operators know to populate them in `.env`.
 
 ## Deployment
 
@@ -86,14 +97,18 @@ docker compose up -d
 docker compose run --rm webserver createsuperuser
 ```
 
+> **Redeploy via Portainer:** After updating compose/env files for paperless-ai, use the existing Git-connected stack in Portainer (VM 103) and click **Pull and redeploy** so the new container is created with injected environment variables.
+
 ## Access
 
 - **Web UI:** https://paperless.infinity-node.com
 - **Local:** http://paperless.local.infinity-node.com:8000
+- **Paperless AI UI:** http://vm103:3010 (or via Pangolin tunnel)
 
 ## Network
 
 - **Port 8001:8000** - Web interface
+- **Port 3010:3010** - Paperless AI semantic search UI
 
 ## Related Documentation
 

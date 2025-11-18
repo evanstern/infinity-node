@@ -95,6 +95,27 @@ services:
     container_name: paperless_tika
     restart: always
 
+  paperless-ai:
+    image: clusterzx/paperless-ai
+    container_name: paperless_ai
+    restart: unless-stopped
+    depends_on:
+      - webserver
+    ports:
+      - "${PAPERLESS_AI_PORT:-3010}:${PAPERLESS_AI_PORT:-3010}"
+    environment:
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
+      PAPERLESS_AI_PORT: ${PAPERLESS_AI_PORT:-3010}
+      RAG_SERVICE_URL: http://webserver:8000
+      RAG_SERVICE_ENABLED: "true"
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - paperless-ai-data:/app/data
+
 networks:
   traefik-network:
     external: true
@@ -105,3 +126,4 @@ volumes:
   media:
   pgdata:
   redisdata:
+  paperless-ai-data:
