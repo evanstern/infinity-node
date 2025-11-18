@@ -89,8 +89,21 @@ http:
         - web
       service: portainer-103
 
+    # Homepage - Dashboard
+    paperless-ai:
+      rule: "Host(`paperless-ai.local.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: paperless-ai
+
   # Services define backend servers to route to
   services:
+    # Paperless-AI - Internal port 3010
+    paperless-ai:
+      loadBalancer:
+        servers:
+          - url: "http://paperless_ai:3010"
+
     # Vaultwarden - Internal port 80
     vaultwarden:
       loadBalancer:
