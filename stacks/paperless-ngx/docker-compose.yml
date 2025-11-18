@@ -47,7 +47,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
   webserver:
-    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    image: paperlessngx/paperless-ngx:latest
     container_name: paperless_webserver
     restart: unless-stopped
     depends_on:
@@ -91,7 +91,7 @@ services:
       - "--api-timeout=600s"
 
   tika:
-    image: ghcr.io/paperless-ngx/tika
+    image: docker.io/apache/tika:latest
     container_name: paperless_tika
     restart: always
 
