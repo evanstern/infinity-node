@@ -41,12 +41,23 @@ tags:
 
 4. **Cron Jobs Added:**
    ```bash
-   0 2 * * * /home/evan/scripts/backup-vaultwarden.sh >> /var/log/vaultwarden-backup.log 2>&1
-   0 2 * * * /home/evan/scripts/backup-mybibliotheca.sh >> /var/log/mybibliotheca-backup.log 2>&1
+   0 2 * * * /home/evan/scripts/backup-vaultwarden.sh >> /home/evan/logs/vaultwarden-backup.log 2>&1
+   0 2 * * * /home/evan/scripts/backup-mybibliotheca.sh >> /home/evan/logs/mybibliotheca-backup.log 2>&1
    ```
    - **User:** evan
    - **Schedule:** Daily at 2 AM
    - **Purpose:** Automated Vaultwarden and MyBibliotheca backups
+   > **Update (2025-11-18):** MyBibliotheca cron entry removed per user request; see entry below.
+
+**2025-11-18 - Manual removal of MyBibliotheca backup cron**
+
+1. **Cron Job Removed:**
+   ```bash
+   0 2 * * * /home/evan/scripts/backup-mybibliotheca.sh >> /home/evan/logs/mybibliotheca-backup.log 2>&1
+   ```
+   - **Why:** MyBibliotheca backups handled manually; automated cron no longer desired
+   - **User:** evan
+   - **Notes:** Script `/home/evan/scripts/backup-mybibliotheca.sh` retained for on-demand execution; cron backup removed after saving copy to `/home/evan/logs/cron-backup-<timestamp>.txt`.
 
 ### Existing Configuration (Not Changed)
 

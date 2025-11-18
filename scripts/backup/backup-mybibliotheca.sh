@@ -17,8 +17,8 @@
 # Usage:
 #   ./backup-mybibliotheca.sh
 #
-# Schedule via cron:
-#   0 2 * * * /home/evan/scripts/backup-mybibliotheca.sh >> /var/log/mybibliotheca-backup.log 2>&1
+# Schedule via cron (currently disabled):
+#   0 2 * * * /home/evan/scripts/backup-mybibliotheca.sh >> /home/evan/logs/mybibliotheca-backup.log 2>&1
 #
 # Exit codes:
 #   0 - Success

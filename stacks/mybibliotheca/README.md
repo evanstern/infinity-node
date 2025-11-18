@@ -11,7 +11,7 @@ external-access: true
 ports: [5054]
 backup-priority: high
 created: 2025-01-27
-updated: 2025-01-27
+updated: 2025-11-18
 tags:
   - stack
   - vm-103
@@ -69,10 +69,10 @@ SECURITY_PASSWORD_SALT=$(bw get item "mybibliotheca-secrets" | jq -r '.fields[] 
 
 ### Volumes
 
-**Data Storage (local VM, backed up to NAS daily):**
+**Data Storage (local VM, backed up to NAS when script runs):**
 - `/home/evan/data/mybibliotheca/data` → `/app/data` - SQLite database, configuration, and application data
 
-**Note:** All data stored locally on VM for performance. Daily backups to NAS at `/mnt/video/backups/mybibliotheca/`.
+**Note:** All data stored locally on VM for performance. Backups push to `/mnt/video/backups/mybibliotheca/` whenever the backup script is run (automated cron disabled 2025-11-18 per user request).
 
 ### Environment Variables
 
@@ -167,14 +167,15 @@ See `.env.example` for complete list (pulled from official repo).
 
 ## Backup
 
-**Automated Daily Backups:**
+**Backup Script:** `/home/evan/scripts/backup-mybibliotheca.sh`
 
-- **Backup Script:** `/home/evan/scripts/backup-mybibliotheca.sh`
-- **Schedule:** Daily at 2 AM (cron job)
 - **Source:** `/home/evan/data/mybibliotheca/data/` (local VM)
 - **Destination:** `/mnt/video/backups/mybibliotheca/` (NAS)
 - **Retention:** 30 days
-- **Logs:** `/var/log/mybibliotheca-backup.log`
+- **Logs:** `/home/evan/logs/mybibliotheca-backup.log`
+- **Schedule:** Manual-only as of 2025-11-18 (cron entry removed). Re-enable by adding \
+  `0 2 * * * /home/evan/scripts/backup-mybibliotheca.sh >> /home/evan/logs/mybibliotheca-backup.log 2>&1` \
+  to the `evan` user crontab on VM-103.
 
 **Manual Backup:**
 ```bash
@@ -209,7 +210,7 @@ docker start mybibliotheca
 
 **SQLite Database:**
 - **Location:** `/home/evan/data/mybibliotheca/data/books.db`
-- **Backup:** Daily automated backups to NAS
+- **Backup:** Manual backups via `/home/evan/scripts/backup-mybibliotheca.sh` (cron disabled 2025-11-18)
 - **Schema:** Managed by SQLAlchemy migrations
 
 ## Monitoring
@@ -235,7 +236,7 @@ du -sh /home/evan/data/mybibliotheca/
 **Database issues:**
 - Verify database file exists: `ls -lh /home/evan/data/mybibliotheca/data/books.db`
 - Check file permissions: `ls -la /home/evan/data/mybibliotheca/data/`
-- Verify backup script runs: `tail /var/log/mybibliotheca-backup.log`
+- Verify latest manual backup logs: `tail /home/evan/logs/mybibliotheca-backup.log`
 
 **Import failures:**
 - Check import file format (CSV)
