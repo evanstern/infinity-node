@@ -1,14 +1,14 @@
 ---
 type: task
 task-id: IN-055
-status: in-progress
+status: completed
 priority: 5
 category: docker-deployment
 agent: docker
 created: 2025-11-16
 updated: 2025-11-16
 started: 2025-11-16
-completed:
+completed: 2025-11-16
 
 # Task classification
 complexity: simple
@@ -239,7 +239,8 @@ Simple - Straightforward Docker Compose deployment with standard patterns alread
 > [!note]- 📋 Work Log
 >
 > * 2025-11-16: Captured the preferred storage layout, authored the Komga compose, env template, and README files, and updated the stacks catalog to document the new service.
+> * 2025-11-16: Ran `create-git-stack.sh` with inline env vars; Portainer already had a `komga` stack, so the script returned a “stack already exists” error (redeploy via Portainer or delete the existing stack before rerunning).
 
 > [!tip]- 💡 Lessons Learned
 >
-> *Lessons learned will be captured during execution*
+> * Portainer stack names must be unique — reusing the same name without deleting the prior stack causes the Git stack creation script to fail fast.

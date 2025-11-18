@@ -1,13 +1,13 @@
 ---
 type: task
 task-id: IN-057
-status: in-progress
+status: pending
 priority: 4
 category: docker
 agent: docker
 created: 2025-11-16
 updated: 2025-11-16
-started: 2025-11-16
+started:
 completed:
 
 # Task classification
@@ -25,40 +25,40 @@ phased_approach: false
 tags:
   - task
   - docker
-  - vm-101
-  - downloads-stack
+  - vm-102
+  - arr-stack
   - new-service
 ---
 
-# Task: IN-057 - Set up Mylar3 Docker Stack on VM 101 (downloads VM)
+# Task: IN-057 - Set up Mylar3 Docker Stack on VM 102
 
-> **Quick Summary**: Deploy `linuxserver/mylar3` as a Docker stack on the downloads VM (VM 101) so comic metadata/download automation runs beside the download clients.
+> **Quick Summary**: Deploy `linuxserver/mylar3` as a Docker stack on the ARR automation VM (VM 102) to serve book/comic metadata and download automation next to the rest of the ARR services.
 
 ## Problem Statement
 
 **What problem are we solving?**
-- Mylar3 provides dedicated automation for comic/site metadata and download coordination, but it is not yet standing up alongside the download clients on VM 101.
+Mylar3 provides dedicated automation for comic/site metadata and download coordination, but it is not yet standing up alongside the ARR services on VM 102.
 
 **Why now?**
-- Adds a focused automation tool next to the download clients so comic downloads share the same host.
-- VM 101 is already hosting the download clients, making it the logical place for Mylar3.
+- Extends the ARR automation stack with a focused tool that keeps metadata and downloads organized.
+- VM 102 is already dedicated to ARR services, so adding Mylar3 keeps automation consolidated.
 
 **Who benefits?**
-- **Household**: better comic and book media automation tied to download clients.
-- **Media Stack Operator**: aligned download pipeline with a dedicated comic automation front end.
+- **Household**: better comic and book media automation.
+- **Media Stack Operator**: one-stop ARR automation stack.
 
 ## Solution Design
 
 ### Recommended Approach
 
-Deploy the `linuxserver/mylar3` container (per https://hub.docker.com/r/linuxserver/mylar3) inside `stacks/mylar3/` so the downloads VM can run comic automation with existing tooling.
+Deploy the `linuxserver/mylar3` container (per https://hub.docker.com/r/linuxserver/mylar3) inside a new stack directory under `stacks/mylar3/`.
 
 **Key components:**
-- Docker Compose configuration for Mylar3 with volumes for config, comics, and downloads.
-- Environment template (`.env.example`) documenting overrides and download-specific paths.
-- README that explains deployment and integration points for the downloads VM.
+- Docker Compose configuration for Mylar3 with volumes for config and downloads (NFS-backed if needed).
+- Environment template (`.env.example`) documenting any overridable settings.
+- README that covers purpose, access, and connection details to the existing ARR stack.
 
-**Rationale**: Hosting Mylar3 on VM 101 keeps the download automation tools together and shares existing NAS mount points already used by the download clients.
+**Rationale**: Keeping this container within the ARR VM keeps related automation together and leverages Portainer + Gitflows already used for other stacks.
 
 ### Scope Definition
 
@@ -66,29 +66,32 @@ Deploy the `linuxserver/mylar3` container (per https://hub.docker.com/r/linuxser
 - Create `stacks/mylar3/docker-compose.yml`.
 - Create `.env.example` with required variables.
 - Document deployment and access steps in `stacks/mylar3/README.md`.
-- Deploy via Portainer on VM 101, referencing the downloads-stack network and volumes.
+- Deploy via Portainer on VM 102, referencing the ARR stack network and volumes.
 
 **❌ Explicitly Out of Scope:**
 - Importing existing comic libraries or migrating data from other systems.
 - Writing custom scrapers or driver scripts beyond what LinuxServer image provides.
 
 **🎯 MVP:**
-Mylar3 container running on VM 101, accessible on a dedicated port, persisting configuration, and documented.
+Mylar3 container running on VM 102, accessible on a dedicated port, persisting configuration, and documented.
 
 ## Risk Assessment
 
 ### Potential Pitfalls
-- ⚠️ **Port conflicts with existing download services** → **Mitigation**: pick an unused port (e.g., 8085) and verify no conflict.
-- ⚠️ **Data persistence misconfiguration** → **Mitigation**: use documented volumes with proper permissions.
-- ⚠️ **Resource contention on VM 101** → **Mitigation**: monitor after deployment and tune resource limits.
+- ⚠️ **Port conflicts with existing ARR services** → **Mitigation**: pick an unused port (e.g., 8085) and verify no conflict.
+- ⚠️ **Data persistence misconfiguration** → **Mitigation**: use documented volumes with proper permissions (NFS if necessary).
+- ⚠️ **Resource contention on VM 102** → **Mitigation**: monitor after deployment; adjust restart policies and limits.
 
 ### Dependencies
 
-- [x] **VM 101 reachable** - Already running and hosting download clients.
+**Prerequisites:**
+- [x] **VM 102 reachable** - Already running and hosting ARR services.
+- [x] **Portainer ready** - Stack deployments controlled via Portainer.
+- [ ] **NFS storage available** - For downloads/metadata persistence if needed.
 
 ### Critical Service Impact
 
-**Services Affected**: Download services on VM 101 share the host; stack must fit without disrupting them.
+**Services Affected**: ARR automation services share VM 102; new stack must not disrupt them.
 
 ### Rollback Plan
 
@@ -107,22 +110,22 @@ Mylar3 container running on VM 101, accessible on a dedicated port, persisting c
 
 **Primary Agent**: `docker`
 
-- [x] **Review LinuxServer Mylar3 requirements** `[agent:docker]`
+- [ ] **Review LinuxServer Mylar3 requirements** `[agent:docker]`
   - Confirm required env vars and ports from https://hub.docker.com/r/linuxserver/mylar3
-- [x] **Create docker-compose.yml** `[agent:docker]`
+- [ ] **Create docker-compose.yml** `[agent:docker]`
   - Define service, ports, volumes, restart policy, updates settings
-- [x] **Draft `.env.example`** `[agent:docker]`
+- [ ] **Draft `.env.example`** `[agent:docker]`
   - Document optional overrides (e.g., `PUID`, `PGID`, `TZ`, `MYLAR_CONFIG`)
-- [x] **Write README.md** `[agent:documentation]`
+- [ ] **Write README.md** `[agent:documentation]`
   - Explain purpose, access URL, and restart/deploy steps
 
 ### Phase 2: Deployment
 
 **Primary Agent**: `docker`
 
-- [ ] **Deploy via Portainer on VM 101** `[agent:docker]`
+- [ ] **Deploy via Portainer on VM 102** `[agent:docker]`
   - Pull latest image, configure env/volumes, set ports
-- [ ] **Provision `.env` on VM 101** `[agent:docker]`
+- [ ] **Provision `.env` on VM 102** `[agent:docker]`
   - Use `linuxserver/mylar3` examples, adjust IDs, timezone
 
 ### Phase 3: Validation
@@ -140,8 +143,8 @@ Mylar3 container running on VM 101, accessible on a dedicated port, persisting c
 
 **Primary Agent**: `documentation`
 
-- [ ] **Update downloads stack inventory** `[agent:documentation]`
-  - Mention Mylar3 in `stacks/README.md` and relevant index
+- [ ] **Update ARR stack inventory** `[agent:documentation]`
+  - Mention Mylar3 in `stacks/README.md` or relevant index
 
 ## Acceptance Criteria
 
@@ -149,7 +152,7 @@ Mylar3 container running on VM 101, accessible on a dedicated port, persisting c
 - [ ] `stacks/mylar3/docker-compose.yml` exists and passes validation.
 - [ ] `.env.example` captures all Mylar3 env options.
 - [ ] README explains deployment and access.
-- [ ] Stack deployed and running on VM 101 via Portainer.
+- [ ] Stack deployed and running on VM 102 via Portainer.
 - [ ] Service reachable on configured port and responding.
 - [ ] Execution plan checklist fully completed.
 - [ ] All changes documented for review.
@@ -157,9 +160,9 @@ Mylar3 container running on VM 101, accessible on a dedicated port, persisting c
 ## Testing Plan
 
 **Manual validation:**
-1. `docker ps` on VM 101 shows Mylar3 container.
+1. `docker ps` on VM 102 shows Mylar3 container.
 2. `docker logs` show successful startup.
-3. Access UI on configured port (e.g., `http://vm-101:8085`).
+3. Access UI on configured port (e.g., `http://vm-102:8085`).
 4. Restart container and confirm config persists in volume.
 
 ## Related Documentation
@@ -171,15 +174,15 @@ Mylar3 container running on VM 101, accessible on a dedicated port, persisting c
 ## Notes
 
 **Priority Rationale**:
-Download services are critical, so priority remains moderate-high (4).
+Arr automation stack is critical, so priority is moderate-high (4).
 
 **Complexity Rationale**:
 Simple Docker stack addition leveraging existing patterns.
 
 **Implementation Notes**:
-- Mirror other VM 101 services for env structure and permitted mount points.
+- Mirror other ARR-adjacent stacks (e.g., Komga) for env structure.
 - Consider exposing port 8085 and document it.
-- Use `PUID/PGID` consistent with service account on VM 101.
+- Use `PUID/PGID` consistent with other services on VM 102.
 
 **Follow-up Tasks**:
 - IN-0XX: Automate Mylar3 config import/export (future).
