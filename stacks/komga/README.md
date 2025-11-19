@@ -94,3 +94,4 @@ After deployment:
 - [[docs/SECRET-MANAGEMENT|Secrets]] (for future SMTP/credentials)
 - [[stacks/README|Stacks Directory Overview]]
 - [[tasks/current/IN-055-setup-komga-docker-stack|Task IN-055]]
+

@@ -24,3 +24,4 @@ services:
       resources:
         limits:
           memory: ${MYLAR_MEMORY_LIMIT:-512M}
+
