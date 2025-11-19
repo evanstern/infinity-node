@@ -16,8 +16,16 @@ services:
       - COOKCLI_ENV=${COOKCLI_ENV:-production}
     volumes:
       - ${COOKCLI_RECIPES_PATH:-/home/evan/data/cookcli/recipes}:/app/recipes
+    networks:
+      - default
+      - traefik-network
     deploy:
       resources:
         limits:
           cpus: ${COOKCLI_CPUS:-0.10}
           memory: ${COOKCLI_MEMORY_LIMIT:-256M}
+
+networks:
+  traefik-network:
+    external: true
+    name: traefik-network

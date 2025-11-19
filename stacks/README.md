@@ -24,6 +24,7 @@ Docker Containers (Runtime)
 stacks/
 ├── vaultwarden/          # VM 103 - Password manager
 ├── paperless-ngx/        # VM 103 - Document management
+├── cookcli/              # VM 103 - Cooklang recipe CLI/server
 ├── kavita/               # VM 103 - Comics & ebook reader
 ├── portainer/            # All VMs - Docker management UI
 ├── mylar3/               # VM 102 - Comic automation (Mylar3)
@@ -38,6 +39,7 @@ stacks/
 - [x] portainer
 
 **Phase 2: Remaining VM 103 Stacks** (Pending)
+- [ ] cookcli
 - [ ] immich
 - [ ] linkwarden
 - [ ] audiobookshelf

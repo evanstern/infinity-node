@@ -24,6 +24,7 @@ This Traefik instance routes the following services:
 - **Calibre-Web** - `calibre-web.local.infinity-node.com` → `calibre-web:8083`
 - **Homepage** - `homepage.local.infinity-node.com` → `homepage:3000`
 - **Portainer** - `portainer-103.local.infinity-node.com` → `portainer:9000`
+- **CookCLI** - `recipes.infinity-node.com` → `cookcli:9080`
 
 ## Configuration Files
 

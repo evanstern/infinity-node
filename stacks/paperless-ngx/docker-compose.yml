@@ -115,6 +115,9 @@ services:
       - no-new-privileges:true
     volumes:
       - paperless-ai-data:/app/data
+    networks:
+      - default
+      - traefik-network
 
 networks:
   traefik-network:

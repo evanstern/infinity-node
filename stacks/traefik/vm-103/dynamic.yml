@@ -19,6 +19,13 @@ http:
         - web
       service: paperless
 
+    # CookCLI - Recipe service
+    cookcli:
+      rule: "Host(`recipes.infinity-node.com`)"
+      entryPoints:
+        - web
+      service: cookcli
+
     # Immich - Photo management
     immich:
       rule: "Host(`immich.local.infinity-node.com`)"
@@ -176,3 +183,9 @@ http:
       loadBalancer:
         servers:
           - url: "http://portainer:9000"
+
+    # CookCLI - Internal port 9080
+    cookcli:
+      loadBalancer:
+        servers:
+          - url: "http://cookcli:9080"
