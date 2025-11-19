@@ -26,7 +26,6 @@ stacks/
 ├── paperless-ngx/        # VM 103 - Document management
 ├── kavita/               # VM 103 - Comics & ebook reader
 ├── portainer/            # All VMs - Docker management UI
-├── komga/                # VM 103 - Comic book manager
 ├── mylar3/               # VM 102 - Comic automation (Mylar3)
 └── README.md            # This file
 ```
@@ -43,7 +42,6 @@ stacks/
 - [ ] linkwarden
 - [ ] audiobookshelf
 - [ ] kavita
-- [ ] komga
 - [ ] homepage
 - [ ] navidrome
 - [ ] watchtower
