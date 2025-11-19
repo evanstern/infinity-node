@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-058
-status: in-progress
+status: completed
 priority: 3
 category: docker
 agent: docker
