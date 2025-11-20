@@ -21,7 +21,7 @@ http:
 
     # CookCLI - Recipe service
     cookcli:
-      rule: "Host(`recipes.infinity-node.com`)"
+      rule: "Host(`recipes.local.infinity-node.com`)"
       entryPoints:
         - web
       service: cookcli
