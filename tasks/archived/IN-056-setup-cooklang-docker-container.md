@@ -1,7 +1,7 @@
 ---
 type: task
 task-id: IN-056
-status: pending
+status: archived
 priority: 5
 category: docker
 agent: docker
