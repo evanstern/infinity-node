@@ -11,9 +11,6 @@ services:
       - NET_ADMIN  # Required for VPN tunnel
       - NET_RAW
 
-    sysctls:
-      - net.ipv4.conf.all.mtu=1420  # WireGuard optimal MTU
-
     dns:
       - 1.1.1.1  # Use Cloudflare DNS
 
@@ -78,3 +75,9 @@ services:
       - ${DELUGE_CONFIG_PATH}:/config
       - ${INCOMPLETE_PATH}:/incomplete
       - ${COMPLETE_PATH}:/complete
+
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1420
