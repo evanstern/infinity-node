@@ -11,6 +11,9 @@ services:
       - NET_ADMIN  # Required for VPN tunnel
       - NET_RAW
 
+    sysctls:
+      - net.ipv4.conf.all.mtu=1420  # WireGuard optimal MTU
+
     dns:
       - 1.1.1.1  # Use Cloudflare DNS
 
