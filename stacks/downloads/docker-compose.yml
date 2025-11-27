@@ -21,7 +21,7 @@ services:
       - ${TORRENT_PORT:-6881}:6881
       - ${TORRENT_PORT:-6881}:6881/udp
       # NZBGet web UI
-      - ${NZBGET_PORT:-6789}:6789
+      # - ${NZBGET_PORT:-6789}:6789
 
     environment:
       - PRIVATE_KEY=${PRIVATE_KEY}  # NordVPN WireGuard private key (secret)
@@ -34,7 +34,10 @@ services:
     restart: unless-stopped
 
     # Route all traffic through VPN (kill switch)
-    network_mode: container:vpn
+    # network_mode: container:vpn
+
+    ports:
+      - ${NZBGET_PORT:-6789}:6789
 
     environment:
       - PUID=${PUID:-1000}
