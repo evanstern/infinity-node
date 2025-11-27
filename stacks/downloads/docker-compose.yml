@@ -36,6 +36,9 @@ services:
     # Route all traffic through VPN (kill switch)
     # network_mode: container:vpn
 
+    ports:
+      - ${NZBGET_PORT:-6789}:6789
+
     environment:
       - PUID=${PUID:-1000}
       - PGID=${PGID:-1000}
