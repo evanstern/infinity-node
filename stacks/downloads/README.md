@@ -199,8 +199,12 @@ docker compose up -d
 1. Access web UI: http://nzbget.local.infinity-node.com:6789
 2. Log in with NZBGET_USER/NZBGET_PASS
 3. Settings → Paths:
-   - MainDir: `/downloads`
+   - MainDir: `/config`
    - InterDir: `/incomplete`
+   - DestDir: `/downloads`
+
+   ⚠️ **CRITICAL**: `InterDir` (`/incomplete`) MUST point to local storage on VM-101, NOT the NAS. Writing downloads to NAS in real-time will bottleneck speed to ~3-4 MB/s due to network I/O. Only `DestDir` should point to network storage for completed files. `MainDir` should point to the config folder (likely `/config`)
+
 4. Settings → News Servers:
    - Add your usenet provider details
 5. Save changes
