@@ -14,9 +14,9 @@ services:
     # Mount configuration files
     volumes:
       # Static configuration (entrypoints, providers, etc.)
-      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ${CONFIG_PATH}/traefik.yml:/etc/traefik/traefik.yml:ro
       # Dynamic configuration (routing rules)
-      - ./dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - ${CONFIG_PATH}/dynamic.yml:/etc/traefik/dynamic.yml:ro
       # Docker socket for service discovery (optional, for future Docker provider)
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
@@ -43,4 +43,3 @@ networks:
   traefik-network:
     name: traefik-network
     driver: bridge
-
