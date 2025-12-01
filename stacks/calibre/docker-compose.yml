@@ -9,6 +9,7 @@ services:
     ports:
       - ${CALIBRE_GUI_PORT:-8265}:8080
       - ${CALIBRE_SERVER_PORT:-8266}:8081
+      - ${CALIBRE_WIRELESS_PORT:-9090}:9090
 
     environment:
       - PUID=${PUID:-1000}
