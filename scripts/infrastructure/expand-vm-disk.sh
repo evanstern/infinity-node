@@ -93,7 +93,38 @@ get_vm_ip() {
     local vm_id="$1"
     local ip
     ip=$(ssh "$PROXMOX_USER@$PROXMOX_HOST" "qm guest cmd $vm_id network-get-interfaces" 2>/dev/null | \
-         grep -oP '"ip-address":\s*"\K[^"]+' | grep -v "127.0.0.1" | grep -v "::" | head -1)
+         python3 -c '
+import json, sys
+from ipaddress import ip_address
+
+raw_input = sys.stdin.read()
+start = raw_input.find("[")
+end = raw_input.rfind("]")
+if start == -1 or end == -1 or end < start:
+    sys.exit(1)
+
+try:
+    interfaces = json.loads(raw_input[start:end+1])
+except json.JSONDecodeError:
+    sys.exit(1)
+
+for iface in interfaces:
+    for record in iface.get("ip-addresses", []):
+        raw = record.get("ip-address")
+        if not raw:
+            continue
+        try:
+            parsed = ip_address(raw)
+        except ValueError:
+            continue
+        if parsed.version != 4:
+            continue
+        if parsed.is_loopback or parsed.is_link_local:
+            continue
+        print(raw)
+        sys.exit(0)
+sys.exit(1)
+')
     echo "$ip"
 }
 
@@ -184,8 +215,23 @@ fi
 
 sleep 2
 
+# Extend partition to use new disk space
+print_header "Step 6: Expanding Partition"
+GROWPART_CMD="sudo growpart /dev/sda 3"
+PARTED_CMD="sudo parted /dev/sda --script resizepart 3 100%"
+if ssh "$VM_SSH_USER@$VM_IP" "$GROWPART_CMD" &>/dev/null; then
+    print_success "Partition /dev/sda3 expanded with growpart"
+elif ssh "$VM_SSH_USER@$VM_IP" "$PARTED_CMD" &>/dev/null; then
+    print_warning "growpart unavailable; used parted to resize partition"
+else
+    print_error "Failed to resize partition /dev/sda3. Install cloud-guest-utils or resize manually."
+    exit 1
+fi
+
+sleep 2
+
 # Extend physical volume
-print_header "Step 6: Extending Physical Volume"
+print_header "Step 7: Extending Physical Volume"
 if ssh "$VM_SSH_USER@$VM_IP" "sudo pvresize /dev/sda3"; then
     print_success "Physical volume extended"
 else
@@ -194,7 +240,7 @@ else
 fi
 
 # Extend logical volume
-print_header "Step 7: Extending Logical Volume"
+print_header "Step 8: Extending Logical Volume"
 if ssh "$VM_SSH_USER@$VM_IP" "sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv"; then
     print_success "Logical volume extended"
 else
@@ -203,7 +249,7 @@ else
 fi
 
 # Resize filesystem
-print_header "Step 8: Resizing Filesystem"
+print_header "Step 9: Resizing Filesystem"
 if ssh "$VM_SSH_USER@$VM_IP" "sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv"; then
     print_success "Filesystem resized"
 else
@@ -212,7 +258,7 @@ else
 fi
 
 # Verify expansion
-print_header "Step 9: Verification"
+print_header "Step 10: Verification"
 
 echo "New disk status on VM:"
 ssh "$VM_SSH_USER@$VM_IP" "df -h /" 2>/dev/null
