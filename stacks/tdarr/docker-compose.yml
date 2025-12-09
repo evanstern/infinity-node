@@ -33,6 +33,17 @@ services:
       - ${MEDIA_PATH_TV}:/media/tv
       - ${TRANSCODE_CACHE}:/temp
 
+    # GPU hardware transcoding enabled (IN-032)
+    # Requires NVIDIA GPU and nvidia-docker runtime
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+
     networks:
       - tdarr
 
