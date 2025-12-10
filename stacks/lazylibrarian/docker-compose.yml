@@ -10,6 +10,7 @@ services:
     volumes:
       - ${CONFIG_PATH}:/config
       - ${DOWNLOADS_PATH}:/downloads
+      - ${COMPLETE_PATH}:/complete
       - ${BOOKS_PATH}:/books #optional
     ports:
       - ${LAZYLIBRARIAN_PORT:-5299}:5299
