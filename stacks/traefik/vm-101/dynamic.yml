@@ -8,7 +8,7 @@ http:
     # Deluge - Torrent client (CRITICAL)
     # Note: Deluge uses network_mode: service:vpn, so we route to VPN container's exposed port
     deluge:
-      rule: "Host(`deluge.local.infinity-node.com`)"
+      rule: "Host(`deluge.local.infinity-node.win`)"
       entryPoints:
         - web
       service: deluge
@@ -16,14 +16,21 @@ http:
     # NZBGet - Usenet downloader (CRITICAL)
     # Note: NZBGet uses network_mode: service:vpn, so we route to VPN container's exposed port
     nzbget:
-      rule: "Host(`nzbget.local.infinity-node.com`)"
+      rule: "Host(`nzbget.local.infinity-node.win`)"
       entryPoints:
         - web
       service: nzbget
 
+    # LazyLibrarian - Ebook automation
+    lazylibrarian:
+      rule: "Host(`lazylibrarian.local.infinity-node.win`)"
+      entryPoints:
+        - web
+      service: lazylibrarian
+
     # Portainer - Container management
     portainer-101:
-      rule: "Host(`portainer-101.local.infinity-node.com`)"
+      rule: "Host(`portainer-101.local.infinity-node.win`)"
       entryPoints:
         - web
       service: portainer-101
@@ -43,6 +50,12 @@ http:
       loadBalancer:
         servers:
           - url: "http://172.17.0.1:6789"
+
+    # LazyLibrarian - Internal port 5299
+    lazylibrarian:
+      loadBalancer:
+        servers:
+          - url: "http://lazylibrarian:5299"
 
     # Portainer - Internal port 9000 (HTTP UI port)
     # Note: Portainer serves web UI on port 9000, not 8000
