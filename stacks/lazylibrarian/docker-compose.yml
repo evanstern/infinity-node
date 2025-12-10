@@ -12,6 +12,7 @@ services:
       - ${DOWNLOADS_PATH}:/downloads
       - ${COMPLETE_PATH}:/complete
       - ${BOOKS_PATH}:/books #optional
+      - ${IMPORT_PATH}:/import
     ports:
       - ${LAZYLIBRARIAN_PORT:-5299}:5299
     restart: unless-stopped
