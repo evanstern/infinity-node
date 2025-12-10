@@ -56,3 +56,8 @@ tasks/.task-id-counter
 stacks/SECRETS-TO-MIGRATE.md
 .gitignore
 __pycache__/
+
+# When making use of stacks dirs for config/service-files
+stacks/downloads/nzbget
+stacks/downloads/deluge
+stacks/portainer/data
