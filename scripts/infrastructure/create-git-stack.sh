@@ -236,6 +236,17 @@ if [ $? -ne 0 ]; then
     exit 3
 fi
 
+# Defensive handling for Portainer non-JSON/bogus HTTP error responses
+# Sometimes Portainer returns a raw error page or non-JSON content. Detect and fail gracefully.
+if ! echo "$RESPONSE" | jq '.' >/dev/null 2>&1; then
+    # Not valid JSON: likely an HTTP error page or raw message
+    # Try to extract HTTP status or message, else print whole response
+    ERROR_SUMMARY=$(echo "$RESPONSE" | head -n 1 | cut -c -200)
+    error "Unexpected non-API error from Portainer (not JSON): $ERROR_SUMMARY"
+    exit 3
+fi
+
+
 # Check for API error
 if echo "$RESPONSE" | jq -e '.message' > /dev/null 2>&1; then
     ERROR_MSG=$(echo "$RESPONSE" | jq -r '.message')
