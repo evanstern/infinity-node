@@ -12,7 +12,7 @@ tags:
 # Service: {{title}}
 
 **VM:** [[VM-XXX]]
-**IP:** 192.168.86.XXX
+**IP:** 192.168.1.XXX
 **Criticality:** Critical | Important | Normal
 **Container:** `container-name`
 **Image:** `organization/image:tag`
@@ -82,7 +82,7 @@ docker compose up -d
 ## Access
 
 ### Web UI
-- Internal: http://192.168.86.XXX:PORT
+- Internal: http://192.168.1.XXX:PORT
 - External: https://service.infinity-node.com (via [[Pangolin]])
 
 ### Credentials

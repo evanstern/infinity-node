@@ -16,7 +16,7 @@ all:
     production:
       hosts:
         vm-100:
-          ansible_host: 192.168.86.172
+          ansible_host: 192.168.1.100
           ansible_user: evan
           vm_id: 100
           vm_name: emby
@@ -24,7 +24,7 @@ all:
           # Note: hostname has typo "ininity" (should be "infinity")
 
         vm-101:
-          ansible_host: 192.168.86.173
+          ansible_host: 192.168.1.101
           ansible_user: evan
           vm_id: 101
           vm_name: downloads
@@ -32,14 +32,14 @@ all:
           # Note: evan user has GID 988 instead of 1000 on this VM
 
         vm-102:
-          ansible_host: 192.168.86.174
+          ansible_host: 192.168.1.102
           ansible_user: evan
           vm_id: 102
           vm_name: arrs
           hostname: infinity-node-arr
 
         vm-103:
-          ansible_host: 192.168.86.249
+          ansible_host: 192.168.1.103
           ansible_user: evan
           vm_id: 103
           vm_name: misc
@@ -52,7 +52,7 @@ all:
         # Placeholder for test VM - will be created in Phase 2
         # Uncomment and update when test VM is created:
         # test-vm:
-        #   ansible_host: 192.168.86.XXX
+        #   ansible_host: 192.168.1.XXX
         #   ansible_user: evan
         #   vm_id: TBD
         #   vm_name: test
@@ -62,7 +62,7 @@ all:
     template:
       hosts:
         template-vm:
-          ansible_host: 192.168.86.24
+          ansible_host: 192.168.1.24
           ansible_user: evan
           vm_id: 9000
           vm_name: ubuntu-template
@@ -80,7 +80,7 @@ all:
     # Note: Assumes passwordless sudo is configured for evan user
 
     # Common VM settings
-    nas_server: "192.168.86.43"
+    nas_server: "192.168.1.80"
     nas_protocol: "cifs"
 
     # NAS mount points (default - all VMs get these)

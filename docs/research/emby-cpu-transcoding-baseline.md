@@ -187,7 +187,7 @@ Hardware Acceleration: Disabled
 docker exec emby df -h /transcode
 
 # Monitor CPU during transcode
-ssh evan@192.168.86.172 "top -b -n 1 | head -20"
+ssh evan@192.168.1.100 "top -b -n 1 | head -20"
 
 # Check transcode directory
 docker exec emby ls -lh /transcode/transcoding-temp/

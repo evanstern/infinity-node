@@ -30,7 +30,7 @@ aliases:
 **Service:** Kavita (Comics & Ebook Reader)
 **VM:** 103 (misc)
 **Priority:** Medium – Improves household reading experience
-**Access:** `https://kavita.local.infinity-node.com` (Traefik) or `http://vm-103.local.infinity-node.com:5750` (direct/debug)
+**Access:** `https://kavita.local.infinity-node.win` (Traefik) or `http://vm-103.local.infinity-node.win:5750` (direct/debug)
 **Image:** `lscr.io/linuxserver/kavita:latest`
 
 ## Overview
@@ -89,12 +89,12 @@ Keep `/library` read-only. Kavita manages metadata internally under `/config`.
 1. Copy `.env.example` → `.env` and adjust values (paths, timezone, optional SMTP).
 2. Store any sensitive values (SMTP credentials, admin bootstrap notes) in Vaultwarden collection `vm-103-misc`.
 3. Commit stack changes, then deploy via Portainer Git stack (`kavita`) on VM-103.
-4. After container is healthy, add Traefik router entry (`kavita.local.infinity-node.com`) in `stacks/traefik/vm-103/dynamic.yml` if not already present.
+4. After container is healthy, add Traefik router entry (`kavita.local.infinity-node.win`) in `stacks/traefik/vm-103/dynamic.yml` if not already present.
 5. Validate via Traefik URL and document results in the task log.
 
 ## Initial Setup
 
-1. Browse to `https://kavita.local.infinity-node.com`.
+1. Browse to `https://kavita.local.infinity-node.win`.
 2. Create the initial admin account (store credentials in Vaultwarden).
 3. Configure libraries under **Server Settings → Libraries**, pointing to directories under `/library` (e.g., `/library/Books`, `/library/Comics`).
 4. Optionally configure metadata providers and OPDS.

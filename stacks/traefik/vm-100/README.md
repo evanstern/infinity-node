@@ -4,9 +4,9 @@ This directory contains the Traefik reverse proxy configuration for VM 100, whic
 
 ## Services Routed
 
-- **Emby (LAN)** `emby.local.infinity-node.com` — Media streaming server (CRITICAL)
+- **Emby (LAN)** `emby.local.infinity-node.win` — Media streaming server (CRITICAL)
 - **Emby (External)** `emby.infinity-node.com` — Routed through Pangolin forward-auth until cutover; Traefik now applies headers + rate limiting and emits access logs for fail2ban.
-- **Portainer** `portainer-100.local.infinity-node.com` — Container management
+- **Portainer** `portainer-100.local.infinity-node.win` — Container management
 
 ## Special Considerations
 
@@ -17,7 +17,7 @@ Emby runs with `network_mode: host` for performance reasons. This means:
 - Emby is directly accessible on the host's network interface
 - Traefik (running in bridge mode) cannot reach Emby via Docker network
 - **Solution**: Route to `host.docker.internal:8096` which allows bridge containers to reach host services
-- Direct port access (`http://emby.local.infinity-node.com:8096`) remains available as fallback
+- Direct port access (`http://emby.local.infinity-node.win:8096`) remains available as fallback
 
 ### Port Availability
 
@@ -39,7 +39,7 @@ Emby runs with `network_mode: host` for performance reasons. This means:
    ```
 3. Verify Traefik starts successfully
 4. Test routing:
-   - LAN: `http://emby.local.infinity-node.com`
+   - LAN: `http://emby.local.infinity-node.win`
    - External (still via Pangolin): `curl -H "Host: emby.infinity-node.com" http://<traefik-ip>`
 5. Confirm `/home/evan/logs/traefik/access.log` is being written (required for fail2ban on VM-100).
 6. Ensure `/home/evan/.config/traefik/vm-100/*.yml` reflects the latest git changes before redeploying (copy from repo if needed).
@@ -50,10 +50,10 @@ After deployment, test each service:
 
 ```bash
 # Test Emby routing (LAN)
-curl -H "Host: emby.local.infinity-node.com" http://192.168.86.172/
+curl -H "Host: emby.local.infinity-node.win" http://192.168.1.100/
 
 # Test Portainer routing
-curl -H "Host: portainer-100.local.infinity-node.com" http://192.168.86.172/
+curl -H "Host: portainer-100.local.infinity-node.win" http://192.168.1.100/
 
 # Quick log tail (expect JSON access events for fail2ban)
 docker exec traefik tail -f /var/log/traefik/access.log

@@ -32,7 +32,7 @@ aliases:
 **Service:** Audiobookshelf (Audiobook and Podcast Server)
 **VM:** 103 (misc)
 **Priority:** Medium - Media library management
-**Access:** http://audiobookshelf.local.infinity-node.com (port-free via Traefik) or http://audiobookshelf.local.infinity-node.com:13378 (direct)
+**Access:** http://audiobookshelf.local.infinity-node.win (port-free via Traefik) or http://audiobookshelf.local.infinity-node.win:13378 (direct)
 **Image:** `ghcr.io/advplyr/audiobookshelf:latest`
 
 ## Overview
@@ -84,7 +84,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. **Access Web UI:** Navigate to http://audiobookshelf.local.infinity-node.com:13378
+1. **Access Web UI:** Navigate to http://audiobookshelf.local.infinity-node.win:13378
 2. **Create Admin Account:** First user becomes admin
 3. **Configure Libraries:**
    - Add audiobook library pointing to `/audiobooks`
@@ -111,7 +111,7 @@ docker compose up -d
 ### Mobile Access
 
 - Download Audiobookshelf app (iOS/Android)
-- Connect to server: http://audiobookshelf.local.infinity-node.com:13378
+- Connect to server: http://audiobookshelf.local.infinity-node.win:13378
 - Login with web UI credentials
 - Sync progress across devices
 

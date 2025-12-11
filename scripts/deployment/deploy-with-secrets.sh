@@ -10,13 +10,13 @@
 # - Bitwarden CLI installed (brew install bitwarden-cli)
 # - BW_CLIENTID and BW_CLIENTSECRET set in environment (~/.zshrc)
 # - SSH access to target VM
-# - Vaultwarden configured: bw config server http://vaultwarden.local.infinity-node.com:8111
+# - Vaultwarden configured: bw config server http://vaultwarden.local.infinity-node.win
 #
 # Usage:
 #   ./deploy-with-secrets.sh <service-name> <vm-ip> <stack-path>
 #
 # Example:
-#   ./deploy-with-secrets.sh emby vm-100.local.infinity-node.com /home/evan/projects/infinity-node/stacks/emby
+#   ./deploy-with-secrets.sh emby vm-100.local.infinity-node.win /home/evan/projects/infinity-node/stacks/emby
 
 set -euo pipefail
 
@@ -47,7 +47,7 @@ log_error() {
 # Check if required arguments are provided
 if [ $# -lt 3 ]; then
     log_error "Usage: $0 <service-name> <vm-host> <stack-path>"
-    log_info "Example: $0 emby vm-100.local.infinity-node.com /home/evan/projects/infinity-node/stacks/emby"
+    log_info "Example: $0 emby vm-100.local.infinity-node.win /home/evan/projects/infinity-node/stacks/emby"
     exit 1
 fi
 
@@ -80,10 +80,10 @@ fi
 
 # Check if Vaultwarden server is configured
 BW_SERVER=$(bw config server 2>/dev/null || echo "")
-if [ "$BW_SERVER" != "http://vaultwarden.local.infinity-node.com:8111" ]; then
+if [ "$BW_SERVER" != "http://vaultwarden.local.infinity-node.win" ]; then
     log_warning "Vaultwarden server not configured correctly"
     log_info "Configuring now..."
-    bw config server http://vaultwarden.local.infinity-node.com:8111
+    bw config server http://vaultwarden.local.infinity-node.win
     log_success "Vaultwarden server configured"
 fi
 
@@ -264,7 +264,7 @@ echo ""
 # Emby Example:
 # ----------------------------
 # EMBY_API_KEY=$(bw get password "emby-api-key")
-# ssh evan@vm-100.local.infinity-node.com "cat > /home/evan/projects/infinity-node/stacks/emby/.env" <<EOF
+# ssh evan@vm-100.local.infinity-node.win "cat > /home/evan/projects/infinity-node/stacks/emby/.env" <<EOF
 # EMBY_API_KEY=${EMBY_API_KEY}
 # EOF
 
@@ -272,7 +272,7 @@ echo ""
 # ----------------------------
 # RADARR_API_KEY=$(bw get password "radarr-api-key")
 # RADARR_DB_PASSWORD=$(bw get password "radarr-db-password")
-# ssh evan@vm-102.local.infinity-node.com "cat > /home/evan/projects/infinity-node/stacks/radarr/.env" <<EOF
+# ssh evan@vm-102.local.infinity-node.win "cat > /home/evan/projects/infinity-node/stacks/radarr/.env" <<EOF
 # RADARR_API_KEY=${RADARR_API_KEY}
 # RADARR_DB_PASSWORD=${RADARR_DB_PASSWORD}
 # EOF
@@ -281,7 +281,7 @@ echo ""
 # ----------------------------
 # NORDVPN_USER=$(bw get item "nordvpn-credentials" | jq -r '.login.username')
 # NORDVPN_PASS=$(bw get password "nordvpn-credentials")
-# ssh evan@vm-101.local.infinity-node.com "cat > /home/evan/projects/infinity-node/stacks/nordvpn/.env" <<EOF
+# ssh evan@vm-101.local.infinity-node.win "cat > /home/evan/projects/infinity-node/stacks/nordvpn/.env" <<EOF
 # NORDVPN_USER=${NORDVPN_USER}
 # NORDVPN_PASS=${NORDVPN_PASS}
 # EOF

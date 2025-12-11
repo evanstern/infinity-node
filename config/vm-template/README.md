@@ -42,7 +42,7 @@ The VM template is built using Ansible (see `ansible/playbooks/vm-template.yml`)
 - inspector user (UID 1001) with bash shell
 - Docker + Docker Compose
 - Base packages: git, curl, wget, htop, vim, zsh
-- NAS mounts (3 shares to 192.168.86.43)
+- NAS mounts (3 shares to 192.168.1.80)
 - UFW firewall (enabled with SSH allowed)
 - Standard directory structure
 

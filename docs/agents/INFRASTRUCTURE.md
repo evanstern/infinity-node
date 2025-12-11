@@ -53,41 +53,41 @@ The Infrastructure Agent manages the underlying infrastructure including Proxmox
 
 ### Proxmox Host
 - **Hostname**: infinity-node
-- **IP**: 192.168.86.106
+- **IP**: 192.168.1.81
 - **Version**: PVE 8.4.1
 - **Access**: SSH as root
 
 ### Storage
 - **local**: 100GB (ISO, templates, backups)
 - **local-lvm**: 1.8TB (VM disks)
-- **NAS**: 57TB NFS (nas.local.infinity-node.com / 192.168.86.43, Synology)
+- **NAS**: 57TB NFS (jace.local.infinity-node.win / 192.168.1.80, Synology)
 
 ### Virtual Machines
 
 #### VM 100: emby (CRITICAL)
-- **IP**: 192.168.86.172
-- **DNS**: vm-100.local.infinity-node.com
+- **IP**: 192.168.1.100
+- **DNS**: vm-100.local.infinity-node.win
 - **Resources**: 2 CPU, 8GB RAM, 82GB disk + 32GB NAS
 - **Purpose**: Media server
 - **Uptime**: Critical (primary service)
 
 #### VM 101: downloads (CRITICAL)
-- **IP**: 192.168.86.173
-- **DNS**: vm-101.local.infinity-node.com
+- **IP**: 192.168.1.101
+- **DNS**: vm-101.local.infinity-node.win
 - **Resources**: 8 CPU, 16GB RAM, 100GB NAS + 4TB physical disk
 - **Purpose**: Torrent/Usenet downloads with VPN
 - **Uptime**: Critical (active downloads must not corrupt)
 
 #### VM 102: infinity-node-arr (CRITICAL)
-- **IP**: 192.168.86.174
-- **DNS**: vm-102.local.infinity-node.com
+- **IP**: 192.168.1.102
+- **DNS**: vm-102.local.infinity-node.win
 - **Resources**: 8 CPU, 32GB RAM, 200GB NAS
 - **Purpose**: Media automation (*arr services)
 - **Uptime**: Critical (media pipeline)
 
 #### VM 103: misc (Important)
-- **IP**: 192.168.86.249
-- **DNS**: vm-103.local.infinity-node.com
+- **IP**: 192.168.1.103
+- **DNS**: vm-103.local.infinity-node.win
 - **Resources**: 6 CPU, 16GB RAM, 100GB NAS
 - **Purpose**: Supporting services
 - **Uptime**: Important but not critical
@@ -99,9 +99,9 @@ The Infrastructure Agent manages the underlying infrastructure including Proxmox
 - Status: Not currently active
 
 ### Network
-- **Network**: 192.168.86.0/24
-- **Gateway**: 192.168.86.1 (assumed)
-- **DNS**: 192.168.86.158 (PiHole on Raspberry Pi)
+- **Network**: 192.168.1.0/24
+- **Gateway**: 192.168.1.1 (assumed)
+- **DNS**: 192.168.1.79 (PiHole on Raspberry Pi)
 - **Bridge**: vmbr0 (all VMs connected)
 
 ## Responsibilities
@@ -310,10 +310,10 @@ qm snapshot VMID snapshot-name
 pvesm status
 
 # Storage scan
-pvesm scan nfs 192.168.86.43
+pvesm scan nfs 192.168.1.80
 
 # Add NFS storage
-pvesm add nfs NAS --server 192.168.86.43 --export /volume1/infinity-node
+pvesm add nfs NAS --server 192.168.1.80 --export /volume1/infinity-node
 ```
 
 ### Network Management

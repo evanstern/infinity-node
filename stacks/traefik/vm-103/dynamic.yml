@@ -7,98 +7,98 @@ http:
   routers:
     # Vaultwarden - Password manager
     vaultwarden:
-      rule: "Host(`vaultwarden.local.infinity-node.com`)"
+      rule: "Host(`vaultwarden.local.infinity-node.win`)"
       entryPoints:
         - web
       service: vaultwarden
 
     # Paperless-NGX - Document management
     paperless:
-      rule: "Host(`paperless.local.infinity-node.com`)"
+      rule: "Host(`paperless.local.infinity-node.win`)"
       entryPoints:
         - web
       service: paperless
 
     # CookCLI - Recipe service
     cookcli:
-      rule: "Host(`recipes.local.infinity-node.com`)"
+      rule: "Host(`recipes.local.infinity-node.win`)"
       entryPoints:
         - web
       service: cookcli
 
     # Immich - Photo management
     immich:
-      rule: "Host(`immich.local.infinity-node.com`)"
+      rule: "Host(`immich.local.infinity-node.win`)"
       entryPoints:
         - web
       service: immich
 
     # Linkwarden - Bookmark management
     linkwarden:
-      rule: "Host(`linkwarden.local.infinity-node.com`)"
+      rule: "Host(`linkwarden.local.infinity-node.win`)"
       entryPoints:
         - web
       service: linkwarden
 
     # Navidrome - Music streaming
     navidrome:
-      rule: "Host(`navidrome.local.infinity-node.com`)"
+      rule: "Host(`navidrome.local.infinity-node.win`)"
       entryPoints:
         - web
       service: navidrome
 
     # Kavita - Comics & ebooks
     kavita:
-      rule: "Host(`kavita.local.infinity-node.com`)"
+      rule: "Host(`kavita.local.infinity-node.win`)"
       entryPoints:
         - web
       service: kavita
 
     # Audiobookshelf - Audiobook management
     audiobookshelf:
-      rule: "Host(`audiobookshelf.local.infinity-node.com`)"
+      rule: "Host(`audiobookshelf.local.infinity-node.win`)"
       entryPoints:
         - web
       service: audiobookshelf
 
     # MyBibliotheca - Book tracking
     mybibliotheca:
-      rule: "Host(`mybibliotheca.local.infinity-node.com`)"
+      rule: "Host(`mybibliotheca.local.infinity-node.win`)"
       entryPoints:
         - web
       service: mybibliotheca
 
     # Calibre - E-book management (GUI)
     calibre:
-      rule: "Host(`calibre.local.infinity-node.com`)"
+      rule: "Host(`calibre.local.infinity-node.win`)"
       entryPoints:
         - web
       service: calibre
 
     # Calibre-Web - Web interface for Calibre
     calibre-web:
-      rule: "Host(`calibre-web.local.infinity-node.com`)"
+      rule: "Host(`calibre-web.local.infinity-node.win`)"
       entryPoints:
         - web
       service: calibre-web
 
     # Homepage - Dashboard
     homepage:
-      rule: "Host(`homepage.local.infinity-node.com`)"
+      rule: "Host(`homepage.local.infinity-node.win`)"
       entryPoints:
         - web
       service: homepage
 
     # Portainer - Container management
     portainer-103:
-      rule: "Host(`portainer-103.local.infinity-node.com`)"
+      rule: "Host(`portainer-103.local.infinity-node.win`)"
       entryPoints:
         - web
       service: portainer-103
 
     # Homepage - Dashboard
     paperless-ai:
-      rule: "Host(`paperless-ai.local.infinity-node.com`)"
+      rule: "Host(`paperless-ai.local.infinity-node.win`)"
       entryPoints:
         - web
       service: paperless-ai

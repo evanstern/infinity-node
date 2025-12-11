@@ -23,7 +23,7 @@ tags:
 3. Add port forwarding rule:
    - **Name:** Emby HTTPS
    - **External Port:** 443
-   - **Internal IP:** 192.168.86.172
+   - **Internal IP:** 192.168.1.100
    - **Internal Port:** 8096
    - **Protocol:** TCP
 
@@ -77,8 +77,8 @@ sudo ./scripts/security/setup-emby-fail2ban.sh
 
 ```bash
 sudo ufw allow 443/tcp
-sudo ufw allow from 192.168.86.0/24 to any port 8096
-sudo ufw allow from 192.168.86.0/24 to any port 8920
+sudo ufw allow from 192.168.1.0/24 to any port 8096
+sudo ufw allow from 192.168.1.0/24 to any port 8920
 sudo ufw enable
 ```
 

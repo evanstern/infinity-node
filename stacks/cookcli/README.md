@@ -65,7 +65,7 @@ ssh evan@vm-103 'mkdir -p /mnt/video/Recipes && chown -R 1000:1000 /mnt/video/Re
 - `docker compose config` passes locally before committing changes.
 - Portainer shows the `cookcli` container as running (no restart loops).
 - Logs (`docker logs cookcli`) show health or `cook server` output when triggered.
-- `curl http://vm-103.local.infinity-node.com:9080` (or whichever host port is configured) returns a response once `cook server` is running.
+- `curl http://vm-103.local.infinity-node.win:9080` (or whichever host port is configured) returns a response once `cook server` is running.
 - Recipes created under `/home/evan/data/cookcli/recipes` persist through restarts.
 
 ## References

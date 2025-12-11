@@ -7,10 +7,10 @@
 
 | VM ID | Name | IP | Hostname | Status |
 |-------|------|-----|----------|--------|
-| 100 | emby | 192.168.86.172 | ininity-node-emby | Running |
-| 101 | downloads | 192.168.86.173 | infinity-node-downloads | Running |
-| 102 | arrs | 192.168.86.174 | infinity-node-arr | Running |
-| 103 | misc | 192.168.86.249 | infinity-node-misc | Running |
+| 100 | emby | 192.168.1.100 | ininity-node-emby | Running |
+| 101 | downloads | 192.168.1.101 | infinity-node-downloads | Running |
+| 102 | arrs | 192.168.1.102 | infinity-node-arr | Running |
+| 103 | misc | 192.168.1.103 | infinity-node-misc | Running |
 
 ## Configuration Comparison
 
@@ -60,18 +60,18 @@
 **⚠️ DIFFERENCE FOUND: VM 103 has different mounts**
 
 **VMs 100, 101, 102** (3 mounts):
-- `//192.168.86.43/media` → `/mnt/video`
-- `//192.168.86.43/complete` → `/mnt/complete`
-- `//192.168.86.43/music` → `/mnt/music`
+- `//192.168.1.80/media` → `/mnt/video`
+- `//192.168.1.80/complete` → `/mnt/complete`
+- `//192.168.1.80/music` → `/mnt/music`
 
 **VM 103** (2 mounts only):
-- `//192.168.86.43/media` → `/mnt/video`
-- `//192.168.86.43/music` → `/mnt/music`
+- `//192.168.1.80/media` → `/mnt/video`
+- `//192.168.1.80/music` → `/mnt/music`
 - ❌ Missing: `/mnt/complete` mount
 
 **Mount Details:**
 - Protocol: CIFS (Windows/Samba shares)
-- NAS IP: 192.168.86.43
+- NAS IP: 192.168.1.80
 - Username: thor
 - Password: [REDACTED] (found in plain text in fstab)
 - Options: vers=2.0,rw,file_mode=0777,dir_mode=0777,nofail

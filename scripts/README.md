@@ -235,7 +235,7 @@ python3 scripts/utils/organize-music.py --dry-run --music-dir "/path/to/music"
 **Related:**
 - See `.claude/commands/organize-music.md` for slash command usage
 - Music library managed via Emby on VM 100
-- Storage: Synology NAS at nas.local.infinity-node.com
+- Storage: Synology NAS at jace.local.infinity-node.win
 
 #### `bw-setup-session.sh`
 **Purpose:** Setup Bitwarden CLI session for Claude Code access
@@ -475,7 +475,7 @@ Total Items in Organization: 13
 **Example:**
 ```bash
 # Deploy radarr to VM 102
-./scripts/deployment/deploy-with-secrets.sh radarr vm-102.local.infinity-node.com
+./scripts/deployment/deploy-with-secrets.sh radarr vm-102.local.infinity-node.win
 ```
 
 **Use Cases:**
@@ -555,7 +555,7 @@ chmod 600 ~/.nas-backup-password
 
 **Implementation Details:**
 - Backs up `/home/evan/data/vw-data/db.sqlite3` on VM 103
-- Transfers to `backup@nas.local.infinity-node.com:/volume1/backups/vaultwarden/`
+- Transfers to `backup@jace.local.infinity-node.win:/volume1/backups/vaultwarden/`
 - Note: Synology NAS requires paths relative to `/volume1/` for SCP (chroot)
 - backup user must be in `administrators` group for SSH/SCP access
 - Password stored securely in `~/.nas-backup-password` on VM 103
@@ -574,7 +574,7 @@ chmod 600 ~/.nas-backup-password
 **Example:**
 ```bash
 # Configure on VM 103
-./scripts/setup/setup-evan-nopasswd-sudo.sh vm-103.local.infinity-node.com
+./scripts/setup/setup-evan-nopasswd-sudo.sh vm-103.local.infinity-node.win
 ```
 
 **Use Cases:**
@@ -591,7 +591,7 @@ chmod 600 ~/.nas-backup-password
 ```bash
 # Create inspector user on all VMs
 for vm in vm-100 vm-101 vm-102 vm-103; do
-  ./scripts/setup/setup-inspector-user.sh "${vm}.local.infinity-node.com"
+  ./scripts/setup/setup-inspector-user.sh "${vm}.local.infinity-node.win"
 done
 ```
 
@@ -671,7 +671,7 @@ done
 **Example Output:**
 ```
 ═══════════════════════════════════════════════════════════════
-        PROXMOX RESOURCE REPORT - 192.168.86.106
+        PROXMOX RESOURCE REPORT - 192.168.1.81
 ═══════════════════════════════════════════════════════════════
 
 HARDWARE RESOURCES
@@ -800,7 +800,7 @@ RESOURCE STATUS
 # Direct mode (provide token and URL manually)
 ./scripts/infrastructure/query-portainer-stacks.sh \
   --token "ptr_ABC123..." \
-  --url "http://portainer-100.local.infinity-node.com:9000"
+  --url "http://portainer-100.local.infinity-node.win:9000"
 
 # Vaultwarden mode (auto-retrieve credentials)
 ./scripts/infrastructure/query-portainer-stacks.sh \
@@ -887,7 +887,7 @@ RESOURCE STATUS
 ```
 
 **Requirements:**
-- SSH access to Proxmox host (192.168.86.106 by default)
+- SSH access to Proxmox host (192.168.1.81 by default)
 - SSH public key at `~/.ssh/id_rsa.pub`
 - Internet access on Proxmox (to download cloud image)
 - Proxmox storage named `local-lvm`
@@ -904,10 +904,10 @@ RESOURCE STATUS
 **Example:**
 ```bash
 # Clean Docker images on VM 103
-./scripts/infrastructure/docker-cleanup.sh vm-103.local.infinity-node.com
+./scripts/infrastructure/docker-cleanup.sh vm-103.local.infinity-node.win
 
 # With explicit SSH user
-./scripts/infrastructure/docker-cleanup.sh vm-103.local.infinity-node.com evan
+./scripts/infrastructure/docker-cleanup.sh vm-103.local.infinity-node.win evan
 ```
 
 **Use Cases:**
@@ -925,7 +925,7 @@ RESOURCE STATUS
 
 **Example Output:**
 ```
-VM 102 (infinity-node-arr) - vm-102.local.infinity-node.com
+VM 102 (infinity-node-arr) - vm-102.local.infinity-node.win
 Before: 49G used (27% full), 170 Docker images, 30.46GB reclaimable
 After:  19G used (10% full), 11 Docker images, 0GB reclaimable
 Result: Freed 17% disk space, removed 159 unused images
@@ -938,7 +938,7 @@ Result: Freed 17% disk space, removed 159 unused images
 **Purpose:** Automate Proxmox VM disk expansion including LVM and filesystem resize
 **Usage:** `./expand-vm-disk.sh <vm-id> <additional-size-GB> [proxmox-host] [ssh-user]`
 **Exit Codes:** 0 (success), 1 (error during expansion)
-**Default Proxmox Host:** `192.168.86.106`
+**Default Proxmox Host:** `192.168.1.81`
 **Default Proxmox User:** `root`
 **VM SSH User:** `evan`
 
@@ -948,7 +948,7 @@ Result: Freed 17% disk space, removed 159 unused images
 ./scripts/infrastructure/expand-vm-disk.sh 103 50
 
 # With explicit Proxmox host
-./scripts/infrastructure/expand-vm-disk.sh 103 50 192.168.86.106 root
+./scripts/infrastructure/expand-vm-disk.sh 103 50 192.168.1.81 root
 ```
 
 **Use Cases:**

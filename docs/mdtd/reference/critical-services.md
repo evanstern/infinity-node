@@ -14,15 +14,15 @@ Extra requirements when working with Emby, downloads, or arr services.
 
 **Services that affect household users:**
 
-- **Emby** (VM 100 - 192.168.86.203): Primary media streaming
+- **Emby** (VM 100 - 192.168.1.203): Primary media streaming
   - **Target**: 99.9% uptime
   - **Impact**: Household media access
 
-- **Downloads** (VM 101 - 192.168.86.208): Download clients with VPN
+- **Downloads** (VM 101 - 192.168.1.208): Download clients with VPN
   - **Target**: Active downloads must not corrupt
   - **Impact**: Media acquisition pipeline
 
-- **Arr Services** (VM 102 - 192.168.86.210): Media automation
+- **Arr Services** (VM 102 - 192.168.1.210): Media automation
   - **Target**: Continuous operation
   - **Impact**: Automated media management
 

@@ -144,7 +144,7 @@ Emby stack deployed successfully. Service is running and accessible. Minor confi
 - Resource usage: Normal (2.1GB/8GB RAM, 15% CPU)
 
 #### ✅ PASS: Service Accessibility
-- Emby web UI accessible at http://emby.local.infinity-node.com (port-free) or http://emby.local.infinity-node.com:8096 (direct)
+- Emby web UI accessible at http://emby.local.infinity-node.win (port-free) or http://emby.local.infinity-node.win:8096 (direct)
 - Response time: 245ms
 - No errors in access logs
 
@@ -179,7 +179,7 @@ Before executing ANY command, the Testing Agent must verify:
 
 The Testing Agent uses a **dedicated inspector user** for SSH access:
 - Username: `inspector` (**configured on all VMs**)
-- SSH: `inspector@192.168.86.{172,173,174,249}`
+- SSH: `inspector@192.168.1.{172,173,174,249}`
 - Permissions: Docker group access (policy-based read-only), no sudo
 - Key-based authentication only
 - Created via: `scripts/setup-inspector-user.sh`

@@ -4,9 +4,9 @@ This directory contains the Traefik reverse proxy configuration for VM 101, whic
 
 ## Services Routed
 
-- **Deluge** (`deluge.local.infinity-node.com`) - Torrent client (CRITICAL)
-- **NZBGet** (`nzbget.local.infinity-node.com`) - Usenet downloader (CRITICAL)
-- **Portainer** (`portainer-101.local.infinity-node.com`) - Container management
+- **Deluge** (`deluge.local.infinity-node.win`) - Torrent client (CRITICAL)
+- **NZBGet** (`nzbget.local.infinity-node.win`) - Usenet downloader (CRITICAL)
+- **Portainer** (`portainer-101.local.infinity-node.win`) - Container management
 
 ## Special Considerations
 
@@ -18,7 +18,7 @@ Download clients (Deluge and NZBGet) use `network_mode: service:vpn` for securit
 - Deluge and NZBGet share the VPN container's network namespace
 - VPN container exposes ports 8112 (Deluge) and 6789 (NZBGet) on the host
 - **Solution**: Route to `172.17.0.1:8112` and `172.17.0.1:6789` (Docker bridge gateway) to reach VPN container's exposed ports
-- Direct port access (`http://deluge.local.infinity-node.com:8112`, `http://nzbget.local.infinity-node.com:6789`) remains available as fallback
+- Direct port access (`http://deluge.local.infinity-node.win:8112`, `http://nzbget.local.infinity-node.win:6789`) remains available as fallback
 
 ### Port Availability
 
@@ -40,7 +40,7 @@ SSH into VM-101 and create the configuration directory:
 
 ```bash
 # SSH to VM-101
-ssh evan@192.168.86.173
+ssh evan@192.168.1.101
 
 # Create config directory
 sudo mkdir -p /opt/traefik/config
@@ -51,10 +51,10 @@ Copy the configuration files to VM-101. From your local machine:
 
 ```bash
 # Copy traefik.yml
-scp stacks/traefik/vm-101/traefik.yml evan@192.168.86.173:/opt/traefik/config/
+scp stacks/traefik/vm-101/traefik.yml evan@192.168.1.101:/opt/traefik/config/
 
 # Copy dynamic.yml
-scp stacks/traefik/vm-101/dynamic.yml evan@192.168.86.173:/opt/traefik/config/
+scp stacks/traefik/vm-101/dynamic.yml evan@192.168.1.101:/opt/traefik/config/
 ```
 
 Verify files are in place:
@@ -67,7 +67,7 @@ ls -la /opt/traefik/config/
 
 ### Step 2: Deploy via Portainer GitOps
 
-1. **Access Portainer** on VM-101: <http://portainer-101.local.infinity-node.com:32768>
+1. **Access Portainer** on VM-101: <http://portainer-101.local.infinity-node.win:32768>
 2. **Navigate to Stacks** → Add stack
 3. **Select "Repository"** as the build method
 4. **Configure Git settings:**
@@ -88,11 +88,11 @@ ls -la /opt/traefik/config/
 docker logs traefik
 
 # Test dashboard
-curl http://192.168.86.173:8080/api/rawdata
+curl http://192.168.1.101:8080/api/rawdata
 
 # Test service routing
-curl -H "Host: deluge.local.infinity-node.com" http://192.168.86.173/
-curl -H "Host: nzbget.local.infinity-node.com" http://192.168.86.173/
+curl -H "Host: deluge.local.infinity-node.win" http://192.168.1.101/
+curl -H "Host: nzbget.local.infinity-node.win" http://192.168.1.101/
 ```
 
 ### Updating Configuration
@@ -102,8 +102,8 @@ To update `traefik.yml` or `dynamic.yml`:
 1. Update files in git repository
 2. Copy updated files to VM-101:
    ```bash
-   scp stacks/traefik/vm-101/traefik.yml evan@192.168.86.173:/opt/traefik/config/
-   scp stacks/traefik/vm-101/dynamic.yml evan@192.168.86.173:/opt/traefik/config/
+   scp stacks/traefik/vm-101/traefik.yml evan@192.168.1.101:/opt/traefik/config/
+   scp stacks/traefik/vm-101/dynamic.yml evan@192.168.1.101:/opt/traefik/config/
    ```
 3. Restart Traefik container in Portainer (or wait for GitOps auto-update if `watch: true` is enabled in traefik.yml)
 
@@ -113,13 +113,13 @@ After deployment, test each service:
 
 ```bash
 # Test Deluge routing
-curl -H "Host: deluge.local.infinity-node.com" http://192.168.86.173/
+curl -H "Host: deluge.local.infinity-node.win" http://192.168.1.101/
 
 # Test NZBGet routing
-curl -H "Host: nzbget.local.infinity-node.com" http://192.168.86.173/
+curl -H "Host: nzbget.local.infinity-node.win" http://192.168.1.101/
 
 # Test Portainer routing
-curl -H "Host: portainer-101.local.infinity-node.com" http://192.168.86.173/
+curl -H "Host: portainer-101.local.infinity-node.win" http://192.168.1.101/
 ```
 
 ## Troubleshooting

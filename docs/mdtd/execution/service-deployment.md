@@ -152,7 +152,7 @@ export BW_SESSION=$(cat ~/.bw-session)
 ./scripts/infrastructure/create-git-stack.sh \
   --name "service-name" \
   --compose-file "stacks/service-name/docker-compose.yml" \
-  --vm-ip "192.168.86.XXX" \
+  --vm-ip "192.168.1.XXX" \
   --portainer-secret "portainer-api-token-vm-XXX" \
   --env-file "path/to/.env"
 ```
@@ -171,7 +171,7 @@ export BW_SESSION=$(cat ~/.bw-session)
 - [ ] Healthcheck passing (if defined)
 
 ```bash
-ssh evan@192.168.86.XXX
+ssh evan@192.168.1.XXX
 docker ps | grep service-name
 docker logs service-name
 ```

@@ -27,7 +27,7 @@ aliases:
 **Service:** Komga (Comic book manager)
 **VM:** 103 (misc)
 **Priority:** Medium – Enhances the household comic library
-**Access:** `http://vm-103.local.infinity-node.com:25600` (direct)
+**Access:** `http://vm-103.local.infinity-node.win:25600` (direct)
 **Image:** `gotson/komga:latest`
 
 ## Overview
@@ -76,7 +76,7 @@ If `/mnt/video/Komga` is not mounted, consult the NAS share documentation (`docs
 
 After deployment:
 
-1. Browse to `http://vm-103.local.infinity-node.com:25600/`.
+1. Browse to `http://vm-103.local.infinity-node.win:25600/`.
 2. Create the initial Komga admin account (store credentials in Vaultwarden `vm-103-misc/komga-admin`).
 3. Under **Libraries**, add the folders reachable from `/data`.
 4. Trigger a scan and watch the logs (`docker logs -f komga`) for permission issues.

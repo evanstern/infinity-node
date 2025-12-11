@@ -34,10 +34,10 @@ aliases:
 **VM:** 100, 101, 102, 103 (all VMs)
 **Priority:** Important - Primary management interface
 **Access:**
-- VM 100: http://portainer-100.local.infinity-node.com (port-free via Traefik) or http://portainer-100.local.infinity-node.com:9000 (direct)
-- VM 101: http://portainer-101.local.infinity-node.com (port-free via Traefik) or http://portainer-101.local.infinity-node.com:32768 (direct, non-standard port)
-- VM 102: http://portainer-102.local.infinity-node.com (port-free via Traefik) or http://portainer-102.local.infinity-node.com:9000 (direct)
-- VM 103: http://portainer-103.local.infinity-node.com (port-free via Traefik) or http://portainer-103.local.infinity-node.com:9000 (direct)
+- VM 100: http://portainer-100.local.infinity-node.win (port-free via Traefik) or http://portainer-100.local.infinity-node.win:9000 (direct)
+- VM 101: http://portainer-101.local.infinity-node.win (port-free via Traefik) or http://portainer-101.local.infinity-node.win:32768 (direct, non-standard port)
+- VM 102: http://portainer-102.local.infinity-node.win (port-free via Traefik) or http://portainer-102.local.infinity-node.win:9000 (direct)
+- VM 103: http://portainer-103.local.infinity-node.win (port-free via Traefik) or http://portainer-103.local.infinity-node.win:9000 (direct)
 
 ## Overview
 

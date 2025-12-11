@@ -31,7 +31,7 @@ aliases:
 **Service:** MyBibliotheca (Self-hosted Book Tracker)
 **VM:** 103 (misc)
 **Priority:** Medium - Personal book tracking
-**Access:** http://mybibliotheca.local.infinity-node.com (port-free via Traefik) or http://mybibliotheca.local.infinity-node.com:5054 (direct)
+**Access:** http://mybibliotheca.local.infinity-node.win (port-free via Traefik) or http://mybibliotheca.local.infinity-node.win:5054 (direct)
 **Image:** `pickles4evaaaa/mybibliotheca:1.1.1`
 
 ## Overview
@@ -111,7 +111,7 @@ See `.env.example` for complete list (pulled from official repo).
 2. **Initial Setup:**
    ```bash
    # Create local directories on VM-103
-   ssh evan@vm-103.local.infinity-node.com
+   ssh evan@vm-103.local.infinity-node.win
    mkdir -p /home/evan/data/mybibliotheca/data
    chown -R evan:evan /home/evan/data/mybibliotheca
    ```
@@ -126,7 +126,7 @@ See `.env.example` for complete list (pulled from official repo).
 
 ## Initial Setup
 
-1. **Access Web UI:** Navigate to http://mybibliotheca.local.infinity-node.com:5054
+1. **Access Web UI:** Navigate to http://mybibliotheca.local.infinity-node.win:5054
 2. **Create Admin Account:** First user becomes admin
 3. **Add Books:**
    - Import from CSV (Goodreads export)

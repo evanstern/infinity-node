@@ -44,7 +44,7 @@ debug() { echo -e "${BLUE}  $1${NC}"; }
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 CONFIG_FILE="${PROJECT_ROOT}/config/dns-records.json"
-PIHOLE_IP="192.168.86.158"
+PIHOLE_IP="192.168.1.79"
 DRY_RUN=false
 
 # Parse arguments

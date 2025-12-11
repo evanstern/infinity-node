@@ -4,14 +4,14 @@ This directory contains the Traefik reverse proxy configuration for VM 102, whic
 
 ## Services Routed
 
-- **Radarr** (`radarr.local.infinity-node.com`) - Movie management (CRITICAL)
-- **Sonarr** (`sonarr.local.infinity-node.com`) - TV show management (CRITICAL)
-- **Lidarr** (`lidarr.local.infinity-node.com`) - Music management (CRITICAL)
-- **Prowlarr** (`prowlarr.local.infinity-node.com`) - Indexer management (CRITICAL)
-- **Jellyseerr** (`jellyseerr.local.infinity-node.com`) - Request management
-- **Flaresolverr** (`flaresolverr.local.infinity-node.com`) - Cloudflare bypass
-- **Huntarr** (`huntarr.local.infinity-node.com`) - Unified search interface
-- **Portainer** (`portainer-102.local.infinity-node.com`) - Container management
+- **Radarr** (`radarr.local.infinity-node.win`) - Movie management (CRITICAL)
+- **Sonarr** (`sonarr.local.infinity-node.win`) - TV show management (CRITICAL)
+- **Lidarr** (`lidarr.local.infinity-node.win`) - Music management (CRITICAL)
+- **Prowlarr** (`prowlarr.local.infinity-node.win`) - Indexer management (CRITICAL)
+- **Jellyseerr** (`jellyseerr.local.infinity-node.win`) - Request management
+- **Flaresolverr** (`flaresolverr.local.infinity-node.win`) - Cloudflare bypass
+- **Huntarr** (`huntarr.local.infinity-node.win`) - Unified search interface
+- **Portainer** (`portainer-102.local.infinity-node.win`) - Container management
 
 ## Port Availability
 
@@ -45,16 +45,16 @@ After deployment, test each service:
 
 ```bash
 # Test arr services
-curl -H "Host: radarr.local.infinity-node.com" http://192.168.86.174/
-curl -H "Host: sonarr.local.infinity-node.com" http://192.168.86.174/
-curl -H "Host: lidarr.local.infinity-node.com" http://192.168.86.174/
-curl -H "Host: prowlarr.local.infinity-node.com" http://192.168.86.174/
+curl -H "Host: radarr.local.infinity-node.win" http://192.168.1.102/
+curl -H "Host: sonarr.local.infinity-node.win" http://192.168.1.102/
+curl -H "Host: lidarr.local.infinity-node.win" http://192.168.1.102/
+curl -H "Host: prowlarr.local.infinity-node.win" http://192.168.1.102/
 
 # Test other services
-curl -H "Host: jellyseerr.local.infinity-node.com" http://192.168.86.174/
-curl -H "Host: flaresolverr.local.infinity-node.com" http://192.168.86.174/
-curl -H "Host: huntarr.local.infinity-node.com" http://192.168.86.174/
-curl -H "Host: portainer-102.local.infinity-node.com" http://192.168.86.174/
+curl -H "Host: jellyseerr.local.infinity-node.win" http://192.168.1.102/
+curl -H "Host: flaresolverr.local.infinity-node.win" http://192.168.1.102/
+curl -H "Host: huntarr.local.infinity-node.win" http://192.168.1.102/
+curl -H "Host: portainer-102.local.infinity-node.win" http://192.168.1.102/
 ```
 
 ## Troubleshooting

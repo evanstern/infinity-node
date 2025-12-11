@@ -33,7 +33,7 @@ aliases:
 **Service:** Navidrome (Music Streaming Server)
 **VM:** 103 (misc)
 **Priority:** Medium - Personal music streaming
-**Access:** http://navidrome.local.infinity-node.com (port-free via Traefik) or http://navidrome.local.infinity-node.com:4533 (direct)
+**Access:** http://navidrome.local.infinity-node.win (port-free via Traefik) or http://navidrome.local.infinity-node.win:4533 (direct)
 **Image:** `deluan/navidrome:latest`
 
 ## Overview
@@ -106,7 +106,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. **Access Web UI:** Navigate to http://navidrome.local.infinity-node.com:4533
+1. **Access Web UI:** Navigate to http://navidrome.local.infinity-node.win:4533
 2. **Create Admin Account:** First user becomes admin
 3. **Library Scan:** Automatic scan on first run
 4. **Configure Settings:**
@@ -119,7 +119,7 @@ docker compose up -d
 
 ### Web Player
 
-- Access at http://navidrome.local.infinity-node.com:4533
+- Access at http://navidrome.local.infinity-node.win:4533
 - Browse by artist, album, genre, playlist
 - Create and manage playlists
 - Search for songs, albums, artists
@@ -133,7 +133,7 @@ docker compose up -d
 - **Desktop:** Sublime Music, Sonixd
 
 **Connection Settings:**
-- Server: http://navidrome.local.infinity-node.com:4533
+- Server: http://navidrome.local.infinity-node.win:4533
 - Username: Your Navidrome username
 - Password: Your Navidrome password
 

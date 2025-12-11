@@ -11,8 +11,8 @@
 #
 # Setup:
 #   1. Generate SSH key if needed: ssh-keygen -t rsa -b 4096
-#   2. Copy public key to NAS: ssh-copy-id backup@nas.local.infinity-node.com
-#   3. Test connection: ssh backup@nas.local.infinity-node.com 'echo test'
+#   2. Copy public key to NAS: ssh-copy-id backup@jace.local.infinity-node.win
+#   3. Test connection: ssh backup@jace.local.infinity-node.win 'echo test'
 #
 # Usage:
 #   ./backup-mybibliotheca.sh
@@ -32,7 +32,7 @@ set -euo pipefail
 
 # Configuration
 SOURCE_DB_DIR="/home/evan/data/mybibliotheca/data"
-NAS_HOST="nas.local.infinity-node.com"
+NAS_HOST="jace.local.infinity-node.win"
 NAS_USER="backup"
 NAS_BACKUP_DIR="backups/mybibliotheca"  # Relative to Synology SFTP chroot (/volume1/)
 NAS_BACKUP_DIR_FULL="/volume1/backups/mybibliotheca"  # Full path for SSH commands

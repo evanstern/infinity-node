@@ -11,7 +11,7 @@ entryPoints:
     forwardedHeaders:
       trustedIPs:
         - 172.23.0.0/16  # Pangolin / tunnel network
-        - 192.168.86.0/24  # LAN clients
+        - 192.168.1.0/24  # LAN clients
   # websecure entrypoint defined for future HTTPS support
   # Currently not used (TLS configuration out of scope for initial deployment)
   # websecure:

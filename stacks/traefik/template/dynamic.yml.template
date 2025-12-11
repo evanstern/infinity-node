@@ -7,7 +7,7 @@ http:
   routers:
     # Example router - replace with actual service routers
     # service-name:
-    #   rule: "Host(`service-name.local.infinity-node.com`)"
+    #   rule: "Host(`service-name.local.infinity-node.win`)"
     #   entryPoints:
     #     - websecure
     #   service: service-name

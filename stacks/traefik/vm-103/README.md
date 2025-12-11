@@ -1,7 +1,7 @@
 # Traefik Stack - VM 103 (misc)
 
 **VM:** 103 (misc)
-**IP:** 192.168.86.249
+**IP:** 192.168.1.103
 **Status:** In Progress
 **Priority:** Important (non-critical services)
 
@@ -13,17 +13,17 @@ Traefik reverse proxy deployment for VM 103, routing all web-accessible services
 
 This Traefik instance routes the following services:
 
-- **Vaultwarden** - `vaultwarden.local.infinity-node.com` → `vaultwarden:80`
-- **Paperless-NGX** - `paperless.local.infinity-node.com` → `paperless_webserver:8000`
-- **Immich** - `immich.local.infinity-node.com` → `immich_server:2283`
-- **Linkwarden** - `linkwarden.local.infinity-node.com` → `linkwarden:3000`
-- **Navidrome** - `navidrome.local.infinity-node.com` → `navidrome:4533`
-- **Audiobookshelf** - `audiobookshelf.local.infinity-node.com` → `audiobookshelf:80`
-- **MyBibliotheca** - `mybibliotheca.local.infinity-node.com` → `mybibliotheca:5054`
-- **Calibre** - `calibre.local.infinity-node.com` → `calibre:8080`
-- **Calibre-Web** - `calibre-web.local.infinity-node.com` → `calibre-web:8083`
-- **Homepage** - `homepage.local.infinity-node.com` → `homepage:3000`
-- **Portainer** - `portainer-103.local.infinity-node.com` → `portainer:9000`
+- **Vaultwarden** - `vaultwarden.local.infinity-node.win` → `vaultwarden:80`
+- **Paperless-NGX** - `paperless.local.infinity-node.win` → `paperless_webserver:8000`
+- **Immich** - `immich.local.infinity-node.win` → `immich_server:2283`
+- **Linkwarden** - `linkwarden.local.infinity-node.win` → `linkwarden:3000`
+- **Navidrome** - `navidrome.local.infinity-node.win` → `navidrome:4533`
+- **Audiobookshelf** - `audiobookshelf.local.infinity-node.win` → `audiobookshelf:80`
+- **MyBibliotheca** - `mybibliotheca.local.infinity-node.win` → `mybibliotheca:5054`
+- **Calibre** - `calibre.local.infinity-node.win` → `calibre:8080`
+- **Calibre-Web** - `calibre-web.local.infinity-node.win` → `calibre-web:8083`
+- **Homepage** - `homepage.local.infinity-node.win` → `homepage:3000`
+- **Portainer** - `portainer-103.local.infinity-node.win` → `portainer:9000`
 - **CookCLI** - `recipes.infinity-node.com` → `cookcli:9080`
 
 ## Configuration Files
@@ -57,7 +57,7 @@ This Traefik instance routes the following services:
    docker logs traefik
 
    # Test dashboard (direct access - dashboard not routed via Traefik)
-   curl http://192.168.86.249:8080/api/rawdata
+   curl http://192.168.1.103:8080/api/rawdata
    ```
 
 ### Updating Routing Rules
@@ -92,7 +92,7 @@ networks:
    http:
      routers:
        new-service:
-         rule: "Host(`new-service.local.infinity-node.com`)"
+         rule: "Host(`new-service.local.infinity-node.win`)"
          entryPoints:
            - web
          service: new-service
@@ -112,26 +112,26 @@ networks:
 ### Test DNS Resolution
 
 ```bash
-dig vaultwarden.local.infinity-node.com
-# Should return: 192.168.86.249
+dig vaultwarden.local.infinity-node.win
+# Should return: 192.168.1.103
 ```
 
 ### Test Port-Free Access
 
 ```bash
 # Test Vaultwarden
-curl -H "Host: vaultwarden.local.infinity-node.com" http://192.168.86.249/
+curl -H "Host: vaultwarden.local.infinity-node.win" http://192.168.1.103/
 
 # Test Homepage
-curl -H "Host: homepage.local.infinity-node.com" http://192.168.86.249/
+curl -H "Host: homepage.local.infinity-node.win" http://192.168.1.103/
 ```
 
 ### Test in Browser
 
 Navigate to:
-- `http://vaultwarden.local.infinity-node.com`
-- `http://homepage.local.infinity-node.com`
-- `http://portainer-103.local.infinity-node.com`
+- `http://vaultwarden.local.infinity-node.win`
+- `http://homepage.local.infinity-node.win`
+- `http://portainer-103.local.infinity-node.win`
 
 ## Troubleshooting
 
@@ -154,7 +154,7 @@ Navigate to:
 
 4. **Verify DNS resolution:**
    ```bash
-   dig service-name.local.infinity-node.com
+   dig service-name.local.infinity-node.win
    ```
 
 ### Traefik Not Starting

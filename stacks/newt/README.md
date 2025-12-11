@@ -101,7 +101,7 @@ NEWT_SECRET=$(bw get item newt-credentials --field newt_secret)
 
 # Update .env file with actual values
 # Or use deployment script:
-# ./scripts/deploy-with-secrets.sh newt vm-103.local.infinity-node.com /path/to/stacks/newt
+# ./scripts/deploy-with-secrets.sh newt vm-103.local.infinity-node.win /path/to/stacks/newt
 
 docker compose up -d
 ```

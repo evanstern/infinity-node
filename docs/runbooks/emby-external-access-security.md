@@ -62,7 +62,7 @@ Exposing Emby directly to the internet requires multiple layers of security:
 - Create port forwarding rule:
   - **Name:** Emby HTTPS
   - **External Port:** 443 (HTTPS) or 8096 (HTTP)
-  - **Internal IP:** 192.168.86.172
+  - **Internal IP:** 192.168.1.100
   - **Internal Port:** 8096
   - **Protocol:** TCP
 
@@ -205,8 +205,8 @@ sudo fail2ban-client set emby unbanip <IP>
 sudo ufw allow 22/tcp
 
 # Allow Emby HTTP/HTTPS from local network only
-sudo ufw allow from 192.168.86.0/24 to any port 8096
-sudo ufw allow from 192.168.86.0/24 to any port 8920
+sudo ufw allow from 192.168.1.0/24 to any port 8096
+sudo ufw allow from 192.168.1.0/24 to any port 8920
 
 # Allow Emby HTTPS from internet (port forwarding)
 sudo ufw allow 443/tcp

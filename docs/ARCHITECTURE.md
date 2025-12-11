@@ -17,22 +17,22 @@ infinity-node is a Proxmox-based home server environment running containerized s
 ## Network Topology
 
 ### Local Network
-- **Network**: 192.168.86.0/24
-- **Gateway**: 192.168.86.1 (assumed router)
-- **DNS**: 192.168.86.158 (Pi-hole - primary), 1.1.1.1 (Cloudflare - secondary/failover)
-- **Local Domain**: `local.infinity-node.com` (managed by Pi-hole)
+- **Network**: 192.168.1.0/24
+- **Gateway**: 192.168.1.1 (assumed router)
+- **DNS**: 192.168.1.79 (Pi-hole - primary), 1.1.1.1 (Cloudflare - secondary/failover)
+- **Local Domain**: `local.infinity-node.win` (managed by Pi-hole)
 
 ### Key Hosts
 
 | Host | IP | DNS Name | Purpose | Access |
 |------|-----|----------|---------|--------|
-| Proxmox | 192.168.86.106 | - | Hypervisor | SSH (root), Web (8006) |
-| NAS | 192.168.86.43 | - | Synology Storage | Web (5000), NFS |
-| Pi-hole | 192.168.86.158 | - | DNS server, ad blocking | Web (80, 443), DNS (53) |
-| VM 100 (emby) | 192.168.86.172 | `vm-100.local.infinity-node.com` | Media server | SSH (evan), Portainer (9443) |
-| VM 101 (downloads) | 192.168.86.173 | `vm-101.local.infinity-node.com` | Download clients | SSH (evan), Portainer (32768) |
-| VM 102 (arr) | 192.168.86.174 | `vm-102.local.infinity-node.com` | Media automation | SSH (evan), Portainer (9443) |
-| VM 103 (misc) | 192.168.86.249 | `vm-103.local.infinity-node.com` | Supporting services | SSH (evan), Portainer (9443) |
+| Proxmox | 192.168.1.81 | - | Hypervisor | SSH (root), Web (8006) |
+| NAS | 192.168.1.80 | - | Synology Storage | Web (5000), NFS |
+| Pi-hole | 192.168.1.79 | - | DNS server, ad blocking | Web (80, 443), DNS (53) |
+| VM 100 (emby) | 192.168.1.100 | `vm-100.local.infinity-node.win` | Media server | SSH (evan), Portainer (9443) |
+| VM 101 (downloads) | 192.168.1.101 | `vm-101.local.infinity-node.win` | Download clients | SSH (evan), Portainer (32768) |
+| VM 102 (arr) | 192.168.1.102 | `vm-102.local.infinity-node.win` | Media automation | SSH (evan), Portainer (9443) |
+| VM 103 (misc) | 192.168.1.103 | `vm-103.local.infinity-node.win` | Supporting services | SSH (evan), Portainer (9443) |
 
 **Note:** VM 101 uses non-standard Portainer port 32768 (not 9443 like other VMs).
 
@@ -45,9 +45,9 @@ infinity-node is a Proxmox-based home server environment running containerized s
 ```
 Internet
     ↓
-Router (192.168.86.1)
+Router (192.168.1.1)
     ↓
-192.168.86.0/24 Network
+192.168.1.0/24 Network
     ├── Proxmox (106)
     │   ├── VM 100 - emby (172)
     │   ├── VM 101 - downloads (173) ← VPN tunnel
@@ -69,11 +69,11 @@ External Access:
 ### Proxmox VE
 
 **Host:** infinity-node
-**IP:** 192.168.86.106
+**IP:** 192.168.1.81
 **Version:** PVE 8.4.1 (running kernel 6.8.12-10-pve)
 **Access:**
-- SSH: `ssh root@192.168.86.106`
-- Web UI: https://192.168.86.106:8006
+- SSH: `ssh root@192.168.1.81`
+- Web UI: https://192.168.1.81:8006
 
 ### Storage Configuration
 
@@ -81,7 +81,7 @@ External Access:
 |---------|------|------|-------|--------------|
 | local | Directory | 100GB | ISOs, templates, backups | /var/lib/vz |
 | local-lvm | LVM-thin | 1.8TB | VM disks (local) | /dev/pve/data |
-| NAS | NFS | 57TB | VM disks (shared), media | 192.168.86.43:/volume1/infinity-node |
+| NAS | NFS | 57TB | VM disks (shared), media | 192.168.1.80:/volume1/infinity-node |
 
 **Storage Notes:**
 - NAS provides shared storage for most VM disks
@@ -95,7 +95,7 @@ External Access:
 **Purpose:** Media streaming server
 **Priority:** CRITICAL - Affects household users
 **Hostname:** ininity-node-emby (note typo in actual hostname)
-**IP:** 192.168.86.172
+**IP:** 192.168.1.100
 
 **Resources:**
 - CPU: 2 cores (x86-64-v2-AES)
@@ -127,7 +127,7 @@ External Access:
 **Purpose:** Download clients with VPN protection
 **Priority:** CRITICAL - Active downloads must not corrupt
 **Hostname:** infinity-node-downloads
-**IP:** 192.168.86.173
+**IP:** 192.168.1.101
 
 **Resources:**
 - CPU: 8 cores (x86-64-v2-AES)
@@ -168,7 +168,7 @@ External Access:
 **Purpose:** Media automation and management
 **Priority:** CRITICAL - Media pipeline must remain active
 **Hostname:** infinity-node-arr
-**IP:** 192.168.86.174
+**IP:** 192.168.1.102
 
 **Resources:**
 - CPU: 8 cores (x86-64-v2-AES)
@@ -213,7 +213,7 @@ External Access:
 **Purpose:** Supporting and experimental services
 **Priority:** Important - Primarily affects system owner
 **Hostname:** infinity-node-misc
-**IP:** 192.168.86.249
+**IP:** 192.168.1.103
 
 **Resources:**
 - CPU: 6 cores (x86-64-v2-AES)
@@ -275,7 +275,7 @@ External Access:
 
 **Purpose:** Port-free service access via DNS names across all VMs
 **Deployment:** One Traefik instance per VM (100, 101, 102, 103)
-**Access:** Services accessible via `http://service-name.local.infinity-node.com` (no port required)
+**Access:** Services accessible via `http://service-name.local.infinity-node.win` (no port required)
 
 **Architecture:**
 - Each VM runs its own Traefik instance on ports 80 and 443
@@ -290,7 +290,7 @@ External Access:
 - **VM 103 (misc)**: Standard bridge network routing
 
 **Benefits:**
-- Cleaner URLs: `http://radarr.local.infinity-node.com` instead of `http://192.168.86.174:7878`
+- Cleaner URLs: `http://radarr.local.infinity-node.win` instead of `http://192.168.1.102:7878`
 - Centralized routing per VM
 - Foundation for future TLS/HTTPS configuration
 - Consistent access pattern across entire infrastructure
@@ -305,7 +305,7 @@ External Access:
 
 **Purpose:** Network-wide DNS server, ad blocker, and local DNS service discovery
 **Hostname:** raspberrypi.lan
-**IP:** 192.168.86.158 (static DHCP reservation)
+**IP:** 192.168.1.79 (static DHCP reservation)
 **Hardware:** Raspberry Pi
 **MAC Address:** dc:a6:32:27:bf:eb
 **Version:** Pi-hole v6.1
@@ -315,25 +315,25 @@ External Access:
 - Web admin interface (ports 80, 443)
 - Ad blocking and tracking protection
 - Query logging and statistics
-- Local DNS management (`local.infinity-node.com` domain)
+- Local DNS management (`local.infinity-node.win` domain)
 
 **Access:**
-- **Web Admin:** http://192.168.86.158/admin/ or https://192.168.86.158/admin/
-- **DNS Server:** 192.168.86.158 (port 53)
+- **Web Admin:** http://192.168.1.79/admin/ or https://192.168.1.79/admin/
+- **DNS Server:** 192.168.1.79 (port 53)
 - **Credentials:** Stored in Vaultwarden (`shared/pihole-admin`)
 
 **Network Role:**
 - **Primary DNS server** for the network (configured in router DHCP)
 - **Secondary DNS:** 1.1.1.1 (Cloudflare) - provides failover if Pi-hole unavailable
-- Provides ad blocking for all devices on 192.168.86.0/24
+- Provides ad blocking for all devices on 192.168.1.0/24
 - Manages local DNS records for service discovery
 - Query logging and network-wide statistics
 
 **Local DNS Configuration:**
-- **Domain:** `local.infinity-node.com`
+- **Domain:** `local.infinity-node.win`
 - **Expand Hostnames:** Enabled (short names like `vm-100` work automatically)
 - **DNS Records:** 28 total (4 VMs + 24 services)
-- **Naming Pattern:** `<service>.local.infinity-node.com`
+- **Naming Pattern:** `<service>.local.infinity-node.win`
 
 **DNS Resolution Flow:**
 ```
@@ -341,8 +341,8 @@ Client Request
     ↓
 Router (DHCP provides Pi-hole as DNS)
     ↓
-Pi-hole DNS Server (192.168.86.158:53)
-    ├── local.infinity-node.com? → Answer from local records
+Pi-hole DNS Server (192.168.1.79:53)
+    ├── local.infinity-node.win? → Answer from local records
     └── Public domain? → Forward to Cloudflare (1.1.1.1)
 ```
 
@@ -361,11 +361,11 @@ Pi-hole DNS Server (192.168.86.158:53)
 
 **NAS Details:**
 - **Model:** Synology (specific model TBD)
-- **IP:** 192.168.86.43
-- **Web UI:** http://nas.local.infinity-node.com:5000 (or http://192.168.86.43:5000)
+- **IP:** 192.168.1.80
+- **Web UI:** http://jace.local.infinity-node.win:5000 (or http://192.168.1.80:5000)
 - **Capacity:** 57TB total
 
-**Mount Point:** nas.local.infinity-node.com:/volume1/infinity-node (or 192.168.86.43:/volume1/infinity-node)
+**Mount Point:** jace.local.infinity-node.win:/volume1/infinity-node (or 192.168.1.80:/volume1/infinity-node)
 
 **Usage:**
 - VM disk images (qcow2 on NFS)
@@ -520,7 +520,7 @@ User Streams Media
 ### SSH Access
 
 **Key-based authentication only:**
-- Proxmox: `root@192.168.86.106`
+- Proxmox: `root@192.168.1.81`
 - VMs: `evan@<VM_IP>` (full access, passwordless sudo)
 - VMs: `inspector@<VM_IP>` (read-only, for Testing Agent)
 
@@ -535,9 +535,9 @@ User Streams Media
 **Strategy:** See [[docs/SECRET-MANAGEMENT|Secret Management]] for complete documentation
 
 **Vaultwarden Instance:**
-- **Location:** VM 103 (vaultwarden.local.infinity-node.com:8111)
+- **Location:** VM 103 (vaultwarden.local.infinity-node.win:8111)
 - **Web UI:** https://vaultwarden.infinity-node.com (via Pangolin)
-- **CLI Access:** http://vaultwarden.local.infinity-node.com:8111 (local DNS required)
+- **CLI Access:** http://vaultwarden.local.infinity-node.win:8111 (local DNS required)
 - **Status:** Active, configured with folder structure
 - **Purpose:** Source of truth for all infrastructure secrets
 
@@ -579,20 +579,20 @@ infinity-node/
 **Portainer CE:**
 - Instance running on each VM
 - **Access URLs (Port-free via Traefik - recommended):**
-  - VM 100: http://portainer-100.local.infinity-node.com
-  - VM 101: http://portainer-101.local.infinity-node.com
-  - VM 102: http://portainer-102.local.infinity-node.com
-  - VM 103: http://portainer-103.local.infinity-node.com
+  - VM 100: http://portainer-100.local.infinity-node.win
+  - VM 101: http://portainer-101.local.infinity-node.win
+  - VM 102: http://portainer-102.local.infinity-node.win
+  - VM 103: http://portainer-103.local.infinity-node.win
 - **Access URLs (Direct DNS with port - fallback):**
-  - VM 100: http://portainer-100.local.infinity-node.com:9000
-  - VM 101: http://portainer-101.local.infinity-node.com:9000
-  - VM 102: http://portainer-102.local.infinity-node.com:9000
-  - VM 103: http://portainer-103.local.infinity-node.com:9000
+  - VM 100: http://portainer-100.local.infinity-node.win:9000
+  - VM 101: http://portainer-101.local.infinity-node.win:9000
+  - VM 102: http://portainer-102.local.infinity-node.win:9000
+  - VM 103: http://portainer-103.local.infinity-node.win:9000
 - **Access URLs (Direct IP - fallback):**
-  - VM 100: http://192.168.86.172:9000
-  - VM 101: http://192.168.86.173:32768 *(non-standard port)*
-  - VM 102: http://192.168.86.174:9000
-  - VM 103: http://192.168.86.249:9000
+  - VM 100: http://192.168.1.100:9000
+  - VM 101: http://192.168.1.101:32768 *(non-standard port)*
+  - VM 102: http://192.168.1.102:9000
+  - VM 103: http://192.168.1.103:9000
 - **Features:**
   - Web UI for container management
   - Git-based stack deployment (GitOps)
@@ -735,7 +735,7 @@ infinity-node/
 
 1. **Emby VM hostname has typo:** "ininity-node-emby"
 2. **Secret migration pending:** All stack docs reference Vaultwarden (completed in [[tasks/completed/IN-001-import-existing-docker-configs|IN-001]]). Actual .env migration pending ([[tasks/current/IN-002-migrate-secrets-to-env|IN-002]]).
-3. ~~**No local DNS:** Services accessed via IP addresses~~ ✅ **RESOLVED** (IN-034) - Pi-hole DNS configured with `local.infinity-node.com` domain
+3. ~~**No local DNS:** Services accessed via IP addresses~~ ✅ **RESOLVED** (IN-034) - Pi-hole DNS configured with `local.infinity-node.win` domain
 4. **No centralized monitoring:** Manual health checks (see [[tasks/backlog/IN-005-setup-monitoring-alerting|IN-005]])
 5. **Backup strategy undefined:** Needs documentation and automation (see [[tasks/backlog/IN-011-document-backup-strategy|IN-011]])
 6. **No disaster recovery testing:** Recovery procedures untested (see [[tasks/backlog/IN-008-test-disaster-recovery|IN-008]])
@@ -789,7 +789,7 @@ infinity-node/
 | 2025-10-24 | Initial architecture documentation | Claude Code + Evan |
 | 2025-10-26 | Completed infrastructure import (IN-001): 24 service stacks documented, wiki-links added to all services, Known Issues section updated | Claude Code + Evan |
 | 2025-10-29 | Enhanced Portainer documentation: Added Portainer URLs to Key Hosts table, documented VM 101 non-standard port, expanded Portainer CE section with GitOps features and API access details (IN-013) | Claude Code + Evan |
-| 2025-11-08 | Added Pi-hole DNS configuration: Documented local DNS service discovery with `local.infinity-node.com` domain, updated Key Hosts table with DNS names, expanded Pi-hole section with DNS resolution flow and local DNS details (IN-034) | Claude Code + Evan |
+| 2025-11-08 | Added Pi-hole DNS configuration: Documented local DNS service discovery with `local.infinity-node.win` domain, updated Key Hosts table with DNS names, expanded Pi-hole section with DNS resolution flow and local DNS details (IN-034) | Claude Code + Evan |
 
 ---
 

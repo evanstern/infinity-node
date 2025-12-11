@@ -56,18 +56,18 @@ The Media Stack Agent specializes in the media server infrastructure including E
 ## Current Media Infrastructure
 
 ### VM 100: emby (CRITICAL - Priority 1)
-**IP**: 192.168.86.172
+**IP**: 192.168.1.100
 **Services**:
 - Emby Server: Core media server
 - Newt: Pangolin tunnel for external access
 - Portainer: Container management
 - Watchtower: Auto-updates
 
-**Media Storage**: NFS mount from NAS (192.168.86.43)
+**Media Storage**: NFS mount from NAS (192.168.1.80)
 **Uptime Requirement**: 99.9% - This is your PRIMARY service
 
 ### VM 101: downloads (CRITICAL - Priority 1)
-**IP**: 192.168.86.173
+**IP**: 192.168.1.101
 **Services**:
 - Deluge: Torrent client
 - NZBGet: Usenet downloader
@@ -79,7 +79,7 @@ The Media Stack Agent specializes in the media server infrastructure including E
 **Uptime Requirement**: 99.9% - Active downloads must not corrupt
 
 ### VM 102: infinity-node-arr (CRITICAL - Priority 1)
-**IP**: 192.168.86.174
+**IP**: 192.168.1.102
 **Services**:
 - Radarr: Movie management
 - Sonarr: TV show management
@@ -329,7 +329,7 @@ When tasks involve:
 ## Integration Points
 
 ### With Other Services
-- **Storage**: Media files on NAS (192.168.86.43)
+- **Storage**: Media files on NAS (192.168.1.80)
 - **Tunnels**: External access via Pangolin (newt)
 - **Requests**: Users request via Jellyseerr
 - **Monitoring**: Huntarr tracks *arr service activity

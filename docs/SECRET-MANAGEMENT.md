@@ -35,8 +35,8 @@ This document describes how secrets are managed in the infinity-node infrastruct
 
 ## Vaultwarden Instance
 
-**Location:** VM 103 (192.168.86.249)
-**Local Access:** http://vaultwarden.local.infinity-node.com (port-free via Traefik) or http://vaultwarden.local.infinity-node.com:8111 (direct)
+**Location:** VM 103 (192.168.1.103)
+**Local Access:** http://vaultwarden.local.infinity-node.win (port-free via Traefik) or http://vaultwarden.local.infinity-node.win:8111 (direct)
 **External Access:** https://vaultwarden.infinity-node.com (via Pangolin tunnel)
 **Docker Container:** `vaultwarden`
 
@@ -48,7 +48,7 @@ This document describes how secrets are managed in the infinity-node infrastruct
 - Auth: Username/password + 2FA (if configured)
 
 **CLI/API (Automation):**
-- URL: http://vaultwarden.local.infinity-node.com:8111 (direct port access required for CLI)
+- URL: http://vaultwarden.local.infinity-node.win:8111 (direct port access required for CLI)
 - Use: Automated secret retrieval for deployments
 - Auth: Username/password, then session token
 - **Note:** CLI must use direct port access (not Traefik) due to API requirements
@@ -177,7 +177,7 @@ npm install -g @bitwarden/cli
 
 ```bash
 # Configure for local Vaultwarden instance
-bw config server http://vaultwarden.local.infinity-node.com:8111
+bw config server http://vaultwarden.local.infinity-node.win:8111
 
 # Verify configuration
 bw status
@@ -370,10 +370,10 @@ export BW_SESSION=$(bw unlock --raw)
 SECRET=$(bw get password "emby-api-key")
 
 # 3. SSH to VM and create .env file
-ssh evan@192.168.86.172 "echo 'EMBY_API_KEY=$SECRET' >> /path/to/.env"
+ssh evan@192.168.1.100 "echo 'EMBY_API_KEY=$SECRET' >> /path/to/.env"
 
 # 4. Deploy service
-ssh evan@192.168.86.172 "cd /path/to/stack && docker compose up -d"
+ssh evan@192.168.1.100 "cd /path/to/stack && docker compose up -d"
 ```
 
 **Automated deployment script:**
@@ -384,7 +384,7 @@ ssh evan@192.168.86.172 "cd /path/to/stack && docker compose up -d"
 set -euo pipefail
 
 STACK_NAME="emby"
-VM_IP="192.168.86.172"
+VM_IP="192.168.1.100"
 STACK_PATH="/home/evan/projects/infinity-node/stacks/emby"
 
 # Ensure vault is unlocked
@@ -431,10 +431,10 @@ bw sync
 NEW_SECRET=$(bw get password "emby-api-key")
 
 # 4. Update on VM
-ssh evan@192.168.86.172 "sed -i 's/^EMBY_API_KEY=.*/EMBY_API_KEY=$NEW_SECRET/' /path/to/.env"
+ssh evan@192.168.1.100 "sed -i 's/^EMBY_API_KEY=.*/EMBY_API_KEY=$NEW_SECRET/' /path/to/.env"
 
 # 5. Restart service
-ssh evan@192.168.86.172 "cd /path/to/stack && docker compose restart"
+ssh evan@192.168.1.100 "cd /path/to/stack && docker compose restart"
 ```
 
 ### Rotating Secrets
@@ -511,12 +511,12 @@ ssh evan@192.168.86.172 "cd /path/to/stack && docker compose restart"
 # 1. Verify server configuration
 bw config server
 
-# 2. Should be: http://vaultwarden.local.infinity-node.com:8111
+# 2. Should be: http://vaultwarden.local.infinity-node.win:8111
 # If not, reconfigure:
-bw config server http://vaultwarden.local.infinity-node.com:8111
+bw config server http://vaultwarden.local.infinity-node.win:8111
 
 # 3. Verify Vaultwarden is accessible
-curl -I http://vaultwarden.local.infinity-node.com:8111
+curl -I http://vaultwarden.local.infinity-node.win:8111
 
 # 4. Try login again
 bw login
@@ -569,7 +569,7 @@ bw list items --search "partial-name"
 ### Current Limitations
 
 **1. Direct Port Access Required for CLI**
-- **Issue:** CLI must use direct port access (`http://vaultwarden.local.infinity-node.com:8111`) instead of Traefik port-free URL
+- **Issue:** CLI must use direct port access (`http://vaultwarden.local.infinity-node.win:8111`) instead of Traefik port-free URL
 - **Reason:** Traefik routing may interfere with Bitwarden CLI API calls; direct port access ensures compatibility
 - **Impact:** CLI configuration uses DNS name with port (acceptable, DNS name is stable)
 - **Workaround:** Use DNS name with port (already resolved via IN-034)
@@ -620,7 +620,7 @@ EXTERNAL_API_KEY=your_external_key_here
 
 # Non-secret configuration (OK to commit)
 SERVICE_PORT=8080
-SERVICE_HOSTNAME=service.local.infinity-node.com
+SERVICE_HOSTNAME=service.local.infinity-node.win
 ```
 
 ### Secret Documentation in README

@@ -35,7 +35,7 @@ aliases:
 **Service:** Emby (Media Server)
 **VM:** 100 (emby)
 **Priority:** CRITICAL - Primary media streaming for household users
-**Access:** http://emby.local.infinity-node.com (port-free via Traefik) or http://emby.local.infinity-node.com:8096 (direct)
+**Access:** http://emby.local.infinity-node.win (port-free via Traefik) or http://emby.local.infinity-node.win:8096 (direct)
 **Image:** `emby/embyserver:latest`
 
 ## Overview
@@ -107,7 +107,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. **Access Web UI:** Navigate to http://emby.local.infinity-node.com:8096
+1. **Access Web UI:** Navigate to http://emby.local.infinity-node.win:8096
 2. **Create Admin Account:** First-time setup wizard
 3. **Add Media Libraries:**
    - Click "Add Media Library"
@@ -146,10 +146,10 @@ docker compose up -d
 **Monitoring:**
 ```bash
 # Check GPU usage
-ssh evan@vm-100.local.infinity-node.com "nvidia-smi"
+ssh evan@vm-100.local.infinity-node.win "nvidia-smi"
 
 # Monitor GPU during transcode
-ssh evan@vm-100.local.infinity-node.com "nvidia-smi dmon -s u"
+ssh evan@vm-100.local.infinity-node.win "nvidia-smi dmon -s u"
 
 # Check transcode logs
 docker exec emby tail -f /config/logs/ffmpeg-transcode-*.txt
@@ -206,14 +206,14 @@ If tmpfs causes issues, remove the `tmpfs:` section from docker-compose.yml and 
 
 ### Web Access
 
-- **Local:** http://emby.local.infinity-node.com:8096
+- **Local:** http://emby.local.infinity-node.win:8096
 - **Remote:** Via Newt/Pangolin tunnel (if configured)
 
 ### Mobile Apps
 
 - **iOS:** Emby for iPhone/iPad (App Store)
 - **Android:** Emby for Android (Google Play)
-- **Connection:** http://emby.local.infinity-node.com:8096 (when on local network)
+- **Connection:** http://emby.local.infinity-node.win:8096 (when on local network)
 
 ### TV Apps
 

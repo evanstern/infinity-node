@@ -92,25 +92,25 @@ infinity-node/
 
 ## Critical Services (99.9% uptime target)
 
-**VM 100 (emby)** - `192.168.86.172`
+**VM 100 (emby)** - `192.168.1.100`
 - Emby media server - Primary household service
 - Portainer CE - Container management
 - Watchtower - Auto-updates
 - Pangolin tunnel (newt) - External access
 
-**VM 101 (downloads)** - `192.168.86.173`
+**VM 101 (downloads)** - `192.168.1.101`
 - Downloads stack (NordVPN + Deluge + NZBGet)
 - ALL traffic through VPN with kill switch
 - 4TB passthrough disk for active downloads
 
-**VM 102 (arr)** - `192.168.86.174`
+**VM 102 (arr)** - `192.168.1.102`
 - Radarr (movies), Sonarr (TV), Lidarr (music)
 - Prowlarr (indexer aggregation)
 - Jellyseerr (request management)
 - Flaresolverr (Cloudflare bypass)
 - Pangolin tunnel (newt)
 
-**VM 103 (misc)** - `192.168.86.249`
+**VM 103 (misc)** - `192.168.1.103`
 - Vaultwarden (password manager - source of truth for secrets)
 - Paperless-NGX (documents)
 - Immich (photos)
@@ -143,7 +143,7 @@ See: `docs/agents/README.md`
 See: `docs/AI-COLLABORATION.md` sections on MDTD
 
 ### Secret Management
-- **Source of Truth:** Vaultwarden on VM 103 (192.168.86.249:8111)
+- **Source of Truth:** Vaultwarden on VM 103 (192.168.1.103:8111)
 - **NEVER commit:** Passwords, API keys, tokens, `.env` files
 - **Always commit:** `.env.example` templates (no real secrets)
 - **Access:** Bitwarden CLI requires user-provided session token
@@ -159,7 +159,7 @@ See: `docs/SECRET-MANAGEMENT.md`
 - Use `git mv` to move files (avoids duplicates)
 
 ### SSH Access
-- **Proxmox:** `root@192.168.86.106`
+- **Proxmox:** `root@192.168.1.81`
 - **VMs (full):** `evan@<VM_IP>` (passwordless sudo for automation)
 - **VMs (read-only):** `inspector@<VM_IP>` (Testing Agent only)
 
@@ -237,22 +237,22 @@ BW_SESSION="<token>" bw get password "service-secret"
 ## Quick Reference
 
 ### VM IPs
-- Proxmox: 192.168.86.106
-- VM 100 (emby): 192.168.86.172
-- VM 101 (downloads): 192.168.86.173
-- VM 102 (arr): 192.168.86.174
-- VM 103 (misc): 192.168.86.249
-- NAS: 192.168.86.43
+- Proxmox: 192.168.1.81
+- VM 100 (emby): 192.168.1.100
+- VM 101 (downloads): 192.168.1.101
+- VM 102 (arr): 192.168.1.102
+- VM 103 (misc): 192.168.1.103
+- NAS: 192.168.1.80
 
 ### Portainer Access
-- VM 100: http://portainer-100.local.infinity-node.com (port-free) or http://192.168.86.172:9000 (direct)
-- VM 101: http://portainer-101.local.infinity-node.com (port-free) or http://192.168.86.173:32768 (direct, non-standard port!)
-- VM 102: http://portainer-102.local.infinity-node.com (port-free) or http://192.168.86.174:9000 (direct)
-- VM 103: http://portainer-103.local.infinity-node.com (port-free) or http://192.168.86.249:9000 (direct)
+- VM 100: http://portainer-100.local.infinity-node.win (port-free) or http://192.168.1.100:9000 (direct)
+- VM 101: http://portainer-101.local.infinity-node.win (port-free) or http://192.168.1.101:32768 (direct, non-standard port!)
+- VM 102: http://portainer-102.local.infinity-node.win (port-free) or http://192.168.1.102:9000 (direct)
+- VM 103: http://portainer-103.local.infinity-node.win (port-free) or http://192.168.1.103:9000 (direct)
 
 ### Storage
-- NAS: 57TB Synology at 192.168.86.43
-- Mount: `192.168.86.43:/volume1/infinity-node`
+- NAS: 57TB Synology at 192.168.1.80
+- Mount: `192.168.1.80:/volume1/infinity-node`
 - Media: `/volume1/infinity-node/media/`
 - Downloads: `/volume1/infinity-node/downloads/`
 - Configs: `/volume1/infinity-node/configs/`
@@ -268,7 +268,7 @@ docker compose restart <service>
 ```
 
 ### Secret Issues
-- Check Vaultwarden: http://vaultwarden.local.infinity-node.com (port-free) or http://vaultwarden.local.infinity-node.com:8111 (direct) or https://vaultwarden.infinity-node.com (external)
+- Check Vaultwarden: http://vaultwarden.local.infinity-node.win (port-free) or http://vaultwarden.local.infinity-node.win:8111 (direct) or https://vaultwarden.infinity-node.com (external)
 - Verify `.env` file exists on VM
 - Check `.env` format matches `.env.example`
 

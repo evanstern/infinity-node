@@ -38,8 +38,8 @@ aliases:
 **VM:** 101 (downloads)
 **Priority:** CRITICAL - Media acquisition for household users
 **Access:**
-- Deluge: http://deluge.local.infinity-node.com (port-free via Traefik) or http://deluge.local.infinity-node.com:8112 (direct)
-- NZBGet: http://nzbget.local.infinity-node.com (port-free via Traefik) or http://nzbget.local.infinity-node.com:6789 (direct)
+- Deluge: http://deluge.local.infinity-node.win (port-free via Traefik) or http://deluge.local.infinity-node.win:8112 (direct)
+- NZBGet: http://nzbget.local.infinity-node.win (port-free via Traefik) or http://nzbget.local.infinity-node.win:6789 (direct)
 **Images:**
 - `ghcr.io/bubuntux/nordlynx:latest`
 - `ghcr.io/linuxserver/deluge:latest`
@@ -147,7 +147,7 @@ NZBGET_PASS=$(bw get item downloads-credentials | jq -r '.fields[] | select(.nam
 
 **VPN Configuration:**
 - `PRIVATE_KEY` - NordVPN WireGuard private key (secret)
-- `NET_LOCAL` - Local network CIDR for web UI access (default: `192.168.86.0/24`)
+- `NET_LOCAL` - Local network CIDR for web UI access (default: `192.168.1.0/24`)
 
 **User/Group:**
 - `PUID` - User ID for file ownership (default: `1000`)
@@ -196,7 +196,7 @@ docker compose up -d
 
 ### 2. Configure NZBGet
 
-1. Access web UI: http://nzbget.local.infinity-node.com:6789
+1. Access web UI: http://nzbget.local.infinity-node.win:6789
 2. Log in with NZBGET_USER/NZBGET_PASS
 3. Settings → Paths:
    - MainDir: `/config`
@@ -211,7 +211,7 @@ docker compose up -d
 
 ### 3. Configure Deluge
 
-1. Access web UI: http://deluge.local.infinity-node.com:8112
+1. Access web UI: http://deluge.local.infinity-node.win:8112
 2. Default password: `deluge` (change immediately!)
 3. Preferences → Downloads:
    - Download to: `/incomplete`
@@ -231,7 +231,7 @@ docker exec deluge curl -s ifconfig.me
 # Should show NordVPN server IP, NOT your home IP
 
 # Verify local network access works
-curl http://deluge.local.infinity-node.com:8112
+curl http://deluge.local.infinity-node.win:8112
 # Should return Deluge web UI
 ```
 
@@ -359,8 +359,8 @@ docker compose up -d
 ### Can't Access Web UIs
 
 **Symptoms:**
-- http://deluge.local.infinity-node.com:8112 times out
-- http://nzbget.local.infinity-node.com:6789 times out
+- http://deluge.local.infinity-node.win:8112 times out
+- http://nzbget.local.infinity-node.win:6789 times out
 
 **Check:**
 1. NET_LOCAL is set correctly
@@ -376,7 +376,7 @@ docker ps | grep vpn
 docker port vpn
 
 # Verify NET_LOCAL matches your network
-# Should be: 192.168.86.0/24
+# Should be: 192.168.1.0/24
 ```
 
 ### Slow Download Speeds

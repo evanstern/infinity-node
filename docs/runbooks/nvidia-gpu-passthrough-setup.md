@@ -81,7 +81,7 @@ IOMMU Group 12 01:00.1 Audio device [0403]: NVIDIA Corporation Device [10de:22bd
 **VM Details:**
 - VM ID: 100
 - VM Name: ininity-node-emby
-- Current IP: 192.168.86.172
+- Current IP: 192.168.1.100
 - OS: Ubuntu 24.04 LTS
 - Purpose: Emby media server with hardware transcoding
 
@@ -92,7 +92,7 @@ If the VM already has the workload running (e.g., Emby), capture baseline CPU-on
 **For Emby transcoding:**
 ```bash
 # SSH to VM
-ssh evan@192.168.86.172
+ssh evan@192.168.1.100
 
 # Start a test transcode and monitor
 docker logs -f emby
@@ -419,8 +419,8 @@ sudo ip link set enp6s18 up
 sudo systemctl restart systemd-networkd
 
 # Manually assign IP (replace with your VM's IP)
-sudo ip addr add 192.168.86.172/24 dev enp6s18
-sudo ip route add default via 192.168.86.1
+sudo ip addr add 192.168.1.100/24 dev enp6s18
+sudo ip route add default via 192.168.1.1
 
 # Test connectivity
 ping -c 3 8.8.8.8
@@ -442,13 +442,13 @@ network:
     ethernets:
         enp6s18:  # Changed from ens18
             addresses:
-              - 192.168.86.172/24
+              - 192.168.1.100/24
             routes:
               - to: default
-                via: 192.168.86.1
+                via: 192.168.1.1
             nameservers:
               addresses:
-                - 192.168.86.1
+                - 192.168.1.1
                 - 8.8.8.8
     version: 2
 ```
@@ -461,7 +461,7 @@ sudo netplan apply
 **Verify network is up:**
 ```bash
 ip addr show enp6s18
-# Should show: state UP and inet 192.168.86.172/24
+# Should show: state UP and inet 192.168.1.100/24
 
 ping -c 3 8.8.8.8
 # Should succeed
@@ -469,14 +469,14 @@ ping -c 3 8.8.8.8
 
 **Now you can SSH to the VM:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@192.168.1.100
 ```
 
 ### 2.7 Verify GPU Visible in VM
 
 **SSH to VM:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@192.168.1.100
 ```
 
 **Check if GPU is visible:**
@@ -564,7 +564,7 @@ sudo reboot
 
 **SSH back to VM:**
 ```bash
-ssh evan@192.168.86.172
+ssh evan@192.168.1.100
 ```
 
 **Run nvidia-smi:**
@@ -730,7 +730,7 @@ crw-rw-rw-    1 root     root      195, 255 Oct 31 22:58 nvidiactl
 ### 5.5 Configure Application to Use GPU
 
 **For Emby:**
-1. Access Emby web UI: `http://emby.local.infinity-node.com` (port-free) or `http://emby.local.infinity-node.com:8096` (direct)
+1. Access Emby web UI: `http://emby.local.infinity-node.win` (port-free) or `http://emby.local.infinity-node.win:8096` (direct)
 2. Navigate to **Settings → Transcoding**
 3. Hardware acceleration: Select **NVIDIA NVENC**
 4. Enable hardware decoding for: H.264, HEVC
@@ -850,8 +850,8 @@ qm start 100
 **Quick fix from console:**
 ```bash
 sudo ip link set enp6s18 up
-sudo ip addr add 192.168.86.172/24 dev enp6s18
-sudo ip route add default via 192.168.86.1
+sudo ip addr add 192.168.1.100/24 dev enp6s18
+sudo ip route add default via 192.168.1.1
 ```
 
 ### Issue: GPU Not Visible in VM
@@ -960,13 +960,13 @@ network:
     ethernets:
         enp6s18:
             addresses:
-              - 192.168.86.172/24  # Static IP
+              - 192.168.1.100/24  # Static IP
             routes:
               - to: default
-                via: 192.168.86.1
+                via: 192.168.1.1
             nameservers:
               addresses:
-                - 192.168.86.1
+                - 192.168.1.1
                 - 8.8.8.8
     version: 2
 ```
@@ -983,7 +983,7 @@ For scripting this process, parameterize:
 
 ```bash
 # Proxmox host
-PROXMOX_HOST="192.168.86.106"
+PROXMOX_HOST="192.168.1.81"
 GPU_PCI_ADDRESS="01:00.0"
 GPU_AUDIO_PCI_ADDRESS="01:00.1"
 GPU_VENDOR_DEVICE="10de:2803"
@@ -993,8 +993,8 @@ IOMMU_GROUP="12"
 # Target VM
 VM_ID="100"
 VM_NAME="ininity-node-emby"
-VM_IP="192.168.86.172"
-VM_GATEWAY="192.168.86.1"
+VM_IP="192.168.1.100"
+VM_GATEWAY="192.168.1.1"
 VM_USER="evan"
 
 # Network interface (will change with Q35!)

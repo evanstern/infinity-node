@@ -14,7 +14,7 @@ tags:
 
 ---
 
-## VM 103 (vm-103.local.infinity-node.com / 192.168.86.249) - Misc Services
+## VM 103 (vm-103.local.infinity-node.win / 192.168.1.103) - Misc Services
 
 ### Manual Changes Made
 
@@ -63,8 +63,8 @@ tags:
 
 - **SSH Access:** evan user with passwordless sudo (configured earlier)
 - **NAS Mounts:**
-  - `/mnt/video` → `//nas.local.infinity-node.com/media` (or `//192.168.86.43/media`)
-  - `/mnt/music` → `//nas.local.infinity-node.com/music` (or `//192.168.86.43/music`)
+  - `/mnt/video` → `//jace.local.infinity-node.win/media` (or `//192.168.1.80/media`)
+  - `/mnt/music` → `//jace.local.infinity-node.win/music` (or `//192.168.1.80/music`)
 - **Docker:** Installed and running
 - **Services:** vaultwarden, paperless-ngx, linkwarden, immich, audiobookshelf, navidrome, mybibliotheca, portainer, watchtower, homepage, newt
 
@@ -75,7 +75,7 @@ tags:
 
 ---
 
-## VM 100 (vm-100.local.infinity-node.com / 192.168.86.172) - Emby
+## VM 100 (vm-100.local.infinity-node.win / 192.168.1.100) - Emby
 
 ### Manual Changes Made
 
@@ -88,7 +88,7 @@ tags:
 
 ---
 
-## VM 101 (vm-101.local.infinity-node.com / 192.168.86.173) - Downloads
+## VM 101 (vm-101.local.infinity-node.win / 192.168.1.101) - Downloads
 
 ### Manual Changes Made
 
@@ -101,7 +101,7 @@ tags:
 
 ---
 
-## VM 102 (vm-102.local.infinity-node.com / 192.168.86.174) - Arr Services
+## VM 102 (vm-102.local.infinity-node.win / 192.168.1.102) - Arr Services
 
 ### Manual Changes Made
 

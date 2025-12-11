@@ -204,7 +204,7 @@ The main playbook (`playbooks/vm-template.yml`) defines the desired state of a V
   become: yes                              # Run tasks with sudo
 
   vars:                                    # Variables
-    nas_server: "192.168.86.43"
+    nas_server: "192.168.1.80"
 
   tasks:                                   # List of tasks
     - name: Install packages               # Task name

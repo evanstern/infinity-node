@@ -25,7 +25,7 @@ services:
 
     environment:
       - PRIVATE_KEY=${PRIVATE_KEY}  # NordVPN WireGuard private key (secret)
-      - NET_LOCAL=${NET_LOCAL:-192.168.86.0/24}  # Local network CIDR
+      - NET_LOCAL=${NET_LOCAL:-192.168.1.0/24}  # Local network CIDR
 
   # NZBGet - Usenet downloader
   nzbget:

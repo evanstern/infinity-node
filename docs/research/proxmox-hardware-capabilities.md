@@ -26,7 +26,7 @@ authors:
 
 **Research Date**: 2025-10-31
 **Purpose**: Assess hardware capabilities for Emby transcoding optimization (Task IN-007)
-**Proxmox Host**: 192.168.86.106
+**Proxmox Host**: 192.168.1.81
 
 ---
 

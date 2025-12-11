@@ -32,7 +32,7 @@ aliases:
 **Service:** Homepage (Dashboard)
 **VM:** 103 (misc)
 **Priority:** Medium - Service dashboard
-**Access:** http://homepage.local.infinity-node.com (port-free via Traefik) or http://homepage.local.infinity-node.com:3001 (direct)
+**Access:** http://homepage.local.infinity-node.win (port-free via Traefik) or http://homepage.local.infinity-node.win:3001 (direct)
 **Image:** `ghcr.io/gethomepage/homepage:latest`
 
 ## Overview
@@ -88,7 +88,7 @@ docker compose up -d
 
 ## Initial Setup
 
-1. **Access Web UI:** Navigate to http://homepage.local.infinity-node.com (port-free) or http://homepage.local.infinity-node.com:3001 (direct)
+1. **Access Web UI:** Navigate to http://homepage.local.infinity-node.win (port-free) or http://homepage.local.infinity-node.win:3001 (direct)
 2. **Configuration:** Homepage uses YAML files in `${CONFIG_PATH}` (default: `./config/homepage/`)
    - Config files are stored in git at: `stacks/homepage/config/homepage/`
    - Portainer automatically deploys config files from git
@@ -125,20 +125,20 @@ If you need to change the config directory path after deployment:
 - Media:
     - Radarr:
         icon: radarr.png
-        href: http://radarr.local.infinity-node.com:7878
+        href: http://radarr.local.infinity-node.win:7878
         description: Movie management
         widget:
           type: radarr
-          url: http://radarr.local.infinity-node.com:7878
+          url: http://radarr.local.infinity-node.win:7878
           key: YOUR_API_KEY
 
     - Sonarr:
         icon: sonarr.png
-        href: http://sonarr.local.infinity-node.com:8989
+        href: http://sonarr.local.infinity-node.win:8989
         description: TV show management
         widget:
           type: sonarr
-          url: http://sonarr.local.infinity-node.com:8989
+          url: http://sonarr.local.infinity-node.win:8989
           key: YOUR_API_KEY
 ```
 
@@ -147,7 +147,7 @@ If you need to change the config directory path after deployment:
 ```yaml
 - Services:
     - Portainer:
-        - href: http://portainer-103.local.infinity-node.com:9000
+        - href: http://portainer-103.local.infinity-node.win:9000
           description: Docker management
 
     - Vaultwarden:
@@ -263,5 +263,5 @@ See [Homepage docs](https://gethomepage.dev/latest/widgets/) for full widget lis
 - Docker widget auto-discovers running containers
 - Can integrate with 100+ services for live monitoring
 - Lightweight and fast - perfect for dashboard/home screen
-- Previously configured with old IP (192.168.86.176) - now uses DNS: homepage.local.infinity-node.com
+- Previously configured with old IP (192.168.1.176) - now uses DNS: homepage.local.infinity-node.win
 - Consider adding authentication via reverse proxy if exposing externally

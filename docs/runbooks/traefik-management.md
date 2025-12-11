@@ -20,14 +20,14 @@ tags:
 ### Access URLs
 
 **Traefik Dashboard (per VM):**
-- VM 100: http://192.168.86.172:8080 (direct access - dashboard not routed via Traefik)
-- VM 101: http://192.168.86.173:8080 (direct access - dashboard not routed via Traefik)
-- VM 102: http://192.168.86.174:8080 (direct access - dashboard not routed via Traefik)
-- VM 103: http://192.168.86.249:8080 (direct access - dashboard not routed via Traefik)
+- VM 100: http://192.168.1.100:8080 (direct access - dashboard not routed via Traefik)
+- VM 101: http://192.168.1.101:8080 (direct access - dashboard not routed via Traefik)
+- VM 102: http://192.168.1.102:8080 (direct access - dashboard not routed via Traefik)
+- VM 103: http://192.168.1.103:8080 (direct access - dashboard not routed via Traefik)
 
 **Service Access (Port-Free):**
-- All services: `http://service-name.local.infinity-node.com`
-- Examples: `http://vaultwarden.local.infinity-node.com`, `http://radarr.local.infinity-node.com`
+- All services: `http://service-name.local.infinity-node.win`
+- Examples: `http://vaultwarden.local.infinity-node.win`, `http://radarr.local.infinity-node.win`
 
 ### Stack Locations
 
@@ -69,7 +69,7 @@ Edit `stacks/traefik/vm-XXX/dynamic.yml`:
 http:
   routers:
     service-name:
-      rule: "Host(`service-name.local.infinity-node.com`)"
+      rule: "Host(`service-name.local.infinity-node.win`)"
       entryPoints:
         - web
       service: service-name
@@ -100,7 +100,7 @@ git push
 
 ```bash
 # Test routing
-curl -H "Host: service-name.local.infinity-node.com" http://<vm-ip>/
+curl -H "Host: service-name.local.infinity-node.win" http://<vm-ip>/
 
 # Check Traefik dashboard
 curl http://<vm-ip>:8080/api/http/routers | jq '.[] | select(.name | contains("service-name"))'
@@ -173,7 +173,7 @@ curl -s http://localhost:8080/api/http/services | jq -r '.[] | {name: .name, ser
 
 ```bash
 # Test service routing
-curl -H "Host: service-name.local.infinity-node.com" http://<vm-ip>/
+curl -H "Host: service-name.local.infinity-node.win" http://<vm-ip>/
 
 # Check Traefik API
 curl http://<vm-ip>:8080/api/overview
@@ -219,7 +219,7 @@ cat stacks/traefik/vm-XXX/dynamic.yml | grep -A 3 "service-name:"
 curl -s http://<vm-ip>:8080/api/http/routers | jq '.[] | select(.name | contains("service-name"))'
 
 # 2. Verify DNS resolution
-dig service-name.local.infinity-node.com
+dig service-name.local.infinity-node.win
 
 # 3. Check dynamic.yml router rule matches DNS name
 cat stacks/traefik/vm-XXX/dynamic.yml | grep -A 5 "service-name:"

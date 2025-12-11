@@ -23,10 +23,10 @@ CRITICAL_THRESHOLD=95
 
 # VM list (DNS names)
 VMS=(
-    "vm-100.local.infinity-node.com:VM-100-emby"
-    "vm-101.local.infinity-node.com:VM-101-downloads"
-    "vm-102.local.infinity-node.com:VM-102-arr"
-    "vm-103.local.infinity-node.com:VM-103-misc"
+    "vm-100.local.infinity-node.win:VM-100-emby"
+    "vm-101.local.infinity-node.win:VM-101-downloads"
+    "vm-102.local.infinity-node.win:VM-102-arr"
+    "vm-103.local.infinity-node.win:VM-103-misc"
 )
 
 # Color codes

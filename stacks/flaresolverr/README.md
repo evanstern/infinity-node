@@ -23,7 +23,7 @@ aliases: [FlareSolverr, Cloudflare Bypass]
 
 Proxy server that solves Cloudflare challenges, allowing Prowlarr to access indexers protected by Cloudflare anti-bot systems.
 
-**Access:** http://flaresolverr.local.infinity-node.com (port-free via Traefik) or http://flaresolverr.local.infinity-node.com:8191 (direct)
+**Access:** http://flaresolverr.local.infinity-node.win (port-free via Traefik) or http://flaresolverr.local.infinity-node.win:8191 (direct)
 
 ## Dependencies
 - Used by: Prowlarr (VM 102)

@@ -34,7 +34,7 @@ aliases:
 **Service:** Paperless-NGX (Document Management System)
 **VM:** 103 (misc)
 **Priority:** Important - Personal document management
-**Access:** http://paperless.local.infinity-node.com (port-free via Traefik) or http://paperless.local.infinity-node.com:8000 (direct) or https://paperless.infinity-node.com (external via Pangolin)
+**Access:** http://paperless.local.infinity-node.win (port-free via Traefik) or http://paperless.local.infinity-node.win:8000 (direct) or https://paperless.infinity-node.com (external via Pangolin)
 
 ## Overview
 
@@ -102,7 +102,7 @@ docker compose run --rm webserver createsuperuser
 ## Access
 
 - **Web UI:** https://paperless.infinity-node.com
-- **Local:** http://paperless.local.infinity-node.com:8000
+- **Local:** http://paperless.local.infinity-node.win:8000
 - **Paperless AI UI:** http://vm103:3010 (or via Pangolin tunnel)
 
 ## Network

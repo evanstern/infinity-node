@@ -68,7 +68,7 @@ Ensure the NAS share for `/mnt/video/Comics` and the downloads share `/mnt/downl
 
 - `docker compose config` (locally) passes before committing.
 - Portainer stack shows the `mylar3` container running.
-- `http://vm-101.local.infinity-node.com:8085` returns the login/setup UI (HTTP 200).
+- `http://vm-101.local.infinity-node.win:8085` returns the login/setup UI (HTTP 200).
 - Container logs (`docker logs mylar3`) show clean startup and binder for the configured downloads/comics folders.
 - Restart container to verify configuration and data persist in the mapped volumes.
 

@@ -32,7 +32,7 @@ set -e  # Exit on any error
 # ============================================================================
 
 # Proxmox host
-PROXMOX_HOST="192.168.86.106"
+PROXMOX_HOST="192.168.1.81"
 PROXMOX_USER="root"
 
 # Parse flags

@@ -80,7 +80,7 @@ Dynamic routing rules template:
    - Add routers for each service on this VM
    - Add services pointing to backend containers
    - Use DNS names from `config/dns-records.json`
-   - Format: `service-name.local.infinity-node.com`
+   - Format: `service-name.local.infinity-node.win`
 
 ### Example Service Route
 
@@ -88,7 +88,7 @@ Dynamic routing rules template:
 http:
   routers:
     vaultwarden:
-      rule: "Host(`vaultwarden.local.infinity-node.com`)"
+      rule: "Host(`vaultwarden.local.infinity-node.win`)"
       entryPoints:
         - websecure
       service: vaultwarden

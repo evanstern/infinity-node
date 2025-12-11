@@ -325,10 +325,10 @@ AI assistants may have built-in todo/task tracking tools for session-based work.
 ### SSH Access
 
 The AI assistant has SSH access to:
-- **Proxmox**: `root@192.168.86.106`
-- **VMs (full access)**: `evan@vm-{100,101,102,103}.local.infinity-node.com` (passwordless sudo)
-- **VMs (read-only)**: `inspector@vm-{100,101,102,103}.local.infinity-node.com` (Testing Agent only)
-- **Note**: IP addresses still work as fallback: `evan@192.168.86.{172,173,174,249}`
+- **Proxmox**: `root@192.168.1.81`
+- **VMs (full access)**: `evan@vm-{100,101,102,103}.local.infinity-node.win` (passwordless sudo)
+- **VMs (read-only)**: `inspector@vm-{100,101,102,103}.local.infinity-node.win` (Testing Agent only)
+- **Note**: IP addresses still work as fallback: `evan@192.168.1.{172,173,174,249}`
 - **Pangolin**: (to be configured)
 
 **User Roles:**

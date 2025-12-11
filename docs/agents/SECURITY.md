@@ -93,9 +93,9 @@ Acceptable secret storage locations:
 **Implementation:**
 
 **Vaultwarden Instance:**
-- **Location:** VM 103 (192.168.86.249:8111)
-- **Web UI:** https://vaultwarden.infinity-node.com (external) or http://vaultwarden.local.infinity-node.com (port-free) or http://vaultwarden.local.infinity-node.com:8111 (direct)
-- **CLI Access:** http://vaultwarden.local.infinity-node.com:8111 (direct port access required for CLI)
+- **Location:** VM 103 (192.168.1.103:8111)
+- **Web UI:** https://vaultwarden.infinity-node.com (external) or http://vaultwarden.local.infinity-node.win (port-free) or http://vaultwarden.local.infinity-node.win:8111 (direct)
+- **CLI Access:** http://vaultwarden.local.infinity-node.win:8111 (direct port access required for CLI)
 - **Organization:** `infinity-node` organization with collection-based structure
 - **Collection Structure:** Organized by VM and purpose
   - `vm-100-emby`, `vm-101-downloads`, `vm-102-arr`, `vm-103-misc` (VM-specific secrets)
@@ -145,7 +145,7 @@ export BW_SESSION=$(bw unlock --raw)
 SECRET=$(bw get password "service-api-key")
 
 # Deploy to VM
-ssh evan@192.168.86.172 "echo 'API_KEY=$SECRET' >> /path/to/.env"
+ssh evan@192.168.1.100 "echo 'API_KEY=$SECRET' >> /path/to/.env"
 ```
 
 #### Available Scripts

@@ -7,56 +7,56 @@ http:
   routers:
     # Radarr - Movie management (CRITICAL)
     radarr:
-      rule: "Host(`radarr.local.infinity-node.com`)"
+      rule: "Host(`radarr.local.infinity-node.win`)"
       entryPoints:
         - web
       service: radarr
 
     # Sonarr - TV show management (CRITICAL)
     sonarr:
-      rule: "Host(`sonarr.local.infinity-node.com`)"
+      rule: "Host(`sonarr.local.infinity-node.win`)"
       entryPoints:
         - web
       service: sonarr
 
     # Lidarr - Music management (CRITICAL)
     lidarr:
-      rule: "Host(`lidarr.local.infinity-node.com`)"
+      rule: "Host(`lidarr.local.infinity-node.win`)"
       entryPoints:
         - web
       service: lidarr
 
     # Prowlarr - Indexer management (CRITICAL)
     prowlarr:
-      rule: "Host(`prowlarr.local.infinity-node.com`)"
+      rule: "Host(`prowlarr.local.infinity-node.win`)"
       entryPoints:
         - web
       service: prowlarr
 
     # Jellyseerr - Request management
     jellyseerr:
-      rule: "Host(`jellyseerr.local.infinity-node.com`)"
+      rule: "Host(`jellyseerr.local.infinity-node.win`)"
       entryPoints:
         - web
       service: jellyseerr
 
     # Flaresolverr - Cloudflare bypass
     flaresolverr:
-      rule: "Host(`flaresolverr.local.infinity-node.com`)"
+      rule: "Host(`flaresolverr.local.infinity-node.win`)"
       entryPoints:
         - web
       service: flaresolverr
 
     # Huntarr - Unified search interface
     huntarr:
-      rule: "Host(`huntarr.local.infinity-node.com`)"
+      rule: "Host(`huntarr.local.infinity-node.win`)"
       entryPoints:
         - web
       service: huntarr
 
     # Portainer - Container management
     portainer-102:
-      rule: "Host(`portainer-102.local.infinity-node.com`)"
+      rule: "Host(`portainer-102.local.infinity-node.win`)"
       entryPoints:
         - web
       service: portainer-102

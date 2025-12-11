@@ -6,7 +6,7 @@
 #
 # Examples:
 #   ./expand-vm-disk.sh 103 50
-#   ./expand-vm-disk.sh 103 50 192.168.86.106 root
+#   ./expand-vm-disk.sh 103 50 192.168.1.81 root
 #
 # Description:
 #   Automates the process of expanding a Proxmox VM's disk by:
@@ -28,7 +28,7 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Default values
-PROXMOX_HOST="${3:-192.168.86.106}"
+PROXMOX_HOST="${3:-192.168.1.81}"
 PROXMOX_USER="${4:-root}"
 VM_SSH_USER="evan"
 
@@ -38,7 +38,7 @@ if [ $# -lt 2 ]; then
     echo ""
     echo "Examples:"
     echo "  $0 103 50                      # Add 50GB to VM 103"
-    echo "  $0 103 50 192.168.86.106 root  # With explicit Proxmox host"
+    echo "  $0 103 50 192.168.1.81 root  # With explicit Proxmox host"
     echo ""
     echo "This script will:"
     echo "  1. Show current VM disk status"

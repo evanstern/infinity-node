@@ -31,7 +31,7 @@ aliases:
 **Service:** Traefik (Reverse Proxy)
 **VMs:** 100, 101, 102, 103 (all VMs)
 **Priority:** High - Enables port-free service access
-**Access:** http://traefik.local.infinity-node.com:8080 (dashboard, per VM)
+**Access:** http://traefik.local.infinity-node.win:8080 (dashboard, per VM)
 **Image:** `traefik:v3.0`
 
 ## Overview
@@ -39,7 +39,7 @@ aliases:
 Traefik is a modern reverse proxy and load balancer that enables port-free access to services via DNS names. Deployed on all VMs (100, 101, 102, 103), Traefik listens on ports 80 and 443 and routes traffic to backend services based on hostname.
 
 **Key Benefits:**
-- **Port-free URLs**: Access services via `http://service-name.local.infinity-node.com` instead of `http://192.168.86.XXX:PORT`
+- **Port-free URLs**: Access services via `http://service-name.local.infinity-node.win` instead of `http://192.168.1.XXX:PORT`
 - **Centralized routing**: Single entry point per VM for all web services
 - **Service discovery**: Automatic routing based on DNS names
 - **Future-ready**: Foundation for TLS/HTTPS, authentication, and advanced routing
@@ -98,7 +98,7 @@ Contains routing rules that change frequently:
 http:
   routers:
     vaultwarden:
-      rule: "Host(`vaultwarden.local.infinity-node.com`)"
+      rule: "Host(`vaultwarden.local.infinity-node.win`)"
       entryPoints:
         - web
       service: vaultwarden
@@ -221,7 +221,7 @@ http:
    curl http://<vm-ip>:8080/api/rawdata
 
    # Test service routing
-   curl -H "Host: service-name.local.infinity-node.com" http://<vm-ip>/
+   curl -H "Host: service-name.local.infinity-node.win" http://<vm-ip>/
    ```
 
 ## Service Integration
@@ -251,7 +251,7 @@ Add service to `dynamic.yml`:
 http:
   routers:
     service-name:
-      rule: "Host(`service-name.local.infinity-node.com`)"
+      rule: "Host(`service-name.local.infinity-node.win`)"
       entryPoints:
         - web
       service: service-name
@@ -269,20 +269,20 @@ Then redeploy Traefik stack via Portainer (GitOps will auto-update).
 
 ### Traefik Dashboard
 
-- **VM 100**: http://192.168.86.172:8080 (direct access - dashboard not routed via Traefik)
-- **VM 101**: http://192.168.86.173:8080 (direct access - dashboard not routed via Traefik)
-- **VM 102**: http://192.168.86.174:8080 (direct access - dashboard not routed via Traefik)
-- **VM 103**: http://192.168.86.249:8080 (direct access - dashboard not routed via Traefik)
+- **VM 100**: http://192.168.1.100:8080 (direct access - dashboard not routed via Traefik)
+- **VM 101**: http://192.168.1.101:8080 (direct access - dashboard not routed via Traefik)
+- **VM 102**: http://192.168.1.102:8080 (direct access - dashboard not routed via Traefik)
+- **VM 103**: http://192.168.1.103:8080 (direct access - dashboard not routed via Traefik)
 
 ### Service Access (Port-Free)
 
 Once configured, services accessible via:
-- `http://service-name.local.infinity-node.com`
+- `http://service-name.local.infinity-node.win`
 
 Examples:
-- `http://vaultwarden.local.infinity-node.com`
-- `http://radarr.local.infinity-node.com`
-- `http://emby.local.infinity-node.com` (if configured)
+- `http://vaultwarden.local.infinity-node.win`
+- `http://radarr.local.infinity-node.win`
+- `http://emby.local.infinity-node.win` (if configured)
 
 ## Troubleshooting
 
@@ -311,7 +311,7 @@ Examples:
 
 2. **Verify DNS resolution:**
    ```bash
-   dig service-name.local.infinity-node.com
+   dig service-name.local.infinity-node.win
    ```
 
 3. **Check service container name:**

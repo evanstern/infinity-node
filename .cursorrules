@@ -12,13 +12,13 @@ infinity-node is a Proxmox-based home server infrastructure running containerize
 4. Learn and improve processes over time
 
 **Infrastructure:**
-- **Hypervisor:** Proxmox VE at 192.168.86.106
+- **Hypervisor:** Proxmox VE at 192.168.1.81
 - **VMs:**
   - VM 100 (emby): Media streaming - CRITICAL
   - VM 101 (downloads): Download clients with VPN - CRITICAL
   - VM 102 (arr): Media automation (*arr services) - CRITICAL
   - VM 103 (misc): Supporting services - Important
-- **Storage:** 57TB Synology NAS (192.168.86.43) via NFS
+- **Storage:** 57TB Synology NAS (192.168.1.80) via NFS
 - **External Access:** Pangolin tunnels for secure remote access
 
 ## Agent System
@@ -100,7 +100,7 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 
 **Secrets Management:**
 - **NEVER commit secrets to git** (passwords, API keys, tokens, credentials)
-- **Source of truth:** Vaultwarden instance on VM 103 (192.168.86.249:8111)
+- **Source of truth:** Vaultwarden instance on VM 103 (192.168.1.103:8111)
 - **Storage pattern:** `.env` files on VMs (gitignored), `.env.example` in git
 - **Access:** Bitwarden CLI for automation, web UI for manual management
 - **Full details:** See `docs/SECRET-MANAGEMENT.md`
@@ -112,7 +112,7 @@ All significant work is tracked via **Markdown Task-Driven Development (MDTD)**:
 4. Never commit actual secret values
 
 **SSH Access:**
-- **Proxmox:** `root@192.168.86.106`
+- **Proxmox:** `root@192.168.1.81`
 - **VMs (full access):** `evan@<VM_IP>` (passwordless sudo for automation)
 - **VMs (read-only):** `inspector@<VM_IP>` (Testing Agent only, policy-enforced)
 

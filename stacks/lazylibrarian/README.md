@@ -28,7 +28,7 @@ See `.env.example` for the complete list of variables.
 ### Networking
 
 - Internal Port: `5299`
-- External Access: `http://lazylibrarian.local.infinity-node.com` (via Traefik)
+- External Access: `http://lazylibrarian.local.infinity-node.win` (via Traefik)
 - Network: `traefik-network`
 
 ## Deployment

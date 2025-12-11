@@ -23,7 +23,7 @@ aliases: [Jellyseerr, Media Requests]
 
 User-friendly interface for household members to request movies and TV shows. Integrates with Radarr/Sonarr to automatically search and download requested content.
 
-**Access:** http://jellyseerr.local.infinity-node.com (port-free via Traefik) or http://jellyseerr.local.infinity-node.com:5055 (direct)
+**Access:** http://jellyseerr.local.infinity-node.win (port-free via Traefik) or http://jellyseerr.local.infinity-node.win:5055 (direct)
 
 ## Key Features
 - Users browse and request content

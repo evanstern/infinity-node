@@ -80,22 +80,22 @@ See [[tasks/README|MDTD Documentation]] for details.
 
 ### Proxmox Host
 - **Host**: infinity-node
-- **IP**: 192.168.86.106
+- **IP**: 192.168.1.81
 - **Version**: PVE 8.4.1
 
 ### Virtual Machines
 
 | VM ID | Name | IP | Purpose | Priority |
 |-------|------|-----|---------|----------|
-| 100 | emby | 192.168.86.172 | Media server | CRITICAL |
-| 101 | downloads | 192.168.86.173 | Download clients + VPN | CRITICAL |
-| 102 | infinity-node-arr | 192.168.86.174 | Media automation (*arr) | CRITICAL |
-| 103 | misc | 192.168.86.249 | Supporting services | Important |
+| 100 | emby | 192.168.1.100 | Media server | CRITICAL |
+| 101 | downloads | 192.168.1.101 | Download clients + VPN | CRITICAL |
+| 102 | infinity-node-arr | 192.168.1.102 | Media automation (*arr) | CRITICAL |
+| 103 | misc | 192.168.1.103 | Supporting services | Important |
 
 ### Storage
 - **local**: 100GB (ISOs, templates, backups)
 - **local-lvm**: 1.8TB (VM disks)
-- **NAS**: 57TB NFS mount (192.168.86.43 - Synology)
+- **NAS**: 57TB NFS mount (192.168.1.80 - Synology)
 
 ### External Services
 - **Pangolin**: 45.55.78.215 - Tunnel server for external access

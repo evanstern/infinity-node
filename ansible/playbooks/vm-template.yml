@@ -350,7 +350,7 @@
 # - Updates system packages
 # - Installs Docker, development tools, and utilities
 # - Creates evan (with zsh) and inspector users
-# - Configures NAS mounts to 192.168.86.43
+# - Configures NAS mounts to 192.168.1.80
 # - Enables UFW firewall (with SSH allowed)
 # - Sets up directory structure
 #

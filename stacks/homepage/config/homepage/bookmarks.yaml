@@ -6,33 +6,33 @@
 - Infrastructure:
     - Proxmox:
         - abbr: PVE
-          href: https://192.168.86.106:8006
+          href: https://192.168.1.81:8006
           description: Hypervisor management
     - NAS:
         - abbr: NAS
-          href: http://thor.local.infinity-node.com:5000
+          href: http://thor.local.infinity-node.win:5000
           description: Synology NAS management
 
 - Portainer (Docker Management):
     - VM 100 (emby):
         - abbr: P100
-          href: https://portainer-100.local.infinity-node.com:9443
+          href: https://portainer-100.local.infinity-node.win:9443
           description: Portainer on VM 100
     - VM 101 (downloads):
         - abbr: P101
-          href: https://portainer-101.local.infinity-node.com:32768
+          href: https://portainer-101.local.infinity-node.win:32768
           description: Portainer on VM 101 (non-standard port)
     - VM 102 (arr):
         - abbr: P102
-          href: https://portainer-102.local.infinity-node.com:9443
+          href: https://portainer-102.local.infinity-node.win:9443
           description: Portainer on VM 102
     - VM 103 (misc):
         - abbr: P103
-          href: https://portainer-103.local.infinity-node.com:9443
+          href: https://portainer-103.local.infinity-node.win:9443
           description: Portainer on VM 103
 
 - Security:
     - Vaultwarden:
         - abbr: VW
-          href: http://vaultwarden.local.infinity-node.com:8111
+          href: http://vaultwarden.local.infinity-node.win:8111
           description: Password manager (source of truth for secrets)

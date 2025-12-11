@@ -23,7 +23,7 @@ aliases: [Prowlarr, Indexer Manager]
 
 Centralized indexer management for all arr services. Manages torrent/usenet indexers and automatically configures them in Radarr, Sonarr, and Lidarr. Critical component - if Prowlarr fails, no arr service can search for content.
 
-**Access:** http://prowlarr.local.infinity-node.com (port-free via Traefik) or http://prowlarr.local.infinity-node.com:9696 (direct)
+**Access:** http://prowlarr.local.infinity-node.win (port-free via Traefik) or http://prowlarr.local.infinity-node.win:9696 (direct)
 
 ## Key Role
 - Manages all indexer connections (torrent sites, usenet providers)

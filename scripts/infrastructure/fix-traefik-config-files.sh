@@ -11,12 +11,12 @@
 #   ./fix-traefik-config-files.sh <vm-ip> [stack-id]
 #
 # Arguments:
-#   vm-ip: IP address of the VM (e.g., 192.168.86.173)
+#   vm-ip: IP address of the VM (e.g., 192.168.1.101)
 #   stack-id: Optional Portainer stack ID. If not provided, will find Traefik stack automatically
 #
 # Examples:
-#   ./fix-traefik-config-files.sh 192.168.86.173
-#   ./fix-traefik-config-files.sh 192.168.86.249 53
+#   ./fix-traefik-config-files.sh 192.168.1.101
+#   ./fix-traefik-config-files.sh 192.168.1.103 53
 #
 # What it does:
 #   1. Finds Traefik stack directory in Portainer's compose directory
@@ -55,8 +55,8 @@ if [ $# -lt 1 ]; then
     echo "Usage: $0 <vm-ip> [stack-id]" >&2
     echo "" >&2
     echo "Examples:" >&2
-    echo "  $0 192.168.86.173" >&2
-    echo "  $0 192.168.86.249 53" >&2
+    echo "  $0 192.168.1.101" >&2
+    echo "  $0 192.168.1.103 53" >&2
     exit 1
 fi
 
@@ -109,10 +109,10 @@ VM_NUM=$(echo "$STACK_DIR" | grep -oE 'vm-[0-9]+' | grep -oE '[0-9]+' || echo ""
 if [ -z "$VM_NUM" ]; then
     # Try to infer from IP
     case "$VM_IP" in
-        192.168.86.172) VM_NUM="100" ;;
-        192.168.86.173) VM_NUM="101" ;;
-        192.168.86.174) VM_NUM="102" ;;
-        192.168.86.249) VM_NUM="103" ;;
+        192.168.1.100) VM_NUM="100" ;;
+        192.168.1.101) VM_NUM="101" ;;
+        192.168.1.102) VM_NUM="102" ;;
+        192.168.1.103) VM_NUM="103" ;;
         *) error "Could not determine VM number"; exit 2 ;;
     esac
 fi
