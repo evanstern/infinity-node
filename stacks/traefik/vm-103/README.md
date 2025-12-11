@@ -1,7 +1,7 @@
 # Traefik Stack - VM 103 (misc)
 
 **VM:** 103 (misc)
-**IP:** 192.168.1.103
+**IP:** vm-103.local.infinity-node.win
 **Status:** In Progress
 **Priority:** Important (non-critical services)
 
@@ -57,7 +57,7 @@ This Traefik instance routes the following services:
    docker logs traefik
 
    # Test dashboard (direct access - dashboard not routed via Traefik)
-   curl http://192.168.1.103:8080/api/rawdata
+   curl http://vm-103.local.infinity-node.win:8080/api/rawdata
    ```
 
 ### Updating Routing Rules
@@ -113,17 +113,17 @@ networks:
 
 ```bash
 dig vaultwarden.local.infinity-node.win
-# Should return: 192.168.1.103
+# Should return: vm-103.local.infinity-node.win
 ```
 
 ### Test Port-Free Access
 
 ```bash
 # Test Vaultwarden
-curl -H "Host: vaultwarden.local.infinity-node.win" http://192.168.1.103/
+curl -H "Host: vaultwarden.local.infinity-node.win" http://vm-103.local.infinity-node.win/
 
 # Test Homepage
-curl -H "Host: homepage.local.infinity-node.win" http://192.168.1.103/
+curl -H "Host: homepage.local.infinity-node.win" http://vm-103.local.infinity-node.win/
 ```
 
 ### Test in Browser

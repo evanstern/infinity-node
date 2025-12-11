@@ -40,7 +40,7 @@ SSH into VM-101 and create the configuration directory:
 
 ```bash
 # SSH to VM-101
-ssh evan@192.168.1.101
+ssh evan@vm-101.local.infinity-node.win
 
 # Create config directory
 sudo mkdir -p /opt/traefik/config
@@ -51,10 +51,10 @@ Copy the configuration files to VM-101. From your local machine:
 
 ```bash
 # Copy traefik.yml
-scp stacks/traefik/vm-101/traefik.yml evan@192.168.1.101:/opt/traefik/config/
+scp stacks/traefik/vm-101/traefik.yml evan@vm-101.local.infinity-node.win:/opt/traefik/config/
 
 # Copy dynamic.yml
-scp stacks/traefik/vm-101/dynamic.yml evan@192.168.1.101:/opt/traefik/config/
+scp stacks/traefik/vm-101/dynamic.yml evan@vm-101.local.infinity-node.win:/opt/traefik/config/
 ```
 
 Verify files are in place:
@@ -88,11 +88,11 @@ ls -la /opt/traefik/config/
 docker logs traefik
 
 # Test dashboard
-curl http://192.168.1.101:8080/api/rawdata
+curl http://vm-101.local.infinity-node.win:8080/api/rawdata
 
 # Test service routing
-curl -H "Host: deluge.local.infinity-node.win" http://192.168.1.101/
-curl -H "Host: nzbget.local.infinity-node.win" http://192.168.1.101/
+curl -H "Host: deluge.local.infinity-node.win" http://vm-101.local.infinity-node.win/
+curl -H "Host: nzbget.local.infinity-node.win" http://vm-101.local.infinity-node.win/
 ```
 
 ### Updating Configuration
@@ -102,8 +102,8 @@ To update `traefik.yml` or `dynamic.yml`:
 1. Update files in git repository
 2. Copy updated files to VM-101:
    ```bash
-   scp stacks/traefik/vm-101/traefik.yml evan@192.168.1.101:/opt/traefik/config/
-   scp stacks/traefik/vm-101/dynamic.yml evan@192.168.1.101:/opt/traefik/config/
+   scp stacks/traefik/vm-101/traefik.yml evan@vm-101.local.infinity-node.win:/opt/traefik/config/
+   scp stacks/traefik/vm-101/dynamic.yml evan@vm-101.local.infinity-node.win:/opt/traefik/config/
    ```
 3. Restart Traefik container in Portainer (or wait for GitOps auto-update if `watch: true` is enabled in traefik.yml)
 
@@ -113,13 +113,13 @@ After deployment, test each service:
 
 ```bash
 # Test Deluge routing
-curl -H "Host: deluge.local.infinity-node.win" http://192.168.1.101/
+curl -H "Host: deluge.local.infinity-node.win" http://vm-101.local.infinity-node.win/
 
 # Test NZBGet routing
-curl -H "Host: nzbget.local.infinity-node.win" http://192.168.1.101/
+curl -H "Host: nzbget.local.infinity-node.win" http://vm-101.local.infinity-node.win/
 
 # Test Portainer routing
-curl -H "Host: portainer-101.local.infinity-node.win" http://192.168.1.101/
+curl -H "Host: portainer-101.local.infinity-node.win" http://vm-101.local.infinity-node.win/
 ```
 
 ## Troubleshooting

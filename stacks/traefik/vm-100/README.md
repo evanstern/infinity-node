@@ -50,10 +50,10 @@ After deployment, test each service:
 
 ```bash
 # Test Emby routing (LAN)
-curl -H "Host: emby.local.infinity-node.win" http://192.168.1.100/
+curl -H "Host: emby.local.infinity-node.win" http://vm-100.local.infinity-node.win/
 
 # Test Portainer routing
-curl -H "Host: portainer-100.local.infinity-node.win" http://192.168.1.100/
+curl -H "Host: portainer-100.local.infinity-node.win" http://vm-100.local.infinity-node.win/
 
 # Quick log tail (expect JSON access events for fail2ban)
 docker exec traefik tail -f /var/log/traefik/access.log

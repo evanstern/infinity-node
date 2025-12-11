@@ -45,16 +45,16 @@ After deployment, test each service:
 
 ```bash
 # Test arr services
-curl -H "Host: radarr.local.infinity-node.win" http://192.168.1.102/
-curl -H "Host: sonarr.local.infinity-node.win" http://192.168.1.102/
-curl -H "Host: lidarr.local.infinity-node.win" http://192.168.1.102/
-curl -H "Host: prowlarr.local.infinity-node.win" http://192.168.1.102/
+curl -H "Host: radarr.local.infinity-node.win" http://vm-102.local.infinity-node.win/
+curl -H "Host: sonarr.local.infinity-node.win" http://vm-102.local.infinity-node.win/
+curl -H "Host: lidarr.local.infinity-node.win" http://vm-102.local.infinity-node.win/
+curl -H "Host: prowlarr.local.infinity-node.win" http://vm-102.local.infinity-node.win/
 
 # Test other services
-curl -H "Host: jellyseerr.local.infinity-node.win" http://192.168.1.102/
-curl -H "Host: flaresolverr.local.infinity-node.win" http://192.168.1.102/
-curl -H "Host: huntarr.local.infinity-node.win" http://192.168.1.102/
-curl -H "Host: portainer-102.local.infinity-node.win" http://192.168.1.102/
+curl -H "Host: jellyseerr.local.infinity-node.win" http://vm-102.local.infinity-node.win/
+curl -H "Host: flaresolverr.local.infinity-node.win" http://vm-102.local.infinity-node.win/
+curl -H "Host: huntarr.local.infinity-node.win" http://vm-102.local.infinity-node.win/
+curl -H "Host: portainer-102.local.infinity-node.win" http://vm-102.local.infinity-node.win/
 ```
 
 ## Troubleshooting
