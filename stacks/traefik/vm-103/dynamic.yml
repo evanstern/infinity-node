@@ -103,6 +103,13 @@ http:
         - web
       service: paperless-ai
 
+    # n8n - Workflow automation
+    n8n:
+      rule: "Host(`n8n.local.infinity-node.win`)"
+      entryPoints:
+        - web
+      service: n8n
+
   # Services define backend servers to route to
   services:
     # Paperless-AI - Internal port 3010
@@ -189,3 +196,9 @@ http:
       loadBalancer:
         servers:
           - url: "http://cookcli:9080"
+
+    # n8n - Internal port 5678
+    n8n:
+      loadBalancer:
+        servers:
+          - url: "http://n8n:5678"
