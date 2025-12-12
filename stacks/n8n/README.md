@@ -90,8 +90,8 @@ POSTGRES_PASSWORD=$(openssl rand -base64 24 | tr -d '=/+' | head -c 24)
 
 ```bash
 export BW_SESSION=$(cat ~/.bw-session)
-N8N_ENCRYPTION_KEY=$(./scripts/secrets/get-vw-secret.sh "n8n-secrets" "shared" "encryption_key")
-POSTGRES_PASSWORD=$(./scripts/secrets/get-vw-secret.sh "n8n-secrets" "shared" "postgres_password")
+N8N_ENCRYPTION_KEY=$(./scripts/secrets/get-vw-secret.sh "n8n-secrets" "vm-103-misc" "encryption_key")
+POSTGRES_PASSWORD=$(./scripts/secrets/get-vw-secret.sh "n8n-secrets" "vm-103-misc" "postgres_password")
 ```
 
 ### Volumes
