@@ -99,6 +99,10 @@ if [ "$CALIBRE_RUNNING" -gt 0 ]; then
         warn "Some containers may not have stopped cleanly"
     }
     CONTAINERS_STOPPED=true
+
+    # Wait for filesystem to settle
+    info "Waiting for filesystem to settle..."
+    sleep 10
 else
     info "Calibre containers not running, proceeding with backup"
     CONTAINERS_STOPPED=false
@@ -112,8 +116,16 @@ info "Library size: $LIBRARY_SIZE"
 info "Creating backup: $BACKUP_NAME"
 START_TIME=$(date +%s)
 
-tar czf "$LOCAL_BACKUP_FILE" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")" 2>&1 || {
-    error "Backup creation failed"
+# Run tar and capture exit code
+set +e # Disable exit on error for tar command
+tar czf "$LOCAL_BACKUP_FILE" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")" 2>&1
+TAR_EXIT=$?
+set -e # Re-enable exit on error
+
+# Tar exit code 1 means "some files differ" (changed during read), which is a warning.
+# Tar exit code 2 means fatal error.
+if [ $TAR_EXIT -ge 2 ]; then
+    error "Backup creation failed (tar exit code $TAR_EXIT)"
 
     # Restart containers if we stopped them
     if [ "$CONTAINERS_STOPPED" = true ]; then
@@ -122,7 +134,7 @@ tar czf "$LOCAL_BACKUP_FILE" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_
     fi
 
     exit 1
-}
+fi
 
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
