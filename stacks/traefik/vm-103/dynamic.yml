@@ -110,6 +110,13 @@ http:
         - web
       service: n8n
 
+    # BookLore - Digital library
+    booklore:
+      rule: "Host(`booklore.local.infinity-node.win`)"
+      entryPoints:
+        - web
+      service: booklore
+
   # Services define backend servers to route to
   services:
     # Paperless-AI - Internal port 3010
@@ -202,3 +209,9 @@ http:
       loadBalancer:
         servers:
           - url: "http://n8n:5678"
+
+    # BookLore - Internal port 6060
+    booklore:
+      loadBalancer:
+        servers:
+          - url: "http://booklore:6060"
