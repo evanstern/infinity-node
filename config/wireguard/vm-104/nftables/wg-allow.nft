@@ -1,7 +1,5 @@
 #!/usr/sbin/nft -f
-# Template for vm-104-wireguard ingress and SSH restriction.
-
-flush table inet wg-allow
+# Template for vm-104-wireguard ingress, forwarding, and NAT for WG clients.
 
 table inet wg-allow {
   chain input {
@@ -12,5 +10,18 @@ table inet wg-allow {
   chain ssh-guard {
     type filter hook input priority 0;
     iifname "wg0" tcp dport 22 accept
+  }
+  chain forward {
+    type filter hook forward priority 0; policy accept;
+    ct state established,related accept
+    iifname "wg0" oifname "ens18" accept
+    iifname "ens18" oifname "wg0" ct state established,related accept
+  }
+}
+
+table ip wg-nat {
+  chain postrouting {
+    type nat hook postrouting priority srcnat; policy accept;
+    ip saddr 10.66.66.0/24 oif "ens18" masquerade
   }
 }

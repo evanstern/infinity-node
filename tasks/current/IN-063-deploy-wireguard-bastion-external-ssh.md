@@ -275,6 +275,17 @@ Moderate: new VM + network/firewall + client configs; known patterns, limited in
 > - Created VM 104 on node `infinity-node`: name `vm-104-wireguard`, 1 vCPU, 1GB RAM, 16G disk on `local-lvm`, bridge `vmbr0`.
 > - Attached ISO `local:iso/ubuntu-24.04.1-live-server-amd64.iso`; boot order set to `scsi0`.
 >
+> **2025-12-25 - Phase 2 execution**
+> - On vm-104: cloned repo to `/opt/infinity-node`; installed `wireguard`, `nftables`.
+> - Applied netplan for static IP `192.168.1.104/24`; confirmed reachability.
+> - Installed sysctl forwarding, nftables rules; added flush to wg nftables table and reapplied (deduped rules).
+> - Generated WG keys on-host; rendered `/etc/wireguard/wg0.conf`; enabled `wg-quick@wg0` (listening 51820).
+> - Removed DNS directive from server wg0.conf to avoid overriding host DNS; server DNS now resolves normally.
+> - Generated peer configs with private keys at `/home/evan/wg-peers/{laptop.conf,phone.conf}` (Endpoint placeholder `<public_or_ddns>`).
+>
+> **2025-12-25 - Forwarding/NAT fix**
+> - Updated nftables to include forward chain and MASQUERADE for `10.66.66.0/24` out `ens18` (file and host applied). This fixes LAN reachability/DNS for peers.
+>
 > **YYYY-MM-DD - [Milestone]**
 > - [What was accomplished]
 > - [Important decisions made]
