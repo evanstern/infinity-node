@@ -1,6 +1,8 @@
 #!/usr/sbin/nft -f
 # Template for vm-104-wireguard ingress and SSH restriction.
 
+flush table inet wg-allow
+
 table inet wg-allow {
   chain input {
     type filter hook input priority 0;
