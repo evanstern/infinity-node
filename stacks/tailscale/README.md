@@ -17,12 +17,13 @@ Deploy one stack per host. Uses an external Portainer secret `ts_authkey` (do no
 - `TS_EXTRA_ARGS`: optional extra flags to `tailscale up` (e.g., `--shields-up`).
 - `TS_STATE_DIR_HOST`: host path for state (default `/home/evan/config/tailscale`).
 - `TS_TUN_DEVICE`: tun device path (default `/dev/net/tun`).
+- `TS_AUTHKEY`: set the auth key inline (preferred for standalone Docker stacks); or `TS_AUTHKEY_FILE` if you mount a file containing the key.
 
 ## Deploy steps (per host)
-1. In Portainer, create external secret `ts_authkey` with your Tailscale auth key (from Vaultwarden: `infinity-node -> vm-10x-xxx/shared`).
+1. Retrieve Tailscale auth key from Vaultwarden (e.g., `ts_authkey` in `shared`). In Portainer, set it as `TS_AUTHKEY` (or mount a file and set `TS_AUTHKEY_FILE`).
 2. Add stack from repo `stacks/tailscale/docker-compose.yml`.
 3. Set env overrides for this host (see above) in the stack variables (or via .env uploaded in Portainer).
-4. Deploy. First run will `tailscale up` automatically using the secret.
+4. Deploy. First run will `tailscale up` automatically using the key.
 5. In Tailscale admin, approve the device; if this host advertises routes, enable them.
 
 ## Notes
