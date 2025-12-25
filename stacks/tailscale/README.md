@@ -1,13 +1,10 @@
 # Tailscale stack (Portainer / Docker, host networking)
 
-Deploy one stack per host. Uses an external Portainer secret `ts_authkey` (do not commit keys). Configure host-specific values via environment overrides in Portainer GitOps.
+Deploy one stack per host. Configure host-specific values via environment overrides in Portainer GitOps. Auth key provided via `TS_AUTHKEY` (or `TS_AUTHKEY_FILE` if you mount it); no secrets committed.
 
 ## Files
 - `docker-compose.yml` — Tailscale service (host network, privileged), persists state in `/var/lib/tailscale`.
 - `.env.example` — Env defaults; copy and override per host in Portainer.
-
-## Required Portainer secret
-- `ts_authkey`: Tailscale auth key (reusable, scoped, not an ephemeral single-use if you want unattended redeploys).
 
 ## Environment overrides per host (Portainer)
 - `TS_HOSTNAME`: e.g., `vm-100`, `vm-101`, …

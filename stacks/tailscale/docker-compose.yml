@@ -18,6 +18,8 @@ services:
       TS_ACCEPT_DNS: ${TS_ACCEPT_DNS:-false}
       TS_EXIT_NODE: ${TS_EXIT_NODE:-false}
       TS_EXTRA_ARGS: ${TS_EXTRA_ARGS:-}
+      TS_AUTHKEY: ${TS_AUTHKEY:-}
+      TS_AUTHKEY_FILE: ${TS_AUTHKEY_FILE:-}
     entrypoint: >
       /bin/sh -c '
         tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/var/run/tailscale/tailscaled.sock &
