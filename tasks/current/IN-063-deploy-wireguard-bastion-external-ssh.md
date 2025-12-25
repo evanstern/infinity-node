@@ -1,13 +1,13 @@
 ---
 type: task
 task-id: IN-063
-status: pending
+status: in-progress
 priority: 2
 category: infrastructure
 agent: infrastructure
 created: 2025-12-25
 updated: 2025-12-25
-started:
+started: 2025-12-25
 completed:
 
 # Task classification
@@ -108,9 +108,9 @@ WireGuard endpoint reachable externally with split-tunnel peers for laptop and p
 ### Dependencies
 
 **Prerequisites (must exist before starting):**
-- [ ] **Host placement decision** - Which node/VM/LXC host will run WG (blocking: yes)
-- [ ] **Port selection + FW allowance** - UDP port and edge/LAN FW rules (blocking: yes)
-- [ ] **Internal DNS info** - Resolver IP/search domain to push (blocking: no)
+- [x] **Host placement decision** - New minimal VM 104 (vm-104-wireguard) (blocking: yes)
+- [ ] **Port selection + FW allowance** - UDP 51820 with FW rate-limit (blocking: yes)
+- [x] **Internal DNS info** - Push resolver + search domain `local.infinity-node.win` (blocking: no)
 
 **Has blocking dependencies** - need placement + port choice before build.
 
@@ -234,6 +234,14 @@ Moderate: new VM + network/firewall + client configs; known patterns, limited in
 - Use split-tunnel AllowedIPs for internal subnets and host routes; keep general traffic on normal/PIA.
 - Consider fronting WG UDP via Traefik/Pangolin only if allowlisting/rate-limit is simpler there; otherwise direct with FW.
 - Push internal DNS/search domain; verify LAN preference when on-site.
+- Decisions: Host = VM 104 (vm-104-wireguard), UDP 51820 (open with FW rate-limit), AllowedIPs start with `192.168.1.0/24`, DNS push `local.infinity-node.win` resolver/search domain, no IP allowlist available.
+- Recommended WG addressing: server `10.66.66.1/24`; peers laptop `10.66.66.2/32`, phone `10.66.66.3/32`.
+- Peer AllowedIPs: `10.66.66.0/24,192.168.1.0/24` (split tunnel); server routes `192.168.1.0/24` via LAN.
+- DNS push: internal resolver (e.g., `192.168.1.1`) and search domain `local.infinity-node.win`.
+- Enable forwarding: `net.ipv4.ip_forward=1`, `net.ipv6.conf.all.forwarding=1` if v6 needed.
+- Firewall idea (nftables): allow udp dport 51820 with rate-limit (e.g., `limit rate 25/minute burst 50`), allow SSH only from WG subnet, drop rest.
+- Keep secrets out of git: generate keys on vm-104-wireguard and distribute peer configs out-of-band.
+- Store config artifacts (templates only) in-repo, e.g., `config/wireguard/vm-104/` with placeholders (no private keys); deploy via `scp` or git pull + symlinks (`/etc/wireguard/wg0.conf -> /opt/infinity-node/config/wireguard/vm-104/wg0.conf`), and keep key files local-only.
 
 **Follow-up Tasks**:
 - IN-XXX: Upgrade Pangolin to 1.13 after SSH path is in place.
@@ -245,6 +253,27 @@ Moderate: new VM + network/firewall + client configs; known patterns, limited in
 >
 > **2025-12-25 - Task created**
 > - Captured plan for WG bastion, scope, risks, and testing.
+>
+> **2025-12-25 - Phase 0 decisions**
+> - Placement: new VM 104 (vm-104-wireguard), minimal.
+> - Exposure: UDP 51820 open with FW rate-limit (no source allowlist).
+> - DNS: push internal resolver + search domain `local.infinity-node.win`.
+> - Routing: initial AllowedIPs `192.168.1.0/24` (single LAN).
+>
+> **2025-12-25 - Phase 1 planning**
+> - Chose WG addressing: server 10.66.66.1/24; laptop 10.66.66.2/32; phone 10.66.66.3/32.
+> - Split tunnel AllowedIPs: 10.66.66.0/24, 192.168.1.0/24.
+> - FW concept: nftables rate-limit on udp/51820; SSH only from WG subnet.
+> - ISO source: reuse existing Ubuntu 24.04.3 live server ISO at NAS path `evan/images/ubuntu-24.04.3-live-server-amd64.iso`.
+> - Config mgmt: keep templates in-repo under `config/wireguard/vm-104/`, deploy via scp or git + symlinks; never store private keys in git.
+>
+> **2025-12-25 - Phase 1 artifacts**
+> - Added repo templates for vm-104: `config/wireguard/vm-104/{wg0.conf,nftables/wg-allow.nft,nftables/wg-allow-nuke.nft,sysctl/99-wg.conf,README.md}` with placeholders (no secrets).
+> - Added netplan template for static IP `192.168.1.104/24` on `ens18` with gateway `192.168.1.1` and DNS `192.168.1.79, 192.168.1.1, 8.8.8.8`.
+>
+> **2025-12-25 - Phase 1 execution**
+> - Created VM 104 on node `infinity-node`: name `vm-104-wireguard`, 1 vCPU, 1GB RAM, 16G disk on `local-lvm`, bridge `vmbr0`.
+> - Attached ISO `local:iso/ubuntu-24.04.1-live-server-amd64.iso`; boot order set to `scsi0`.
 >
 > **YYYY-MM-DD - [Milestone]**
 > - [What was accomplished]

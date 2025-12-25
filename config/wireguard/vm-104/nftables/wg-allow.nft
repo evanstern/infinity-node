@@ -1,0 +1,14 @@
+#!/usr/sbin/nft -f
+# Template for vm-104-wireguard ingress and SSH restriction.
+
+table inet wg-allow {
+  chain input {
+    type filter hook input priority 0;
+    ct state established,related accept
+    udp dport 51820 limit rate 25/minute burst 50 packets accept
+  }
+  chain ssh-guard {
+    type filter hook input priority 0;
+    iifname "wg0" tcp dport 22 accept
+  }
+}
