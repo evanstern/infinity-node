@@ -285,6 +285,17 @@ Moderate: new VM + network/firewall + client configs; known patterns, limited in
 >
 > **2025-12-25 - Forwarding/NAT fix**
 > - Updated nftables to include forward chain and MASQUERADE for `10.66.66.0/24` out `ens18` (file and host applied). This fixes LAN reachability/DNS for peers.
+
+> **2025-12-25 - Teardown (CGNAT identified)**
+> - Determined ISP CGNAT (WAN IP 100.77.69.204) preventing inbound WG. No traffic reached vm-104 despite forwarding.
+> - Destroyed VM 104 on Proxmox (purged disk) and removed WG config templates from repo (`config/wireguard/vm-104/*`).
+> - Plan pivot: replace WG ingress with Tailscale (user has account). No-IP DDNS to be removed by user.
+
+> **2025-12-25 - Tailscale plan (Portainer/GitOps)**
+> - Added `stacks/tailscale/docker-compose.yml` and `stacks/tailscale/README.md` for per-host Tailscale via Portainer.
+> - Uses external secret `ts_authkey` (from Vaultwarden `infinity-node -> vm-10x-xxx/shared`), host overrides via env vars (TS_HOSTNAME, TS_ROUTES, TS_ACCEPT_DNS, TS_EXIT_NODE, TS_EXTRA_ARGS).
+> - Default host target vm-100; subnet router to be chosen (set TS_ROUTES on that host only).
+> - Added `.env.example` with configurable state path (`TS_STATE_DIR_HOST` default `/home/evan/config/tailscale`) and tun device; volume mounts now configurable.
 >
 > **YYYY-MM-DD - [Milestone]**
 > - [What was accomplished]

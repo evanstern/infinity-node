@@ -1,4 +1,0 @@
-#!/usr/sbin/nft -f
-# Cleanup for wg-allow ruleset.
-
-flush table inet wg-allow
