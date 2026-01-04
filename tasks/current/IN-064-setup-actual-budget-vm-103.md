@@ -32,7 +32,7 @@ tags:
 
 # Task: IN-064 - Set up Actual Budget on VM-103
 
-> **Quick Summary**: Deploy Actual Budget on VM-103 via Portainer-managed Docker stack, exposing port 5006, persisting data at `/mnt/video/ActualBudget`, and handling the SimpleFIN setup token via Vaultwarden with a `.env.example` placeholder.
+> **Quick Summary**: Deploy Actual Budget on VM-103 via Portainer-managed Docker stack, exposing port 5006, persisting data at `/home/evan/data/actual-budget`, and handling the SimpleFIN setup token via Vaultwarden with a `.env.example` placeholder.
 
 ## Problem Statement
 
@@ -52,11 +52,11 @@ We need a self-hosted Actual Budget instance to manage household finances and en
 
 ### Recommended Approach
 
-Create a new `Actual Budget` stack managed via Portainer Git integration. Base the compose on upstream `actualbudget/actual-server:latest`, expose host port `5006`, mount `/mnt/video/ActualBudget` to `/data`, include healthcheck, and add a `.env.example` with a placeholder for the SimpleFIN setup token stored in Vaultwarden. Document deployment steps and validation.
+Create a new `Actual Budget` stack managed via Portainer Git integration. Base the compose on upstream `actualbudget/actual-server:latest`, expose host port `5006`, mount `/home/evan/data/actual-budget` to `/data`, include healthcheck, and add a `.env.example` with a placeholder for the SimpleFIN setup token stored in Vaultwarden. Document deployment steps and validation.
 
 **Key components:**
 - Docker image `actualbudget/actual-server:latest` with healthcheck.
-- Volume mount `/mnt/video/ActualBudget:/data` for persistent storage.
+- Volume mount `/home/evan/data/actual-budget:/data` for persistent storage.
 - Port mapping `5006:5006`.
 - `.env.example` placeholder for `ACTUAL_SIMPLEFIN_TOKEN` (secret in Vaultwarden).
 
@@ -82,7 +82,7 @@ Create a new `Actual Budget` stack managed via Portainer Git integration. Base t
 ### Scope Definition
 
 **✅ In Scope:**
-- Add a new stack definition for Actual Budget with port 5006 and `/mnt/video/ActualBudget` volume.
+- Add a new stack definition for Actual Budget with port 5006 and `/home/evan/data/actual-budget` volume.
 - Add `.env.example` with SimpleFIN token placeholder and documented secrets flow (Vaultwarden).
 - Document deployment, validation, and rollback steps in the task file.
 
@@ -98,7 +98,7 @@ Create a new `Actual Budget` stack managed via Portainer Git integration. Base t
 ### Potential Pitfalls
 
 - ⚠️ **Port collision on 5006** → **Mitigation**: Verify availability on VM-103; adjust host port if conflict found.
-- ⚠️ **Volume permissions on `/mnt/video/ActualBudget`** → **Mitigation**: Ensure path exists and is writable by container UID/GID; document ownership expectations.
+- ⚠️ **Volume permissions on `/home/evan/data/actual-budget`** → **Mitigation**: Ensure path exists and is writable by container UID/GID; document ownership expectations.
 - ⚠️ **Secret handling for SimpleFIN token** → **Mitigation**: Store token in Vaultwarden; only include placeholder in `.env.example`; avoid committing secrets.
 - ⚠️ **Drift from Portainer Git stack** → **Mitigation**: Deploy via Portainer pull/redeploy; avoid manual `docker compose up`.
 
@@ -106,7 +106,7 @@ Create a new `Actual Budget` stack managed via Portainer Git integration. Base t
 
 **Prerequisites (must exist before starting):**
 - [ ] Portainer access for VM-103 stack deployment (blocking: yes)
-- [ ] Writable path `/mnt/video/ActualBudget` on VM-103/NAS mount (blocking: yes)
+- [ ] Writable path `/home/evan/data/actual-budget` on VM-103 (blocking: yes)
 
 **Has blocking dependencies** - cannot deploy until Portainer access and path readiness confirmed.
 
@@ -121,12 +121,12 @@ Create a new `Actual Budget` stack managed via Portainer Git integration. Base t
 **How to rollback if this goes wrong:**
 1. In Portainer, stop/remove the Actual stack.
 2. Revert compose/.env.example changes in git.
-3. If container data is bad, restore `/mnt/video/ActualBudget` from backup (if available) or recreate empty dir.
+3. If container data is bad, restore `/home/evan/data/actual-budget` from backup (if available) or recreate empty dir.
 
 **Recovery time estimate**: ~10-20 minutes (stack removal/redeploy; longer if restoring data).
 
 **Backup requirements:**
-- None pre-existing (new deploy). If data accumulates later, add backup strategy for `/mnt/video/ActualBudget`.
+- None pre-existing (new deploy). If data accumulates later, add backup strategy for `/home/evan/data/actual-budget`.
 
 ## Execution Plan
 
@@ -135,15 +135,15 @@ Create a new `Actual Budget` stack managed via Portainer Git integration. Base t
 **Primary Agent**: `[agent:docker]`
 
  - [x] Confirm port 5006 free on VM-103. `[agent:docker]`
- - [x] Verify `/mnt/video/ActualBudget` exists and is writable; create if needed (no git). `[agent:docker]`
+ - [x] Verify initial NAS path `/mnt/video/ActualBudget` (not used; caused DB lock). `[agent:docker]`
+ - [x] Verify `/home/evan/data/actual-budget` exists and is writable; create if needed (no git). `[agent:docker]`
 - [x] Identify Portainer stack naming and repo path convention (e.g., `stacks/actual`). `[agent:docker]`
 
 ### Phase 1: Compose & Secrets
 
 **Primary Agent**: `[agent:docker]`
 
-- [ ] Add `stacks/actual/docker-compose.yml` with image `actualbudget/actual-server:latest`, port `5006:5006`, volume mount `/mnt/video/ActualBudget:/data`, and healthcheck. `[agent:docker]`
-- [x] Add `stacks/actual/docker-compose.yml` with image `actualbudget/actual-server:latest`, port `5006:5006`, volume mount `/mnt/video/ActualBudget:/data`, and healthcheck. `[agent:docker]`
+- [x] Add `stacks/actual/docker-compose.yml` with image `actualbudget/actual-server:latest`, port `5006:5006`, volume mount `/home/evan/data/actual-budget:/data`, and healthcheck. `[agent:docker]`
 - [x] Add `stacks/actual/.env.example` with `ACTUAL_SIMPLEFIN_TOKEN=` placeholder; note Vaultwarden entry for real token. `[agent:docker]`
 - [x] Document environment options (e.g., HTTPS key/cert, upload limits) referencing upstream docs. `[agent:docker]`
 
@@ -151,23 +151,21 @@ Create a new `Actual Budget` stack managed via Portainer Git integration. Base t
 
 **Primary Agent**: `[agent:testing]`
 
-- [ ] Validate compose via `docker compose config` (Portainer or local check). `[agent:testing]`
-- [x] Validate compose via `docker compose config` (Portainer or local check). `[agent:testing]`
-- [ ] After deployment, confirm healthcheck passing and UI reachable on port 5006. `[agent:testing]`
-- [ ] Confirm data persists in `/mnt/video/ActualBudget` after restart. `[agent:testing]`
+ - [x] Validate compose via `docker compose config` (Portainer or local check). `[agent:testing]`
+ - [ ] After deployment, confirm healthcheck passing and UI reachable on port 5006. `[agent:testing]`
+ - [ ] Confirm data persists in `/home/evan/data/actual-budget` after restart. `[agent:testing]`
 
 ### Phase 3: Documentation
 
 **Primary Agent**: `[agent:documentation]`
 
-- [ ] Record deployment/runbook steps and rollback notes in repo docs or task. `[agent:documentation]`
 - [x] Record deployment/runbook steps and rollback notes in repo docs or task. `[agent:documentation]`
 - [x] Note SimpleFIN token storage location in Vaultwarden entry. `[agent:documentation]`
 
 ## Acceptance Criteria
 
 - [ ] Task file reflects approved plan (priority 3, moderate complexity, docker category, agent docker).
-- [ ] Compose and `.env.example` paths and values documented (port 5006, `/mnt/video/ActualBudget:/data`).
+- [ ] Compose and `.env.example` paths and values documented (port 5006, `/home/evan/data/actual-budget:/data`).
 - [ ] SimpleFIN token handling recorded: Vaultwarden secret + `.env.example` placeholder.
 - [ ] Healthcheck and deployment/validation steps documented.
 - [ ] Rollback guidance present.
@@ -180,7 +178,7 @@ Create a new `Actual Budget` stack managed via Portainer Git integration. Base t
 - Compose parses cleanly (`docker compose config`).
 - Container reports healthy via healthcheck.
 - Web UI reachable at `http://<vm-103-ip>:5006/`.
-- Data written persists under `/mnt/video/ActualBudget`.
+- Data written persists under `/home/evan/data/actual-budget`.
 
 **Manual validation:**
 1. Portainer: pull and redeploy Actual stack; observe successful deploy.
@@ -223,7 +221,11 @@ Create a new `Actual Budget` stack managed via Portainer Git integration. Base t
 >
 > **2026-01-04 - Port/path checks**
 > - Port 5006 free on VM-103.
-> - Created `/mnt/video/ActualBudget` (NFS mount reports root:root, mode 777).
+> - Initial NAS path created but unsuitable (DB lock); switching to local disk.
+>
+> **2026-01-04 - Path updated**
+> - Updated stack to use `/home/evan/data/actual-budget`.
+> - Created `/home/evan/data/actual-budget` (UID/GID 1000, mode 755).
 >
 > **YYYY-MM-DD - Deployment**
 > - [Fill during execution]

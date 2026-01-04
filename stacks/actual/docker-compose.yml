@@ -10,7 +10,7 @@ services:
       - "${ACTUAL_PORT:-5006}:5006"
 
     volumes:
-      - /mnt/video/ActualBudget:/data
+      - /home/evan/data/actual-budget:/data
 
     healthcheck:
       test: ["CMD-SHELL", "node src/scripts/health-check.js"]
