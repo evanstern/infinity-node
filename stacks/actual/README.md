@@ -7,6 +7,7 @@ Self-hosted Actual Budget server deployed via Portainer Git stack.
 - Host port: `5006` (configurable via `ACTUAL_PORT`)
 - Data path: `/home/evan/data/actual-budget` (host) mounted to `/data`
 - Healthcheck: `node src/scripts/health-check.js`
+- Traefik: `actual.local.infinity-node.win` → service `actual:5006` (attached to `traefik-network`)
 
 ## Secrets
 - SimpleFIN setup token: store in Vaultwarden (`vm-103-misc` collection). Not committed; reference only in `.env.example` placeholder.
@@ -22,4 +23,4 @@ Self-hosted Actual Budget server deployed via Portainer Git stack.
 
 ## Validation
 - `docker compose config` (from `stacks/actual`) to verify syntax.
-- After deploy: confirm UI at `http://<vm-103-ip>:5006`, healthcheck healthy, and data persists under `/home/evan/data/actual-budget`.
+- After deploy: confirm UI at `http://<vm-103-ip>:5006` and via Traefik `http://actual.local.infinity-node.win`, healthcheck healthy, and data persists under `/home/evan/data/actual-budget`.

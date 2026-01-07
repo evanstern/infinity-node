@@ -21,10 +21,17 @@ services:
       - /home/evan/.config/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
       # Dynamic configuration (routing rules)
       - /home/evan/.config/traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
+      # Basic auth files (do not commit real hashes to git)
+      - /home/evan/.config/traefik/auth:/etc/traefik/auth:ro
       # Docker socket for service discovery (optional, for future Docker provider)
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # Access logs written to host for fail2ban
       - /home/evan/logs/traefik:/var/log/traefik
+
+    # Allow routing to host services via http://host.docker.internal:<port>
+    # (Linux-only; requires Docker 20.10+)
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
     # Command line arguments (can override config file settings)
     command:

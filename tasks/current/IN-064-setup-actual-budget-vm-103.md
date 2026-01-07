@@ -52,12 +52,13 @@ We need a self-hosted Actual Budget instance to manage household finances and en
 
 ### Recommended Approach
 
-Create a new `Actual Budget` stack managed via Portainer Git integration. Base the compose on upstream `actualbudget/actual-server:latest`, expose host port `5006`, mount `/home/evan/data/actual-budget` to `/data`, include healthcheck, and add a `.env.example` with a placeholder for the SimpleFIN setup token stored in Vaultwarden. Document deployment steps and validation.
+Create a new `Actual Budget` stack managed via Portainer Git integration. Base the compose on upstream `actualbudget/actual-server:latest`, expose host port `5006`, mount `/home/evan/data/actual-budget` to `/data`, attach to `traefik-network` for local DNS routing, include healthcheck, and add a `.env.example` with a placeholder for the SimpleFIN setup token stored in Vaultwarden. Document deployment steps and validation.
 
 **Key components:**
 - Docker image `actualbudget/actual-server:latest` with healthcheck.
 - Volume mount `/home/evan/data/actual-budget:/data` for persistent storage.
 - Port mapping `5006:5006`.
+- Traefik router `actual.local.infinity-node.win` → service `actual:5006`.
 - `.env.example` placeholder for `ACTUAL_SIMPLEFIN_TOKEN` (secret in Vaultwarden).
 
 **Rationale**: Follows upstream compose, fits Portainer Git-managed workflow used across stacks, and keeps secrets out of git via Vaultwarden + `.env` on VM-103.
@@ -143,7 +144,8 @@ Create a new `Actual Budget` stack managed via Portainer Git integration. Base t
 
 **Primary Agent**: `[agent:docker]`
 
-- [x] Add `stacks/actual/docker-compose.yml` with image `actualbudget/actual-server:latest`, port `5006:5006`, volume mount `/home/evan/data/actual-budget:/data`, and healthcheck. `[agent:docker]`
+ - [x] Add `stacks/actual/docker-compose.yml` with image `actualbudget/actual-server:latest`, port `5006:5006`, volume mount `/home/evan/data/actual-budget:/data`, and healthcheck. `[agent:docker]`
+ - [x] Attach service to `traefik-network` and add Traefik router/service entries. `[agent:docker]`
 - [x] Add `stacks/actual/.env.example` with `ACTUAL_SIMPLEFIN_TOKEN=` placeholder; note Vaultwarden entry for real token. `[agent:docker]`
 - [x] Document environment options (e.g., HTTPS key/cert, upload limits) referencing upstream docs. `[agent:docker]`
 
@@ -226,6 +228,10 @@ Create a new `Actual Budget` stack managed via Portainer Git integration. Base t
 > **2026-01-04 - Path updated**
 > - Updated stack to use `/home/evan/data/actual-budget`.
 > - Created `/home/evan/data/actual-budget` (UID/GID 1000, mode 755).
+>
+> **2026-01-04 - Traefik routing**
+> - Attached Actual to `traefik-network`; added router/service `actual.local.infinity-node.win`.
+> - GitOps polling confirmed; pending Portainer pull/redeploy to apply.
 >
 > **YYYY-MM-DD - Deployment**
 > - [Fill during execution]

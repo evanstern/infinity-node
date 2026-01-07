@@ -117,6 +117,22 @@ http:
         - web
       service: booklore
 
+    # Actual Budget
+    actual:
+      rule: "Host(`actual.local.infinity-node.win`)"
+      entryPoints:
+        - web
+      service: actual
+
+    # lvlp-dev - dev service on VM-103 host (localhost:15173)
+    lvlp-dev:
+      rule: "Host(`lvlp-dev.infinity-node.win`)"
+      entryPoints:
+        - websecure
+      tls: {}
+      service: lvlp-dev-svc
+      middlewares:
+        - lvlp-dev-auth
   # Services define backend servers to route to
   services:
     # Paperless-AI - Internal port 3010
@@ -215,3 +231,22 @@ http:
       loadBalancer:
         servers:
           - url: "http://booklore:6060"
+
+    # Actual Budget - Internal port 5006
+    actual:
+      loadBalancer:
+        servers:
+          - url: "http://actual:5006"
+
+    lvlp-dev-svc:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:15173"
+        passHostHeader: true
+
+  middlewares:
+    lvlp-dev-auth:
+      basicAuth:
+        # Store the htpasswd hash on the VM, not in git.
+        # Create: /home/evan/.config/traefik/auth/lvlp-dev.htpasswd
+        usersFile: "/etc/traefik/auth/lvlp-dev.htpasswd"

@@ -25,6 +25,7 @@ This Traefik instance routes the following services:
 - **Homepage** - `homepage.local.infinity-node.win` → `homepage:3000`
 - **Portainer** - `portainer-103.local.infinity-node.win` → `portainer:9000`
 - **CookCLI** - `recipes.infinity-node.com` → `cookcli:9080`
+- **LVLP Dev (basic auth)** - `lvlp-dev.infinity-node.win` → VM-103 host `:15173`
 
 ## Configuration Files
 
