@@ -126,7 +126,7 @@ http:
 
     # lvlp-dev - dev service on VM-103 host (localhost:15173)
     lvlp-dev:
-      rule: "Host(`lvlp-dev.infinity-node.win`)"
+      rule: "Host(`lvlp-dev.local.infinity-node.win`)"
       entryPoints:
         - websecure
       tls: {}
