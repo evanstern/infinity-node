@@ -21,7 +21,6 @@ services:
     volumes:
       - ${CALIBRE_CONFIG_PATH}:/config
       - ${CALIBRE_LIBRARY_PATH}:/library
-      - ${LIBRARY_PATH}:/library-2
       - ${KAVITA_LIBRARY_PATH}:/kavita
       - ${BOOKS_PATH}:/books
       - ${KINDLE_PATH}:/kindle:ro
