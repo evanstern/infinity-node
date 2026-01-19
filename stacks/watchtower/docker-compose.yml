@@ -14,4 +14,5 @@ services:
             - WATCHTOWER_INCLUDE_STOPPED=${INCLUDE_STOPPED}
             - WATCHTOWER_MONITOR_ONLY=${MONITOR_ONLY}
             - WATCHTOWER_LIFECYCLE_HOOKS=${ENABLE_LIFECYCLE_HOOKS}
+            - DOCKER_API_VERSION=v1.52
         restart: unless-stopped
