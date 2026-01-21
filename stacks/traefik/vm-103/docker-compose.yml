@@ -33,6 +33,10 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+    # Environment variables
+    environment:
+      - DOCKER_API_VERSION=v1.52
+
     # Command line arguments (can override config file settings)
     command:
       - "--log.level=INFO"

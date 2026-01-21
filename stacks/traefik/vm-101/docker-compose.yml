@@ -20,6 +20,10 @@ services:
       # Docker socket for service discovery (optional, for future Docker provider)
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
+    # Environment variables
+    environment:
+      - DOCKER_API_VERSION=v1.52
+
     # Command line arguments (can override config file settings)
     command:
       - "--log.level=INFO"

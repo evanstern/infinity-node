@@ -22,6 +22,10 @@ services:
       # Access logs for fail2ban analysis
       - /home/evan/logs/traefik:/var/log/traefik
 
+    # Environment variables
+    environment:
+      - DOCKER_API_VERSION=v1.52
+
     # Command line arguments (can override config file settings)
     command:
       - "--log.level=INFO"
