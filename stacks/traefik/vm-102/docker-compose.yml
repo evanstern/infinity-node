@@ -22,7 +22,7 @@ services:
 
     # Environment variables
     environment:
-      - DOCKER_API_VERSION=v1.52
+      - DOCKER_API_VERSION=1.52
 
     # Command line arguments (can override config file settings)
     command:
