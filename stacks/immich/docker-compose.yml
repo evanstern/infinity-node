@@ -6,8 +6,15 @@ services:
         volumes:
             - ${UPLOAD_LOCATION}:/usr/src/app/upload
             - /etc/localtime:/etc/localtime:ro
-        env_file:
-            - .env
+        environment:
+            TZ: ${TZ}
+            DB_HOSTNAME: database
+            DB_PORT: 5432
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_DATABASE_NAME: ${DB_DATABASE_NAME}
+            REDIS_HOSTNAME: redis
+            REDIS_PORT: 6379
         ports:
             - '${SERVER_PORT}:2283'
         depends_on:
@@ -25,8 +32,8 @@ services:
         image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
         volumes:
             - model-cache:/cache
-        env_file:
-            - .env
+        environment:
+            IMMICH_LOG_LEVEL: log
         restart: always
         healthcheck:
             disable: false
