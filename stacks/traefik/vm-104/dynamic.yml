@@ -1,0 +1,34 @@
+# Traefik Dynamic Configuration for VM 104
+# This file contains routing rules for all services on VM 104
+# Update this file to add/remove/modify service routes
+
+http:
+  # Routers define how requests are matched and routed
+  routers:
+    # Forgejo - Self-hosted Git forge
+    forgejo:
+      rule: "Host(`forgejo.local.infinity-node.win`)"
+      entryPoints:
+        - web
+      service: forgejo
+
+    # Portainer - Container management
+    portainer-104:
+      rule: "Host(`portainer-104.local.infinity-node.win`)"
+      entryPoints:
+        - web
+      service: portainer-104
+
+  # Services define backend servers to route to
+  services:
+    # Forgejo - Internal port 3000
+    forgejo:
+      loadBalancer:
+        servers:
+          - url: "http://forgejo:3000"
+
+    # Portainer - Internal port 9000 (HTTP)
+    portainer-104:
+      loadBalancer:
+        servers:
+          - url: "http://portainer:9000"
