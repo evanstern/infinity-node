@@ -36,7 +36,7 @@ services:
       - ${DATA_PATH}/config:/etc/gitea
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - ${WEB_PORT}:3000
+      - ${WEB_PORT}:3010
       - ${SSH_PORT}:2222
     depends_on:
       - postgres
