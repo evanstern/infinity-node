@@ -29,6 +29,7 @@ services:
       - FORGEJO__server__ROOT_URL=${ROOT_URL}
       - FORGEJO__server__SSH_PORT=${SSH_PORT}
       - FORGEJO__server__SSH_LISTEN_PORT=2222
+      - FORGEJO__api__ENABLE_SWAGGER=${ENABLE_SWAGGER}
       - FORGEJO____APP_NAME=${APP_NAME}
     volumes:
       - ${DATA_PATH}/data:/var/lib/gitea
