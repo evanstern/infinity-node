@@ -25,7 +25,7 @@ http:
     forgejo:
       loadBalancer:
         servers:
-          - url: "http://forgejo:3000"
+          - url: "http://forgejo:3010"
 
     # Portainer - Internal port 9000 (HTTP)
     portainer-104:
